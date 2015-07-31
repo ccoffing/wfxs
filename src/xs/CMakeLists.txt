@@ -1,0 +1,91 @@
+project(wfxs)
+
+set(wfxsLibSources
+	XSApplication.cpp
+	XSApplication.h
+	XSColor.cpp
+	XSColor.h
+	XSCommand.cpp
+	XSCommand.h
+	XSCommandClearSquare.cpp
+	XSCommandClearSquare.h
+	XSCommandFloodFill.cpp
+	XSCommandFloodFill.h
+	XSCommandLayer.cpp
+	XSCommandLayer.h
+	XSCommandSetBead.cpp
+	XSCommandSetBead.h
+	XSCommandSetFlossPalette.cpp
+	XSCommandSetFlossPalette.h
+	XSCommandSetKnot.cpp
+	XSCommandSetKnot.h
+	XSCommandSetProperties.cpp
+	XSCommandSetProperties.h
+	XSCommandSetSize.cpp
+	XSCommandSetSize.h
+	XSCommandSetStitch.cpp
+	XSCommandSetStitch.h
+	XSCommandSetStyle.cpp
+	XSCommandSetStyle.h
+	XSCommandSetTool.cpp
+	XSCommandSetTool.h
+	XSCommandShowGrid.cpp
+	XSCommandShowGrid.h
+	XSCommandShowRulers.cpp
+	XSCommandShowRulers.h
+	XSCommandStack.cpp
+	XSCommandStack.h
+	XSCommandZoom.cpp
+	XSCommandZoom.h
+	XSController.cpp
+	XSController.h
+	XSData.cpp
+	XSData.h
+	XSDataIO.cpp
+	XSDataIO.h
+	XSDocument.h
+	XSFile.cpp
+	XSFile.h
+	XSFileNative.cpp
+	XSFileNative.h
+	XSFilePCStitch.cpp
+	XSFilePCStitch.h
+	XSFloss.cpp
+	XSFloss.h
+	XSFlossPalette.cpp
+	XSFlossPalette.h
+	XSLayer.cpp
+	XSLayer.h
+	XSMessages.h
+	XSModel.cpp
+	XSModel.h
+	XSPoint.h
+	XSProperties.cpp
+	XSProperties.h
+	XSSelection.cpp
+	XSSelection.h
+	XSSelectionPath.cpp
+	XSSelectionPath.h
+	XSSkein.cpp
+	XSSkein.h
+	XSSkeinPalette.cpp
+	XSSkeinPalette.h
+	XSSquare.cpp
+	XSSquare.h
+	XSSquareIO.cpp
+	XSSquareIO.h
+	XSStitchTypes.h
+	XSSymbolPalette.cpp
+	XSSymbolPalette.h
+	XSToolState.cpp
+	XSToolState.h
+	XSToolTypes.h
+)
+
+add_library(wfxs STATIC ${wfxsLibSources})
+target_link_libraries(wfxs
+	PUBLIC
+		clc
+	)
+
+add_subdirectory(tests)
