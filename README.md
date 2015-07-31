@@ -11,7 +11,7 @@ developers.
 My wife cross-stitches, but in our house we try to avoid un-free operating
 systems such as Windows due to security and privacy concerns.
 
-Closed-source cross stitch programs exist, but they are only available on
+Closed-source cross-stitch programs exist, but they are only available on
 Windows.  These are not viable options for us.  Hence WFXS.
 
 My goal is to have WFXS available on any platform with a C++ compiler.  Help
