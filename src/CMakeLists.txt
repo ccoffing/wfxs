@@ -3,8 +3,15 @@ enable_testing()
 
 project(WildflowerCrossStitch)
 
+# major.minor.patch:
+#     odd patch is development
+#     even patch is release
+set(WFXS_VERSION 0.0.1)
+configure_file(xs/XSVersion.h.in xs/XSVersion.h)
+
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_BINARY_DIR}
 )
 add_definitions(-std=c++11)
 
@@ -47,4 +54,3 @@ endif()
 if(UI_WX)
     add_subdirectory(wx)
 endif()
-

@@ -1,7 +1,8 @@
-#include "XSPropertiesDialog.h"
-#include "mainwindow.h"
+#include "qt/XSPropertiesDialog.h"
+#include "qt/mainwindow.h"
 #include "xs/XSColor.h"
 #include "xs/XSFloss.h"
+#include "xs/XSVersion.h"
 
 #include "clc/support/Logger.h"
 
@@ -12,7 +13,7 @@
 
 
 MainWindow::MainWindow() :
-    m_model(100, 100),
+    m_model(40, 40),
     m_controller(&m_model)
 {
     QWidget *widget = new QWidget;
@@ -83,12 +84,9 @@ MainWindow::MainWindow() :
     createActions();
     createMenus();
 
-    QString message = tr("A context menu is available by right-clicking");
-    statusBar()->showMessage(message);
+    statusBar()->showMessage("Wildflower Cross Stitch " WFXS_VERSION);
 
     setWindowTitle(tr("Wildflower Cross Stitch"));
-//	setMinimumSize(160, 160);
-//	resize(480, 320);
 }
 
 void MainWindow::contextMenuEvent(QContextMenuEvent *event)
@@ -111,61 +109,126 @@ void MainWindow::newFile()
 // http://qt-project.org/doc/qt-4.8/painting-basicdrawing.html
 }
 
+void MainWindow::updateStitchMessage()
+{
+    const char *message;
+    StitchType stitchType = m_controller.GetStitchType();
+
+    switch (stitchType) {
+    case Stitch_Full:
+        message = "Full stitch";
+        break;
+    case Stitch_ThreeQuarterUL:
+        message = "Three-quarter stitch (upper left)";
+        break;
+    case Stitch_ThreeQuarterUR:
+        message = "Three-quarter stitch (upper right)";
+        break;
+    case Stitch_ThreeQuarterLL:
+        message = "Three-quarter stitch (lower left)";
+        break;
+    case Stitch_ThreeQuarterLR:
+        message = "Three-quarter stitch (lower right)";
+        break;
+    case Stitch_HalfBottom:
+        message = "Half stitch (bottom)";
+        break;
+    case Stitch_HalfTop:
+        message = "Half stitch (top)";
+        break;
+    case Stitch_QuarterUL:
+        message = "Quarter stitch (upper left)";
+        break;
+    case Stitch_QuarterUR:
+        message = "Quarter stitch (upper right)";
+        break;
+    case Stitch_QuarterLL:
+        message = "Quarter stitch (lower left)";
+        break;
+    case Stitch_QuarterLR:
+        message = "Quarter stitch (lower right)";
+        break;
+    case Stitch_ThreeQuarterAuto:
+        message = "Three-quarter stitch (automatic orientation)";
+        break;
+    case Stitch_HalfAuto:
+        message = "Half stitch (automatic orientation)";
+        break;
+    case Stitch_QuarterAuto:
+        message = "Quarter stitch (automatic orientation)";
+        break;
+    default:
+        return;
+    }
+    statusBar()->showMessage(message);
+}
+
 void MainWindow::fullStitch()
 {
     m_controller.OnFullStitch();
+    updateStitchMessage();
 }
 
 void MainWindow::halfStitch()
 {
     // TODO toggle among
     m_controller.OnHalfAutoStitch();
+    updateStitchMessage();
 }
 
 void MainWindow::halfAutoStitch()
 {
     m_controller.OnHalfAutoStitch();
+    updateStitchMessage();
 }
 
 void MainWindow::halfTopStitch()
 {
     m_controller.OnHalfTopStitch();
+    updateStitchMessage();
 }
 
 void MainWindow::halfBottomStitch()
 {
     m_controller.OnHalfBottomStitch();
+    updateStitchMessage();
 }
 
 void MainWindow::threeQuarterAutoStitch()
 {
     m_controller.OnThreeQuarterAutoStitch();
+    updateStitchMessage();
 }
 
 void MainWindow::threeQuarterULStitch()
 {
     m_controller.OnThreeQuarterULStitch();
+    updateStitchMessage();
 }
 
 void MainWindow::threeQuarterURStitch()
 {
     m_controller.OnThreeQuarterURStitch();
+    updateStitchMessage();
 }
 
 void MainWindow::threeQuarterLLStitch()
 {
     m_controller.OnThreeQuarterLLStitch();
+    updateStitchMessage();
 }
 
 void MainWindow::threeQuarterLRStitch()
 {
     m_controller.OnThreeQuarterLRStitch();
+    updateStitchMessage();
 }
 
 void MainWindow::quarterStitch()
 {
     // TODO:  alternate
     m_controller.OnQuarterAutoStitch();
+    updateStitchMessage();
 }
 
 void MainWindow::setFloss(int i)
@@ -260,14 +323,6 @@ void MainWindow::zoomOut()
     m_area->update();
 }
 
-void MainWindow::bold()
-{
-}
-
-void MainWindow::italic()
-{
-}
-
 void MainWindow::leftAlign()
 {
 }
@@ -295,7 +350,7 @@ void MainWindow::setParagraphSpacing()
 void MainWindow::about()
 {
     QMessageBox::about(this, tr("About Wildflower Cross Stitch"),
-            tr("<center>Wildflower Cros Stitch\n...grows freely anywhere...\nversion 0.1.0</center>"));
+            tr("<center>Wildflower Cross Stitch<br>...grows freely anywhere...<br>version " WFXS_VERSION "</center>"));
 }
 
 void MainWindow::createActions()
@@ -399,26 +454,6 @@ void MainWindow::createActions()
     zoomOutAct = new QAction(tr("Zoom Out"), this);
     zoomOutAct->setShortcuts(QKeySequence::ZoomOut);
     connect(zoomOutAct, SIGNAL(triggered()), this, SLOT(zoomOut()));
-
-    boldAct = new QAction(tr("&Bold"), this);
-    boldAct->setCheckable(true);
-    boldAct->setShortcut(QKeySequence::Bold);
-    boldAct->setStatusTip(tr("Make the text bold"));
-    connect(boldAct, SIGNAL(triggered()), this, SLOT(bold()));
-
-    QFont boldFont = boldAct->font();
-    boldFont.setBold(true);
-    boldAct->setFont(boldFont);
-
-    italicAct = new QAction(tr("&Italic"), this);
-    italicAct->setCheckable(true);
-    italicAct->setShortcut(QKeySequence::Italic);
-    italicAct->setStatusTip(tr("Make the text italic"));
-    connect(italicAct, SIGNAL(triggered()), this, SLOT(italic()));
-
-    QFont italicFont = italicAct->font();
-    italicFont.setItalic(true);
-    italicAct->setFont(italicFont);
 
     setLineSpacingAct = new QAction(tr("Set &Line Spacing..."), this);
     setLineSpacingAct->setStatusTip(tr("Change the gap between the lines of a "
@@ -546,8 +581,6 @@ void MainWindow::createMenus()
 
 #if 0
     formatMenu = editMenu->addMenu(tr("&Format"));
-    formatMenu->addAction(boldAct);
-    formatMenu->addAction(italicAct);
     formatMenu->addSeparator()->setText(tr("Alignment"));
     formatMenu->addAction(leftAlignAct);
     formatMenu->addAction(rightAlignAct);

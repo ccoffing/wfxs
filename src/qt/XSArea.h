@@ -47,6 +47,9 @@ private:
 
     bool m_mouseDown;
     bool m_cmdDown;
+    unsigned int m_prevX;
+    unsigned int m_prevY;
+    unsigned int m_prevRegion;
 
     XSSelectionPath *m_selectionPath;
     clc::BitMask *m_selectionMask;

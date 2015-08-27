@@ -1,0 +1,6 @@
+#ifndef XS_VERSION_H
+#define XS_VERSION_H
+
+#define WFXS_VERSION "@WFXS_VERSION@"
+
+#endif

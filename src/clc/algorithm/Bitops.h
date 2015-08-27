@@ -10,16 +10,6 @@
 
 namespace clc {
 
-inline int minimum(int a, int b)
-{
-    return (a < b) ? a : b;
-}
-
-inline int maximum(int a, int b)
-{
-    return (a > b) ? a : b;
-}
-
 /**
  *  @note branch-free
  *  @return absolute value of x

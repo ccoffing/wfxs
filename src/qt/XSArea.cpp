@@ -5,6 +5,8 @@
 #include "xs/XSSelection.h"
 #include "xs/XSSelectionPath.h"
 
+#include "clc/algorithm/BresenhamLine.h"
+
 #include <QtGui>
 
 #include <assert.h>
@@ -143,15 +145,14 @@ XSArea::XSArea(XSModel &model, XSController &controller, QWidget *parent) :
     m_resetCursor(true),
     m_mouseDown(false),
     m_cmdDown(false),
+    m_prevX((unsigned int)-1),
+    m_prevY((unsigned int)-1),
+    m_prevRegion((unsigned int)-1),
     m_selectionPath(0),
     m_selectionMask(0)
 {
-    //	pixmap.load(":/images/qt-logo.png");
-
     setBackgroundRole(QPalette::Base);
     setAutoFillBackground(true);
-
-    setMouseTracking(true);
 }
 
 QSize XSArea::minimumSizeHint() const
@@ -203,7 +204,9 @@ void XSArea::mousePressEvent(QMouseEvent *event)
     unsigned int zoom = m_model.GetZoom();
     int squareX = event->x() / zoom;
     int squareY = event->y() / zoom;
-    refreshSquare(squareX, squareY);
+
+    m_prevX = squareX;
+    m_prevY = squareY;
 
     XSToolState const toolState = m_model.ToolState();
     switch (toolState.m_toolType) {
@@ -217,22 +220,24 @@ void XSArea::mousePressEvent(QMouseEvent *event)
         break;
     case ToolType_Bead:
     {
-        // DeJiggle(event->x(), event->y(), true);
+        DeJiggle(squareX, squareY, true);
         // struct RegionOffsetDef* ro = &RegionOffsets[region];
         // m_controller.OnSetBead(squareX + ro->newX, squareY + ro->newY, ro->newRegion);
         break;
     }
     case ToolType_Knot:
     {
-        // DeJiggle(event->x(), event->y(), true);
+        DeJiggle(squareX, squareY, true);
         // struct RegionOffsetDef* ro = & RegionOffsets[region];
         // m_controller.OnSetKnot(squareX + ro->newX, squareY + ro->newY, ro->newRegion);
         break;
     }
     case ToolType_Eraser:
-        // DeJiggle(event->x(), event->y(), true);
+    {
+        DeJiggle(squareX, squareY, true);
         m_controller.OnClearSquare(squareX, squareY);
         break;
+    }
     case ToolType_FloodFill:
     {
         XSSquareIO oldSquare;
@@ -251,6 +256,7 @@ void XSArea::mousePressEvent(QMouseEvent *event)
         break;
     }
     case ToolType_Select:
+    {
         if (toolState.m_tool == Tool_RectangularSelect)
             m_selectionPath = new XSRectangularSelectionPath();
         else {
@@ -266,6 +272,7 @@ void XSArea::mousePressEvent(QMouseEvent *event)
             }
         }
         break;
+    }
     case ToolType_ColorPicker:
     {
         XSSquareIO square;
@@ -275,17 +282,25 @@ void XSArea::mousePressEvent(QMouseEvent *event)
         break;
     }
     case ToolType_Backstitch:
+    {
         // FIXME
         break;
+    }
     case ToolType_Couching:
+    {
         // FIXME
         break;
+    }
     case ToolType_Text:
+    {
         // FIXME
         break;
+    }
     default:
         assert(0);
     }
+
+    refreshSquare(squareX, squareY);
 }
 
 void XSArea::mouseMoveEvent(QMouseEvent *event)
@@ -296,16 +311,19 @@ void XSArea::mouseMoveEvent(QMouseEvent *event)
     unsigned int zoom = m_model.GetZoom();
     int squareX = event->x() / zoom;
     int squareY = event->y() / zoom;
-    refreshSquare(squareX, squareY);
+
+    if (squareX < 0 || squareX >= m_model.SquaresX() ||
+        squareY < 0 || squareY >= m_model.SquaresX())
+        return;
+
+    if (!DeJiggle(squareX, squareY, false))
+        return;
 
     switch (m_model.m_toolState.m_toolType) {
     case ToolType_Stitch:
     {
-        // DeJiggle(x, y, true);
-#if 0
-        std::vector<QPoint> points;
-        mt::BresenhamLine<QPoint>(m_prevX, m_prevY, x, squareY, points);
-
+        std::vector<XSPoint> points;
+        clc::BresenhamLine<XSPoint>(m_prevX, m_prevY, squareX, squareY, points);
         // First point has already been stitched by MouseDown
         assert(points.size() > 1);
         points.erase(points.begin());
@@ -314,14 +332,13 @@ void XSArea::mouseMoveEvent(QMouseEvent *event)
             m_controller.OnClearSquares(points);
         else
             m_controller.OnSetStitches(points);
+
+        for (auto &point : points)
+            refreshSquare(point.x, point.y);
+
+        m_prevX = squareX;
+        m_prevY = squareY;
         break;
-#else
-        if (m_cmdDown)
-            m_controller.OnClearSquare(squareX, squareY);
-        else
-            // FIXME:  pass region instead
-            m_controller.OnSetStitch(squareX, squareY, 50, 50);     // xPercent, yPercent);
-#endif
     }
     default:
         // FIXME:  Handle other types, as appropriate

@@ -47,8 +47,6 @@ private slots:
     void paste();
     void zoomIn();
     void zoomOut();
-    void bold();
-    void italic();
     void leftAlign();
     void rightAlign();
     void justify();
@@ -92,8 +90,6 @@ private:
     QAction *overwriteAct;
     QAction *zoomInAct;
     QAction *zoomOutAct;
-    QAction *boldAct;
-    QAction *italicAct;
     QAction *leftAlignAct;
     QAction *rightAlignAct;
     QAction *justifyAct;
@@ -105,6 +101,8 @@ private:
     XSModel m_model;
     XSController m_controller;
     XSArea *m_area;
+
+    void updateStitchMessage();
 };
 
 #endif
