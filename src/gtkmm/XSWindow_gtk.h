@@ -5,10 +5,6 @@
 
 #include <gtkmm.h>
 
-namespace clc {
-class Buffer;
-}
-
 class XSController;
 
 class XSGtkWindow : public Gtk::Window {
@@ -34,7 +30,7 @@ class XSWindow_gtk : public XSWindow {
 public:
     XSWindow_gtk(XSController &controller);
 
-    void setTitle(clc::Buffer const &title);
+    void setTitle(const std::string &title);
     void setSize()
     {
     }

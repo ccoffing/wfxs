@@ -1,9 +1,8 @@
+#include "Logger.h"
 #include "XSDataIO.h"
+#include "XSException.h"
 #include "XSSkein.h"
 #include "XSSymbolPalette.h"
-
-#include "clc/support/Exception.h"
-#include "clc/support/Logger.h"
 
 #define LOG_NAME "xs.Skein"
 
@@ -52,12 +51,12 @@ void XSSkein::Unserialize(std::istream &src)
 
     Read8_exc(src, ui8);
     if (ui8 >= FM_NUMBER)
-        throw clc::IllegalFormatException();
+        throw IllegalFormatException();
     m_maker = (Maker_t)ui8;
 
     Read8_exc(src, ui8);
     if (ui8 >= FPL_NUMBER)
-        throw clc::IllegalFormatException();
+        throw IllegalFormatException();
     m_productLine = (FlossProductLine_t)ui8;
 
     ReadCStr_exc(src, m_id, MAX_FLOSS_ID_LEN);
@@ -69,7 +68,7 @@ void XSSkein::Unserialize(std::istream &src)
     m_discontinued = (ui8 & 1);
     unsigned int blend = (ui8 >> 1) & 3;
     if (blend >= FB_NUMBER)
-        throw clc::IllegalFormatException();
+        throw IllegalFormatException();
     m_blend = (FlossBlend_t)blend;
 
     Read8_exc(src, ui8);
@@ -84,7 +83,7 @@ void XSSkein::Unserialize(std::istream &src)
         m_colors.push_back(rgb);
         color += ((r << 16) | (g << 8) | b);
     }
-    clc::Log::debug(LOG_NAME, "%d %d %06x", m_maker, m_productLine,
+    Log::debug(LOG_NAME, "%d %d %06x", m_maker, m_productLine,
             color / colors);
 }
 
@@ -113,18 +112,18 @@ void XSSkein::Serialize(std::ostream &file) const
 void XSSkein::UnserializeRef(std::istream &src,
         Maker_t &maker,
         FlossProductLine_t &productLine,
-        clc::Buffer &id)
+        std::string &id)
 {
     uint8_t ui8;
 
     Read8_exc(src, ui8);
     if (ui8 > FM_NUMBER)
-        throw clc::IllegalFormatException();
+        throw IllegalFormatException();
     maker = (Maker_t)ui8;
 
     Read8_exc(src, ui8);
     if (ui8 > FPL_NUMBER)
-        throw clc::IllegalFormatException();
+        throw IllegalFormatException();
     productLine = (FlossProductLine_t)ui8;
 
     ReadCStr_exc(src, id, MAX_FLOSS_ID_LEN);

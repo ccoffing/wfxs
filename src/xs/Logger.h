@@ -1,19 +1,17 @@
-#ifndef LIBCLC_LOGGER_H
-#define LIBCLC_LOGGER_H
+#ifndef XS_LOGGER_H
+#define XS_LOGGER_H
 
 #include <map>
 #include <mutex>
 #include <set>
+#include <stdarg.h>
+#include <string>
 
-#include "clc/data/Buffer.h"
-#ifndef CLC_LOG_LEVEL
-#define CLC_LOG_LEVEL 5
+#ifndef XS_LOG_LEVEL
+#define XS_LOG_LEVEL 5
 #endif
 
 #include <assert.h>
-
-
-namespace clc {
 
 class Logger;
 class LogAppender;
@@ -54,7 +52,7 @@ protected:
 
     void clearAppenderUnchecked(LogAppender *);
 
-    std::map<Buffer, Logger *> m_loggers;
+    std::map<std::string, Logger *> m_loggers;
     bool m_init;  // To avoid using during shutdown after static instance is dead
 };
 
@@ -156,7 +154,7 @@ public:
      *  Derived classes must implement this in a threadsafe manner.
      *  Any exceptions thrown from this method will be consumed and ignored by the Logger.
      */
-    virtual void append(Buffer &s) = 0;
+    virtual void append(std::string &s) = 0;
 
     void setLoggers(Loggers *loggers)
     {
@@ -183,7 +181,7 @@ protected:
  *  An instance of a named logger.  Each distinct logger name referenced in the program (such as ""
  *  or "myapp" or "myapp.subsys") will have its own Logger instance.  One usage style would be for a class
  *  to get a reference to its Logger in its constructor.  This is most efficient.  Or for a more
- *  functional style, see the convenience methods in clc::Log.
+ *  functional style, see the convenience methods in Log.
  */
 class Logger {
 public:
@@ -197,7 +195,7 @@ public:
     /**
      *  @return The full dotted name of this logger.  Empty string for the root logger.
      */
-    const Buffer &getName() const
+    const std::string &getName() const
     {
         return m_name;
     }
@@ -259,23 +257,23 @@ protected:
      */
     void clearAppender(LogAppender *appender = 0);
 
-    Logger(Loggers *loggers, Logger *parent, Buffer &name);
+    Logger(Loggers *loggers, Logger *parent, std::string &name);
 
     Logger(Loggers *loggers, Logger *parent, const char *name, int32_t nameLen = 0x7fffffff);
 
     /**
      *  If level is appropriate, logs s.  Recursively appends to parent.
      */
-    void append(Log::Level level, Buffer &s);
+    void append(Log::Level level, std::string &s);
 
     Loggers *const m_loggers;
     Logger *const m_parent;
-    Buffer m_name;
+    std::string m_name;
     Log::Level m_level;
     std::set<LogAppender *> m_appenders;
 };
 
-#if defined(CLC_LOG_LEVEL) && CLC_LOG_LEVEL >= 5
+#if defined(XS_LOG_LEVEL) && XS_LOG_LEVEL >= 5
 inline void Log::trace(const char *name, const char *fmt, ...)
 {
     va_list ap;
@@ -290,7 +288,7 @@ inline void Logger::trace(const char *fmt, ...)
     va_list ap;
 
     va_start(ap, fmt);
-    log(clc::Log::Trace, fmt, ap);
+    log(Log::Trace, fmt, ap);
     va_end(ap);
 }
 
@@ -305,7 +303,7 @@ inline void Logger::trace(const char *, ...)
 
 #endif
 
-#if defined(CLC_LOG_LEVEL) && CLC_LOG_LEVEL >= 4
+#if defined(XS_LOG_LEVEL) && XS_LOG_LEVEL >= 4
 inline void Log::debug(const char *name, const char *fmt, ...)
 {
     va_list ap;
@@ -320,7 +318,7 @@ inline void Logger::debug(const char *fmt, ...)
     va_list ap;
 
     va_start(ap, fmt);
-    log(clc::Log::Debug, fmt, ap);
+    log(Log::Debug, fmt, ap);
     va_end(ap);
 }
 
@@ -335,7 +333,7 @@ inline void Logger::debug(const char *, ...)
 
 #endif
 
-#if defined(CLC_LOG_LEVEL) && CLC_LOG_LEVEL >= 3
+#if defined(XS_LOG_LEVEL) && XS_LOG_LEVEL >= 3
 inline void Log::info(const char *name, const char *fmt, ...)
 {
     va_list ap;
@@ -350,7 +348,7 @@ inline void Logger::info(const char *fmt, ...)
     va_list ap;
 
     va_start(ap, fmt);
-    log(clc::Log::Info, fmt, ap);
+    log(Log::Info, fmt, ap);
     va_end(ap);
 }
 
@@ -365,7 +363,7 @@ inline void Logger::info(const char *, ...)
 
 #endif
 
-#if defined(CLC_LOG_LEVEL) && CLC_LOG_LEVEL >= 2
+#if defined(XS_LOG_LEVEL) && XS_LOG_LEVEL >= 2
 inline void Log::warn(const char *name, const char *fmt, ...)
 {
     va_list ap;
@@ -380,7 +378,7 @@ inline void Logger::warn(const char *fmt, ...)
     va_list ap;
 
     va_start(ap, fmt);
-    log(clc::Log::Warn, fmt, ap);
+    log(Log::Warn, fmt, ap);
     va_end(ap);
 }
 
@@ -395,7 +393,7 @@ inline void Logger::warn(const char *, ...)
 
 #endif
 
-#if defined(CLC_LOG_LEVEL) && CLC_LOG_LEVEL >= 1
+#if defined(XS_LOG_LEVEL) && XS_LOG_LEVEL >= 1
 inline void Log::error(const char *name, const char *fmt, ...)
 {
     va_list ap;
@@ -410,7 +408,7 @@ inline void Logger::error(const char *fmt, ...)
     va_list ap;
 
     va_start(ap, fmt);
-    log(clc::Log::Error, fmt, ap);
+    log(Log::Error, fmt, ap);
     va_end(ap);
 }
 
@@ -425,7 +423,7 @@ inline void Logger::error(const char *, ...)
 
 #endif
 
-#if defined(CLC_LOG_LEVEL) && CLC_LOG_LEVEL >= 0
+#if defined(XS_LOG_LEVEL) && XS_LOG_LEVEL >= 0
 inline void Log::fatal(const char *name, const char *fmt, ...)
 {
     va_list ap;
@@ -440,7 +438,7 @@ inline void Logger::fatal(const char *fmt, ...)
     va_list ap;
 
     va_start(ap, fmt);
-    log(clc::Log::Fatal, fmt, ap);
+    log(Log::Fatal, fmt, ap);
     va_end(ap);
 }
 
@@ -454,6 +452,5 @@ inline void Logger::fatal(const char *, ...)
 }
 
 #endif
-}
 
 #endif

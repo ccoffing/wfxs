@@ -1,7 +1,6 @@
 #include "XSSymbolPalette.h"
 
-#include "clc/support/Debug.h"
-
+#include <assert.h>
 #include <cstring>
 #include <stdint.h>
 
@@ -210,14 +209,14 @@ XSSymbolPalette::~XSSymbolPalette()
 
 char const *XSSymbolPalette::SymbolAtIndex(unsigned int i)
 {
-    ASSERT(i < numTotal);
+    assert(i < numTotal);
     // printf("SymbolAtIndex %d is %p %s\n", i, symbols+i*4, symbols+i*4);
     return symbols + i * 4;
 }
 
 char *XSSymbolPalette::EditSymbolAtIndex(unsigned int i)
 {
-    ASSERT(i < numTotal);
+    assert(i < numTotal);
     return symbols + i * 4;
 }
 
@@ -240,7 +239,7 @@ char const *XSSymbolPalette::ReserveNextSymbol()
 
 char const *XSSymbolPalette::ReserveSymbol(unsigned int index)
 {
-    ASSERT(index < numTotal);
+    assert(index < numTotal);
     isUsed[index] = true;
     m_lastReservedIndex = index;
     return SymbolAtIndex(index);
@@ -250,7 +249,7 @@ void XSSymbolPalette::FreeSymbol(char const *symbol)
 {
     unsigned int index = (symbol - symbols) / 4;
 
-    ASSERT(index < numTotal);
+    assert(index < numTotal);
     isUsed[index] = false;
 }
 

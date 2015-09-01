@@ -1,11 +1,10 @@
 #include "qt/XSArea.h"
 
+#include "xs/BresenhamLine.h"
 #include "xs/XSColor.h"
 #include "xs/XSFloss.h"
 #include "xs/XSSelection.h"
 #include "xs/XSSelectionPath.h"
-
-#include "clc/algorithm/BresenhamLine.h"
 
 #include <QtGui>
 
@@ -312,8 +311,8 @@ void XSArea::mouseMoveEvent(QMouseEvent *event)
     int squareX = event->x() / zoom;
     int squareY = event->y() / zoom;
 
-    if (squareX < 0 || squareX >= m_model.SquaresX() ||
-        squareY < 0 || squareY >= m_model.SquaresX())
+    if (squareX < 0 || (unsigned int)squareX >= m_model.SquaresX() ||
+        squareY < 0 || (unsigned int)squareY >= m_model.SquaresX())
         return;
 
     if (!DeJiggle(squareX, squareY, false))
@@ -323,7 +322,7 @@ void XSArea::mouseMoveEvent(QMouseEvent *event)
     case ToolType_Stitch:
     {
         std::vector<XSPoint> points;
-        clc::BresenhamLine<XSPoint>(m_prevX, m_prevY, squareX, squareY, points);
+        BresenhamLine<XSPoint>(m_prevX, m_prevY, squareX, squareY, points);
         // First point has already been stitched by MouseDown
         assert(points.size() > 1);
         points.erase(points.begin());

@@ -1,5 +1,5 @@
-#ifndef LIBCLC_BYTEORDER_H
-#define LIBCLC_BYTEORDER_H
+#ifndef XS_BYTEORDER_H
+#define XS_BYTEORDER_H
 
 #include <stdint.h>
 
@@ -32,7 +32,6 @@
 #endif
 
 #endif
-namespace clc {
 
 class ByteOrder {
 public:
@@ -186,7 +185,5 @@ public:
         return lsb | c << 8 | b << 16 | msb << 24;
     }
 };
-
-}
 
 #endif

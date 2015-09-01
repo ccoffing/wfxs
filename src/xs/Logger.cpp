@@ -1,11 +1,9 @@
-#include "clc/os/Clock.h"
-#include "clc/support/LogAppenders.h"
-#include "clc/support/Logger.h"
+#include "LogAppenders.h"
+#include "Logger.h"
+#include "StringUtils.h"
 
 #include <memory>
-
-
-namespace clc {
+#include <string>
 
 using namespace std;
 
@@ -55,7 +53,7 @@ void Loggers::setRoot()
 {
     // Calling setRoot from another static is bad because I can't guarantee ordering.  Asserting
     // because I can't honor the contract.  Just don't do it.
-    ASSERT(m_init);
+    assert(m_init);
     if (m_init) {
         Logger *root = new Logger(this, 0, "", 0);
         root->setLevel(Log::Warn);
@@ -65,7 +63,7 @@ void Loggers::setRoot()
             m_loggers[root->getName()] = root;
         }
 
-        ASSERT(get(""));
+        assert(get(""));
     }
 }
 
@@ -83,11 +81,11 @@ Logger *Loggers::get(const char *name)
         const char *end;
         unsigned int searchOffset = 0;
         // Root logger should have been created in setRoot.
-        ASSERT(nameLen > 0);
+        assert(nameLen > 0);
 
         lock_guard<mutex> lock(m_lock);
         Logger *parent = m_loggers[""];
-        ASSERT(parent);
+        assert(parent);
         do {
             unsigned int subnameLen;
             end = strchr(name + searchOffset, '.');
@@ -97,7 +95,7 @@ Logger *Loggers::get(const char *name)
             } else {
                 subnameLen = nameLen;
             }
-            Buffer subname(name, subnameLen);
+            std::string subname(name, subnameLen);
             logger = m_loggers[subname];
             if (!logger) {
                 logger = new Logger(this, parent, subname);
@@ -134,7 +132,7 @@ void Log::log(const char *name, Log::Level level, const char *fmt, ...)
     va_end(ap);
 }
 
-Logger::Logger(Loggers *loggers, Logger *parent, Buffer &name) :
+Logger::Logger(Loggers *loggers, Logger *parent, std::string &name) :
     m_loggers(loggers),
     m_parent(parent),
     m_name(name),
@@ -170,7 +168,7 @@ Logger *Logger::getParent()
 
 void Logger::setAppender(LogAppender *a)
 {
-    ASSERT(a);
+    assert(a);
 
     lock_guard<mutex> lock(m_loggers->m_lock);
     auto iter = m_appenders.find(a);
@@ -193,7 +191,7 @@ void Logger::clearAppender(LogAppender *logAppender)
     }
 }
 
-void Logger::append(Log::Level level, Buffer &s)
+void Logger::append(Log::Level level, std::string &s)
 {
     {
         lock_guard<mutex> lock(m_loggers->m_lock);
@@ -218,8 +216,9 @@ void Logger::log(Log::Level level, const char *fmt, va_list ap)
 {
     try {
         if (this && getLevel() <= level) {
+#if 0
+            std::string s;
             uint64_t usec64 = Clock::monotonicUSec();
-            Buffer s;
             unsigned int usec = (unsigned int)(usec64 % 1000000);
             unsigned int sec = (unsigned int)(usec64 / 1000000);
             unsigned int min = sec / 60;
@@ -229,6 +228,10 @@ void Logger::log(Log::Level level, const char *fmt, va_list ap)
             s.format("%02d:%02d:%02d.%06d %c %-10s ", hour, min, sec, usec, levelChar[level - 1],
                     m_name.c_str());
             s.appendFormatList(fmt, ap);
+#else
+            std::string s(format("%c %-10s ", levelChar[level - 1], m_name.c_str()));
+            appendFormatList(s, fmt, ap);
+#endif
             s += "\n";
             append(level, s);
         }
@@ -244,6 +247,4 @@ void Logger::log(Log::Level level, const char *fmt, ...)
     va_start(ap, fmt);
     log(level, fmt, ap);
     va_end(ap);
-}
-
 }

@@ -1,9 +1,6 @@
 #include "XSDataIO.h"
 #include "XSFile.h"
 
-#include "clc/support/Debug.h"
-
-
 XSFileIn::XSFileIn(std::istream &file,
         ProgressFn *progressFn,
         void *handle) :

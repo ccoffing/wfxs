@@ -1,18 +1,13 @@
-#ifndef LIBCLC_EXCEPTION_H
-#define LIBCLC_EXCEPTION_H
+#ifndef XS_EXCEPTION_H
+#define XS_EXCEPTION_H
 
 /**
  *  @file Common exceptions.
- *
- *  Note that all exceptions derive from std::exception, not std::runtime_error.  The latter pulls
- *  in std::string.
  *
  *  @todo  better state than a string.  e.g., include file
  */
 
 #include <exception>
-
-namespace clc {
 
 class Exception : public std::exception {
 public:
@@ -72,7 +67,5 @@ public:
     {
     }
 };
-
-}
 
 #endif

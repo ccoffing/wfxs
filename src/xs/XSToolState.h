@@ -5,8 +5,6 @@
 #include "XSStitchTypes.h"
 #include "XSToolTypes.h"
 
-#include "clc/data/Buffer.h"
-
 #include <vector>
 
 /**
@@ -19,8 +17,8 @@ public:
     Tool m_tool;
     XSFlossPalette m_flossPalette;
     unsigned int m_flossIndex;
-    std::vector<clc::Buffer> m_makerNames;
-    std::vector<clc::Buffer> m_productLineNames;
+    std::vector<std::string> m_makerNames;
+    std::vector<std::string> m_productLineNames;
     unsigned int m_beadIndex;
     StitchType m_stitchType;
     StitchType m_stitchTypeContinued;

@@ -3,8 +3,6 @@
 
 #include "XSSkein.h"
 
-#include <clc/data/Buffer.h>
-
 TEST_CASE("XSSkein") {
 
     SECTION("Constructor") {
@@ -34,8 +32,8 @@ TEST_CASE("XSSkein") {
         // num-colors:  8: r
         //              8: g
         //              8: b
-        clc::Buffer raw("\x02\x02 \x01", 4);
-        clc::Buffer buf(raw);
+        std::string raw("\x02\x02 \x01", 4);
+        std::string buf(raw);
         // std::istream is(buf);
         // skein.Unserialize(is);
 

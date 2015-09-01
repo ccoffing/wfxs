@@ -1,8 +1,6 @@
+#include "BitMask.h"
 #include "XSSelection.h"
 #include "XSSelectionPath.h"
-
-#include "clc/data/BitMask.h"
-#include "clc/support/Debug.h"
 
 #include <algorithm>
 #include <vector>
@@ -26,7 +24,7 @@ void XSSelectionPath::Move(MoveDirection move,
         (*x)++;
         break;
     default:
-        ASSERT(0);
+        assert(0);
     }
 }
 
@@ -41,7 +39,7 @@ XSFreeFormSelectionPath::XSFreeFormSelectionPath() :
 {
 }
 
-clc::BitMask *XSFreeFormSelectionPath::GetMask()
+BitMask *XSFreeFormSelectionPath::GetMask()
 {
     UpdateCache();
     if (!m_complete)
@@ -54,9 +52,9 @@ clc::BitMask *XSFreeFormSelectionPath::GetMask()
     // floodfill the mask from one point down from the starting outline point.  Since the path
     // can't touch itself, the floodfill will get everywhere.
 
-    ASSERT(m_width > 0);
-    ASSERT(m_height > 0);
-    clc::BitMask *mask = new clc::BitMask(m_width + 2, m_height + 2);
+    assert(m_width > 0);
+    assert(m_height > 0);
+    BitMask *mask = new BitMask(m_width + 2, m_height + 2);
     bool tracing = false;
     int x = m_x1, y = m_y1;  // Offsets at start
     int clockwise = 0, flood_x = -1, flood_y = 0;
@@ -69,7 +67,7 @@ clc::BitMask *XSFreeFormSelectionPath::GetMask()
                 flood_x = x - 1;
                 clockwise = 0;
             } else {
-                ASSERT(*it == RIGHT);
+                assert(*it == RIGHT);
                 flood_x = x;
                 clockwise = 1;
             }
@@ -96,8 +94,8 @@ clc::BitMask *XSFreeFormSelectionPath::GetMask()
         if (it == m_moves.end())
             it = m_moves.begin();
     }
-    ASSERT(flood_x > 0);
-    clc::BitMask outline = *mask;
+    assert(flood_x > 0);
+    BitMask outline = *mask;
     mask->FloodFill(flood_x, flood_y, true);
     mask->Erase(outline);
     mask->Crop(1, 1, -1, -1);
@@ -143,7 +141,7 @@ bool XSFreeFormSelectionPath::IsCompleted()
 
 bool XSFreeFormSelectionPath::Complete()
 {
-    ASSERT(0);  // FIXME -- how to do this without crossing?
+    assert(0);  // FIXME -- how to do this without crossing?
     return false;
 }
 
@@ -208,11 +206,11 @@ XSRectangularSelectionPath::XSRectangularSelectionPath() :
 {
 }
 
-clc::BitMask *XSRectangularSelectionPath::GetMask()
+BitMask *XSRectangularSelectionPath::GetMask()
 {
     if (!m_complete)
         return 0;
-    return new clc::BitMask(m_x, m_y);
+    return new BitMask(m_x, m_y);
 }
 
 bool XSRectangularSelectionPath::Move(MoveDirection m)

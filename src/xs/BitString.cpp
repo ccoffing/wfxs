@@ -1,12 +1,9 @@
-#include "clc/algorithm/Bitops.h"
-#include "clc/data/BitString.h"
+#include "xs/BitOps.h"
+#include "xs/BitString.h"
 
 #include <assert.h>
 #include <stdint.h>
 #include <string.h>
-
-
-namespace clc {
 
 inline unsigned int getWords(unsigned int bits)
 {
@@ -168,10 +165,10 @@ unsigned int BitString::countSet() const
 
     for (unsigned int word = 0; word < fullWords; ++word) {
         uint32_t i = m_bits[word];
-        total += clc::population(i);
+        total += population(i);
     }
     if (words > fullWords)
-        total += clc::population(m_bits[fullWords] & getFinalMask(m_numBits));
+        total += population(m_bits[fullWords] & getFinalMask(m_numBits));
     return total;
 }
 
@@ -179,6 +176,4 @@ unsigned int BitString::countSet() const
 unsigned int BitString::numBits() const
 {
     return m_numBits;
-}
-
 }

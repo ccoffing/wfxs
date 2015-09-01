@@ -6,13 +6,10 @@
 
 #include <QBrush>
 #include <QPen>
-// #include <QPixmap>
 #include <QWidget>
 
 class XSSelectionPath;
-namespace clc {
 class BitMask;
-};
 
 class XSArea : public QWidget {
     Q_OBJECT
@@ -52,7 +49,7 @@ private:
     unsigned int m_prevRegion;
 
     XSSelectionPath *m_selectionPath;
-    clc::BitMask *m_selectionMask;
+    BitMask *m_selectionMask;
 };
 
 #endif

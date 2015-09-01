@@ -6,7 +6,7 @@
  */
 class XSApplication {
 public:
-    XSApplication();
+    XSApplication(int argc, char *argv[]);
     virtual ~XSApplication();
 
 private:

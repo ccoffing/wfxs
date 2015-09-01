@@ -1,14 +1,11 @@
-#ifndef LIBCLC_BITOPS_H
-#define LIBCLC_BITOPS_H
+#ifndef XS_BITOPS_H
+#define XS_BITOPS_H
 
 /** @file
  *  Fast bitwise functions, mostly from by "Hacker's Delight".
  */
 
 #include <stdint.h>
-
-
-namespace clc {
 
 /**
  *  @note branch-free
@@ -92,8 +89,6 @@ inline unsigned int bitopCond(bool pred, unsigned int a, unsigned int b)
     const unsigned int p = -static_cast<unsigned int>(pred);
 
     return (a & p) | (b & ~p);
-}
-
 }
 
 #endif

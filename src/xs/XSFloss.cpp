@@ -1,12 +1,11 @@
+#include "Logger.h"
 #include "XSData.h"
 #include "XSDataIO.h"
+#include "XSException.h"
 #include "XSFloss.h"
 #include "XSSkein.h"
 #include "XSSkeinPalette.h"
 #include "XSSymbolPalette.h"
-
-#include "clc/support/Exception.h"
-#include "clc/support/Logger.h"
 
 #include <assert.h>
 
@@ -52,20 +51,20 @@ void XSFloss::Unserialize(std::istream &src)
 
     Read8_exc(src, numskeins);
     if (!numskeins || numskeins > MaxSkeins)
-        throw clc::IllegalFormatException();
+        throw IllegalFormatException();
     m_numskeins = numskeins;
     for (unsigned int i = 0; i < m_numskeins; ++i) {
         uint8_t strands;
         Read8_exc(src, strands);
         if (strands > 6 || strands == 0)
-            throw clc::IllegalFormatException();
+            throw IllegalFormatException();
         m_strands[i] = strands;
 
         Maker_t maker;
         FlossProductLine_t productLine;
-        clc::Buffer id;
+        std::string id;
         XSSkein::UnserializeRef(src, maker, productLine, id);
-        clc::Log::info(LOG_NAME, "Floss:  skein ref:  maker %d   prodLine %d   id %s", maker, productLine, id.c_str());
+        Log::info(LOG_NAME, "Floss:  skein ref:  maker %d   prodLine %d   id %s", maker, productLine, id.c_str());
 
         XSSkein const *skein = makerSkeinPalette[maker]->Lookup(maker, productLine, id);
         if (skein) {
@@ -73,7 +72,7 @@ void XSFloss::Unserialize(std::istream &src)
         } else {
             // The appropriate maker, product line, or ID wasn't read in
             // previously.
-            throw clc::IllegalFormatException();
+            throw IllegalFormatException();
         }
     }
 

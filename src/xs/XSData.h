@@ -14,8 +14,8 @@ class XSSkeinPalette;
 
 extern XSSkeinPalette *makerSkeinPalette[FM_NUMBER];
 extern XSFlossPalette *makerFlossPalette[FM_NUMBER];
-extern std::vector<clc::Buffer> makerNames;
-extern std::vector<clc::Buffer> productLineNames;
+extern std::vector<std::string> makerNames;
+extern std::vector<std::string> productLineNames;
 
 /** Initializes data (skeins, palettes, etc) at program startup.
  */

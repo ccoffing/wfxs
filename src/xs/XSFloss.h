@@ -16,8 +16,7 @@ class XSColor;
  *  Floss, which associates metadata (such as symbol and name) with (possibly) several strands of
  *  (possibly) several skeins.
  */
-class XSFloss
-{
+class XSFloss {
 public:
     static const unsigned int MaxSkeins = 2;
 

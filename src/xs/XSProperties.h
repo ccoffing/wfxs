@@ -5,10 +5,7 @@
  *  @brief TODO
  */
 
-#include "clc/data/Buffer.h"
-
 #include <iostream>
-
 
 /**
  */
@@ -26,11 +23,11 @@ private:
     void SetDefaults();
 
 public:
-    clc::Buffer m_filename;  // FIXME:  move this elsewhere
-    clc::Buffer m_title;
-    clc::Buffer m_author;
-    clc::Buffer m_fabric;
-    clc::Buffer m_instructions;
+    std::string m_filename;  // FIXME:  move this elsewhere
+    std::string m_title;
+    std::string m_author;
+    std::string m_fabric;
+    std::string m_instructions;
     uint32_t m_horiClothCount;
     uint32_t m_vertClothCount;
 };

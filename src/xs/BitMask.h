@@ -1,12 +1,9 @@
-#ifndef LIBCLC_DATA_BITMASK_H
-#define LIBCLC_DATA_BITMASK_H
+#ifndef XS_BITMASK_H
+#define XS_BITMASK_H
 
-#include "clc/data/BitString.h"
+#include "xs/BitString.h"
 
 #include <assert.h>
-
-
-namespace clc {
 
 /**
  *  A bitmask.
@@ -94,6 +91,5 @@ private:
     unsigned int w, h;
     BitString m_bs;
 };
-}
 
 #endif

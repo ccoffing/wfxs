@@ -1,15 +1,13 @@
-#ifndef LIBCLC_BRESENHAM_LINE_H
-#define LIBCLC_BRESENHAM_LINE_H
+#ifndef XS_BRESENHAM_LINE_H
+#define XS_BRESENHAM_LINE_H
 
 /** @file
  *  Bresenham line-calculating algorithm.
  */
 
-#include <vector>
 #include <algorithm>
 #include <cstdlib>
-
-namespace clc {
+#include <vector>
 
 /**
  *  Bresenham's Line Algorithm.
@@ -61,8 +59,6 @@ void BresenhamLine(int x0, int y0, int x1, int y1, std::vector<T> &points)
             error -= deltax;
         }
     }
-}
-
 }
 
 #endif

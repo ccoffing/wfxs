@@ -1,6 +1,5 @@
 #include "XSController.h"
 #include "XSWindow_gtk.h"
-#include "clc/data/Buffer.h"
 
 #include <iostream>
 
@@ -58,7 +57,7 @@ XSWindow_gtk::XSWindow_gtk(XSController &controller) :
 {
 }
 
-void XSWindow_gtk::setTitle(clc::Buffer const &title)
+void XSWindow_gtk::setTitle(const std::string &title)
 {
     m_win.set_title(title.c_str());
 }

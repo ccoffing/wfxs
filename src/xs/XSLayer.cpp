@@ -2,8 +2,7 @@
 #include "XSSquare.h"
 #include "XSStitchTypes.h"
 
-#include "clc/support/Debug.h"
-
+#include <assert.h>
 
 XSLayer::XSLayer(unsigned int sizeX, unsigned int sizeY) :
     m_sizeX(sizeX),
@@ -83,7 +82,7 @@ StitchTypeAndLocation XSLayer::autoStitch(unsigned int squareX, unsigned int squ
         unsigned int xPercent, unsigned int yPercent, StitchType stitchType,
         unsigned int flossIndex)
 {
-    ASSERT(stitchType == Stitch_QuarterAuto ||
+    assert(stitchType == Stitch_QuarterAuto ||
             stitchType == Stitch_HalfAuto ||
             stitchType == Stitch_ThreeQuarterAuto);
 
@@ -127,7 +126,7 @@ StitchTypeAndLocation XSLayer::autoStitch(unsigned int squareX, unsigned int squ
             stitchToRotate = StitchLoc_QuarterUL;
         stitchToRotate = (StitchTypeAndLocation)(stitchToRotate + offset);
     } else {
-        ASSERT(stitchType == Stitch_HalfAuto);
+        assert(stitchType == Stitch_HalfAuto);
         if (yPercent > 50)
             stitchToRotate = StitchLoc_HalfBottom;
         else
@@ -207,9 +206,9 @@ void XSLayer::SetEmbelishment(EmbelType type, unsigned int x, unsigned int y, un
     bool exists;
     EmbLocation embloc;
 
-    ASSERT(x < m_sizeX);
-    ASSERT(y < m_sizeY);
-    ASSERT(region < 10 && region != 2 && region != 7);
+    assert(x < m_sizeX);
+    assert(y < m_sizeY);
+    assert(region < 10 && region != 2 && region != 7);
 
     embloc.x = x;
     embloc.y = y;
@@ -236,16 +235,16 @@ void XSLayer::SetEmbelishment(EmbelType type, unsigned int x, unsigned int y, un
     } else if (type == EmbelType_Bead) {
         emb.bead.m_colorIndex = index;
     } else {
-        ASSERT(0);
+        assert(0);
     }
     m_embelishments.insert(std::pair<EmbLocation, Embelishment>(embloc, emb));
 
-    ASSERT(m_embelishments.count(embloc) == 1);
+    assert(m_embelishments.count(embloc) == 1);
 }
 
 void XSLayer::ClearSquare(unsigned int x, unsigned int y)
 {
-    ASSERT(x < m_sizeX && y < m_sizeY);
+    assert(x < m_sizeX && y < m_sizeY);
     XSSquare *square = getSquare(x, y);
     square->Clear();
 }
@@ -257,9 +256,9 @@ void XSLayer::Backstitch()
 
 void XSLayer::GetSquareData(XSSquareIO *square, unsigned int squareX, unsigned int squareY)
 {
-    ASSERT(square);
-    ASSERT(squareX < m_sizeX);
-    ASSERT(squareY < m_sizeY);
+    assert(square);
+    assert(squareX < m_sizeX);
+    assert(squareY < m_sizeY);
 
     XSSquare *s = getSquare(squareX, squareY);
 
@@ -282,7 +281,7 @@ void XSLayer::GetSquareData(XSSquareIO *square, unsigned int squareX, unsigned i
             square->knot[square->knots].flossIndex = emb.knot.m_flossIndex;
             square->knots++;
         } else {
-            ASSERT(emb.m_embType == EmbelType_Bead);
+            assert(emb.m_embType == EmbelType_Bead);
             square->bead[square->beads].region = i;
             square->bead[square->beads].colorIndex = emb.bead.m_colorIndex;
             square->beads++;
@@ -292,9 +291,9 @@ void XSLayer::GetSquareData(XSSquareIO *square, unsigned int squareX, unsigned i
 
 void XSLayer::SetSquareData(XSSquareIO const *square, unsigned int x, unsigned int y)
 {
-    ASSERT(square);
-    ASSERT(x < m_sizeX);
-    ASSERT(y < m_sizeY);
+    assert(square);
+    assert(x < m_sizeX);
+    assert(y < m_sizeY);
 
     XSSquare *s = getSquare(x, y);
     s->SetSquareData(square);

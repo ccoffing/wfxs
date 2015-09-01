@@ -1,7 +1,6 @@
+#include "ByteOrder.h"
 #include "XSDataIO.h"
-
-#include "clc/data/Buffer.h"
-#include "clc/support/Exception.h"
+#include "XSException.h"
 
 #include <assert.h>
 #include <iostream>
@@ -13,7 +12,7 @@ size_t Write_exc(std::ostream &dio,
         size_t size)
 {
     if (dio.write(src, size).fail())
-        throw clc::IOException();
+        throw IOException();
     return size;
 }
 
@@ -26,33 +25,33 @@ size_t Write8_exc(std::ostream &dio,
 size_t WriteLE16_exc(std::ostream &dio,
         uint16_t i)
 {
-    i = clc::ByteOrder::swapUInt16OnLE(i);
+    i = ByteOrder::swapUInt16OnLE(i);
     return Write_exc(dio, (char const *)&i, 2);
 }
 
 size_t WriteLE32_exc(std::ostream &dio,
         uint32_t i)
 {
-    i = clc::ByteOrder::swapUInt32OnLE(i);
+    i = ByteOrder::swapUInt32OnLE(i);
     return Write_exc(dio, (char const *)&i, 4);
 }
 
 size_t WriteBE16_exc(std::ostream &dio,
         uint16_t i)
 {
-    i = clc::ByteOrder::swapUInt16OnLE(i);
+    i = ByteOrder::swapUInt16OnLE(i);
     return Write_exc(dio, (char const *)&i, 2);
 }
 
 size_t WriteBE32_exc(std::ostream &dio,
         uint32_t i)
 {
-    i = clc::ByteOrder::swapUInt32OnLE(i);
+    i = ByteOrder::swapUInt32OnLE(i);
     return Write_exc(dio, (char const *)&i, 4);
 }
 
 size_t WriteCStr_exc(std::ostream &dio,
-        clc::Buffer const &src)
+        std::string const &src)
 {
     size_t len = src.length() + 1;
 
@@ -74,7 +73,7 @@ size_t Read_exc(std::istream &dio,
         size_t size)
 {
     if (dio.read(dst, size).fail())
-        throw clc::IOException();
+        throw IOException();
     return size;
 }
 
@@ -90,8 +89,8 @@ size_t ReadLE16_exc(std::istream &dio,
     size_t bytes = Read_exc(dio, (char *)&i, 2);
 
     if (bytes != 2)
-        throw clc::IOException();
-    i = clc::ByteOrder::swapUInt16OnLE(i);
+        throw IOException();
+    i = ByteOrder::swapUInt16OnLE(i);
     return bytes;
 }
 
@@ -101,8 +100,8 @@ size_t ReadLE32_exc(std::istream &dio,
     size_t bytes = Read_exc(dio, (char *)&i, 4);
 
     if (bytes != 4)
-        throw clc::IOException();
-    i = clc::ByteOrder::swapUInt32OnLE(i);
+        throw IOException();
+    i = ByteOrder::swapUInt32OnLE(i);
     return bytes;
 }
 
@@ -112,8 +111,8 @@ size_t ReadBE16_exc(std::istream &dio,
     size_t bytes = Read_exc(dio, (char *)&i, 2);
 
     if (bytes != 2)
-        throw clc::IOException();
-    i = clc::ByteOrder::swapUInt16OnLE(i);
+        throw IOException();
+    i = ByteOrder::swapUInt16OnLE(i);
     return bytes;
 }
 
@@ -123,24 +122,24 @@ size_t ReadBE32_exc(std::istream &dio,
     size_t bytes = Read_exc(dio, (char *)&i, 4);
 
     if (bytes != 4)
-        throw clc::IOException();
-    i = clc::ByteOrder::swapUInt32OnLE(i);
+        throw IOException();
+    i = ByteOrder::swapUInt32OnLE(i);
     return bytes;
 }
 
 size_t ReadCStr_exc(std::istream &dio,
-        clc::Buffer &dst,
+        std::string &dst,
         unsigned int max)
 {
     for (unsigned int i = 0; !max || i <= max; ++i) {
         char c;
         if (dio.read(&c, 1).fail())
-            throw clc::IOException();
+            throw IOException();
         if (c == 0)
             return i;
         dst.append(c, 1);
     }
-    throw clc::IllegalFormatException();
+    throw IllegalFormatException();
 }
 
 size_t ReadCStr_exc(std::istream &dio,
@@ -150,17 +149,17 @@ size_t ReadCStr_exc(std::istream &dio,
     for (unsigned int i = 0; !max || i <= max; ++i) {
         char c;
         if (dio.read(&c, 1).fail())
-            throw clc::IOException();
+            throw IOException();
         dst[i] = c;
         if (c == 0)
             return i;
     }
-    throw clc::IllegalFormatException();
+    throw IllegalFormatException();
 }
 
 #if 0
 size_t ReadPStr_exc(std::istream &dio,
-        clc::Buffer &dst,
+        std::string &dst,
         unsigned int max)
 {
     uint8_t len;
@@ -174,7 +173,7 @@ size_t ReadPStr_exc(std::istream &dio,
 #endif
     char tmp[len];
     if (dio.read(tmp, len).fail())
-        throw clc::IOException();
+        throw IOException();
     if (max && len > max)
         throw IllegalFormatException();
     dst.assign(len, tmp);

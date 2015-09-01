@@ -1,13 +1,10 @@
-#ifndef LIBCLC_LOG_APPENDERS_H
-#define LIBCLC_LOG_APPENDERS_H
+#ifndef XS_LOG_APPENDERS_H
+#define XS_LOG_APPENDERS_H
 
-#include "clc/support/Debug.h"
-#include "clc/support/Logger.h"
+#include "Logger.h"
 
 #include <stdio.h>
-
-
-namespace clc {
+#include <string>
 
 class Logger;
 
@@ -17,22 +14,24 @@ class Logger;
  */
 class LogAppenderNull : public LogAppender {
 public:
-    void append(Buffer &)
+    void append(std::string &)
     {
     }
 };
 
 
+#if 0
 /**
  *  Appender that sends the messages to the debugger (if any).
  */
 class LogAppenderDebugger : public LogAppender {
 public:
-    void append(Buffer &s)
+    void append(std::string &s)
     {
         Debugger::printf(s);
     }
 };
+#endif
 
 
 /**
@@ -45,7 +44,7 @@ public:
     {
     }
 
-    void append(Buffer &s)
+    void append(std::string &s)
     {
         fprintf(m_f, "%s", s.c_str());
     }
@@ -53,6 +52,5 @@ public:
 protected:
     FILE *m_f;
 };
-}
 
 #endif

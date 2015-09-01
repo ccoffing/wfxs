@@ -1,6 +1,7 @@
 #include "XSApplication.h"
 #include "XSController.h"
 #include "XSDataIO.h"
+#include "XSException.h"
 #include "XSFile.h"
 #include "XSFileNative.h"
 #include "XSFloss.h"
@@ -9,7 +10,7 @@
 
 #include <assert.h>
 #include <iostream>
-#include <string.h>
+#include <string>
 
 
 static unsigned int g_version = 1;
@@ -33,10 +34,10 @@ void StreamOutNative(std::ostream &stream,
     unsigned int squaresY = model->SquaresY();
     unsigned int layers = model->GetNumberLayers();
 
-    WriteLE32_exc(stream, 'w');
-    WriteLE32_exc(stream, 'f');
-    WriteLE32_exc(stream, 'x');
-    WriteLE32_exc(stream, 's');
+    Write8_exc(stream, 'w');
+    Write8_exc(stream, 'f');
+    Write8_exc(stream, 'x');
+    Write8_exc(stream, 's');
     WriteLE32_exc(stream, g_version);
     WriteLE32_exc(stream, squaresX);
     WriteLE32_exc(stream, squaresY);
@@ -143,13 +144,12 @@ void StreamOutNative(std::ostream &stream,
 void StreamInNative(std::istream &stream,
         XSModel *doc)
 {
-#if 0
     do {
         uint32_t u32, squaresX, squaresY, layers;
 
         ReadLE32_exc(stream, u32);
-        if (u32 != XSApplication::signature)
-            break;
+        // if (u32 != XSApplication::signature)
+        //    break;
 
         ReadLE32_exc(stream, u32);
         if (u32 > g_version)
@@ -170,7 +170,7 @@ void StreamInNative(std::istream &stream,
         for (unsigned int i = 0; i < numMakers; ++i) {
             uint8_t index;
             Read8_exc(stream, index);
-            clc::Buffer maker;
+            std::string maker;
             ReadCStr_exc(stream, maker);
             // FIXME - add maker to set
         }
@@ -213,6 +213,5 @@ void StreamInNative(std::istream &stream,
         return;
     } while (false);
 
-    throw clc::IllegalFormatException();
-#endif
+    throw IllegalFormatException();
 }

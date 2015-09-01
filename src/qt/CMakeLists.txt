@@ -20,4 +20,4 @@ include(${QT_USE_FILE})
 add_definitions(${QT_DEFINITIONS})
 
 add_executable(wfxs-qt ${wfxsQt_SOURCES} ${wfxsQt_HEADERS_MOC})
-target_link_libraries(wfxs-qt ${QT_LIBRARIES} wfxs clc)
+target_link_libraries(wfxs-qt ${QT_LIBRARIES} wfxs)

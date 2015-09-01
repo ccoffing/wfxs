@@ -1,9 +1,7 @@
+#include "Logger.h"
 #include "XSDataIO.h"
 #include "XSFloss.h"
 #include "XSFlossPalette.h"
-
-#include "clc/support/ByteOrder.h"
-#include "clc/support/Logger.h"
 
 #include <assert.h>
 

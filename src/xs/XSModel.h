@@ -24,6 +24,7 @@ enum DrawStyle {
 class XSModel {
 public:
     XSModel(unsigned int sizeX, unsigned int sizeY);
+    XSModel &operator=(XSModel &&rhs);
     ~XSModel();
 
     void setController(XSController *controller)
@@ -113,8 +114,8 @@ private:
     /** Width of each square (not including the dividing lines)
      */
     unsigned int m_zoom;
-    const unsigned int m_minZoom;
-    const unsigned int m_maxZoom;
+    unsigned int m_minZoom;
+    unsigned int m_maxZoom;
 
     unsigned int m_numLayers;
     unsigned int m_numAllocatedLayers;
@@ -127,10 +128,6 @@ private:
     XSProperties m_properties;
 
     enum DrawStyle m_drawStyle;
-
-    // Disallow copying
-    XSModel(XSModel const &);
-    XSModel &operator=(XSModel const &);
 };
 
 #endif

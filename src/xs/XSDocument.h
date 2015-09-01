@@ -1,8 +1,6 @@
 #ifndef XS_DOCUMENT_H
 #define XS_DOCUMENT_H
 
-#include "clc/data/Buffer.h"
-
 #include "XSModel.h"
 
 
@@ -14,7 +12,7 @@ public:
     XSDocument();
 
 protected:
-    clc::Buffer m_filename;
+    std::string m_filename;
     bool m_isModified;
     XSModel m_model;
 };

@@ -22,6 +22,7 @@ public:
     XSController(XSModel *model);
 
     void save(const XSModel &model, const char *filename);
+    void open(const char *filename);
 
     void OnClearSquare(unsigned int x, unsigned int y);
     void OnClearSquares(std::vector<XSPoint> const &points);
@@ -84,7 +85,11 @@ public:
 
 private:
     XSCommandStack m_commandStack;
+
+public:
     XSModel *m_model;
+
+private:
     XSPropertiesWindow *m_propertiesWindow;
     XSEditFlossWindow *m_editFlossWindow;
 };

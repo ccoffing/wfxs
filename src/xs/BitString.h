@@ -1,9 +1,7 @@
-#ifndef LIBCLC_DATA_BITSTRING_H
-#define LIBCLC_DATA_BITSTRING_H
+#ifndef XS_BITSTRING_H
+#define XS_BITSTRING_H
 
 #include <stdint.h>
-
-namespace clc {
 
 /**
  *  An efficient bitstring.
@@ -55,7 +53,5 @@ private:
     unsigned int m_numBits;
     uint32_t *m_bits;
 };
-
-}
 
 #endif

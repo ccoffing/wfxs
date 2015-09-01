@@ -6,6 +6,36 @@
 #include <QDialog>
 
 
+class PatSizeTab : public QWidget {
+    Q_OBJECT
+
+public:
+    PatSizeTab(XSProperties &properties);
+
+protected:
+    XSProperties &m_properties;
+};
+
+class PatDescrTab : public QWidget {
+    Q_OBJECT
+
+public:
+    PatDescrTab(XSProperties &properties);
+
+protected:
+    XSProperties &m_properties;
+};
+
+class PatInstrTab : public QWidget {
+    Q_OBJECT
+
+public:
+    PatInstrTab(XSProperties &properties);
+
+protected:
+    XSProperties &m_properties;
+};
+
 class XSPropertiesDialog : public QDialog {
     Q_OBJECT
 

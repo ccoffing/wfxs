@@ -1,8 +1,6 @@
+#include "Logger.h"
 #include "XSDataIO.h"
 #include "XSSkeinPalette.h"
-
-#include "clc/support/ByteOrder.h"
-#include "clc/support/Logger.h"
 
 #define LOG_NAME "xs.SknPal"
 
@@ -14,7 +12,7 @@ XSSkeinPalette::XSSkeinPalette() :
 
 XSSkein const *XSSkeinPalette::Lookup(Maker_t maker,
         FlossProductLine_t productLine,
-        clc::Buffer const &id)
+        std::string const &id)
 {
     for (size_t i = 0; i < m_skeins.size(); ++i) {
         if (m_skeins[i].m_maker == maker &&
@@ -42,7 +40,7 @@ void XSSkeinPalette::Unserialize(std::istream &src)
 
     ReadBE16_exc(src, n);
     size_t skeins = n;
-    clc::Log::debug(LOG_NAME, "Loading %u skeins", n);
+    Log::debug(LOG_NAME, "Loading %u skeins", n);
     for (size_t i = 0; i < skeins; ++i) {
         XSSkein skein;
         skein.Unserialize(src);

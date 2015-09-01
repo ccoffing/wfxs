@@ -39,16 +39,17 @@ void XSController::save(const XSModel &model, const char *filename)
     model.SaveObject(of);
 }
 
-#if 0
-void XSController::open()
+void XSController::open(const char *filename)
 {
     std::ifstream ifs;
 
     ifs.open(filename);
-    model.LoadObject(ifs);
-}
 
-#endif
+    XSModel model(0, 0);
+    model.LoadObject(ifs);
+
+    *m_model = std::move(model);
+}
 
 void XSController::OnNew()
 {
@@ -86,9 +87,9 @@ void x()
         int32_t dialog, button;
 
         s = message->FindInt32("dialog", &dialog);
-        ASSERT(s == B_OK);
+        assert(s == B_OK);
         s = message->FindInt32("button", &button);
-        ASSERT(s == B_OK);
+        assert(s == B_OK);
 
         switch ((XSWindowDialogs)dialog) {
         case XS_DIALOG_PROPERTIES:
@@ -104,7 +105,7 @@ void x()
             m_editFlossWindow = 0;
             break;
         default:
-            ASSERT(0);
+            assert(0);
         }
         break;
     }
@@ -380,7 +381,7 @@ void XSController::SetTool(Tool tool)
         // FIXME
         break;
     default:
-        ASSERT(0);
+        assert(0);
     }
 }
 
@@ -481,7 +482,7 @@ XSRect XSController::GetPreferredFrame(unsigned int x,
 #endif
 
 #if 0
-void XSController::OnKeyDown(clc::KeyEvent &event)
+void XSController::OnKeyDown(KeyEvent &event)
 {
     unsigned int zoom = m_model->GetZoom();
 
@@ -502,16 +503,16 @@ void XSController::OnKeyDown(clc::KeyEvent &event)
     case 'd':
         m_view->ScrollBy(-zoom, 0);
         break;
-    case clc::KeyEvent::LEFT:
+    case KeyEvent::LEFT:
         m_view->MoveCursorBy(-1, 0);
         break;
-    case clc::KeyEvent::RIGHT:
+    case KeyEvent::RIGHT:
         m_view->MoveCursorBy(1, 0);
         break;
-    case clc::KeyEvent::UP:
+    case KeyEvent::UP:
         m_view->MoveCursorBy(0, -1);
         break;
-    case clc::KeyEvent::DOWN:
+    case KeyEvent::DOWN:
         m_view->MoveCursorBy(0, 1);
         break;
     case ' ':

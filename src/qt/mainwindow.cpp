@@ -1,15 +1,22 @@
 #include "qt/XSPropertiesDialog.h"
 #include "qt/mainwindow.h"
+#include "xs/Logger.h"
 #include "xs/XSColor.h"
 #include "xs/XSFloss.h"
 #include "xs/XSVersion.h"
-
-#include "clc/support/Logger.h"
 
 #include <QFileDialog>
 #include <QtGui>
 
 #define LOG_NAME "qt.main"
+
+
+XSQApplication::XSQApplication(int &argc, char *argv[]) :
+    QApplication(argc, argv),
+    m_app(argc, argv)
+{
+    m_window.show();
+}
 
 
 MainWindow::MainWindow() :
@@ -233,14 +240,14 @@ void MainWindow::quarterStitch()
 
 void MainWindow::setFloss(int i)
 {
-    clc::Log::debug(LOG_NAME, "setFloss(%d)", i);
+    Log::debug(LOG_NAME, "setFloss(%d)", i);
 
     m_controller.setFloss(i);
 }
 
 void MainWindow::overwrite()
 {
-    clc::Log::debug(LOG_NAME, "Overwrite");
+    Log::debug(LOG_NAME, "Overwrite");
 
     m_controller.OnOverwrite();
 }
@@ -252,7 +259,18 @@ void MainWindow::open()
             tr("All files (*.*)"));
 
     if (!fileName.isNull()) {
-        // m_controller-
+        try {
+            m_controller.open(fileName.toUtf8().constData());
+        } catch (std::exception &e) {
+            Log::error(LOG_NAME, "Failed to open file: %s", e.what());
+            QMessageBox msgBox;
+            QString msg("The file could not be opened: ");
+            msg += e.what();
+            msgBox.setText(msg);
+            msgBox.exec();
+            return;
+        }
+        m_area->update();
     }
 }
 
@@ -264,7 +282,17 @@ void MainWindow::save()
             QFileDialog::HideNameFilterDetails);
 
     if (!fileName.isNull()) {
-        m_controller.save(m_model, fileName.toUtf8().data());
+        try {
+            m_controller.save(m_model, fileName.toUtf8().constData());
+        } catch (std::exception &e) {
+            Log::error(LOG_NAME, "Failed to save file: %s", e.what());
+            QMessageBox msgBox;
+            QString msg("The file could not be saved: ");
+            msg += e.what();
+            msgBox.setText(msg);
+            msgBox.exec();
+            return;
+        }
     }
 }
 

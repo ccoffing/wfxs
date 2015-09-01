@@ -8,6 +8,6 @@ TEST_CASE("XSFloss") {
         XSFloss floss;
 
         // 2 skeins, first of 2 strands,
-        // clc::Buffer f("\x02\x02 \x01", n);
+        // std::string f("\x02\x02 \x01", n);
     }
 }

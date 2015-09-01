@@ -1,11 +1,9 @@
+#include "Logger.h"
 #include "XSController.h"
 #include "XSFileNative.h"
 #include "XSLayer.h"
 #include "XSModel.h"
 #include "XSProperties.h"
-
-#include "clc/support/Debug.h"
-#include "clc/support/Logger.h"
 
 #define LOG_NAME "xs.Model"
 
@@ -29,6 +27,34 @@ XSModel::XSModel(unsigned int x,
     m_drawStyle(DrawStyle_Design)
 {
     AddLayer();
+}
+
+XSModel &XSModel::operator=(XSModel &&rhs)
+{
+    m_toolState = rhs.m_toolState;
+    m_controller = rhs.m_controller;
+    m_sizeX = rhs.m_sizeX;
+    m_sizeX = rhs.m_sizeX;
+    m_sizeY = rhs.m_sizeY;
+    m_zoom = rhs.m_zoom;
+    m_minZoom = rhs.m_minZoom;
+    m_maxZoom = rhs.m_maxZoom;
+    m_numLayers = rhs.m_numLayers;
+    m_numAllocatedLayers = rhs.m_numAllocatedLayers;
+    m_currentLayerIndex = rhs.m_currentLayerIndex;
+    m_layers = rhs.m_layers;
+    m_numLayers = rhs.m_numLayers;
+    m_showGrid = rhs.m_showGrid;
+    m_showRulers = rhs.m_showRulers;
+    m_editable = rhs.m_editable;
+    m_properties = rhs.m_properties;
+    m_drawStyle = rhs.m_drawStyle;
+
+    rhs.m_layers = nullptr;
+
+    m_controller->m_model = this;
+
+    return *this;
 }
 
 XSModel::~XSModel()
@@ -116,8 +142,8 @@ void XSModel::AddLayer()
 
 void XSModel::DelLayer(unsigned int i)
 {
-    ASSERT(i < m_numLayers);
-    ASSERT(m_numLayers > 1);
+    assert(i < m_numLayers);
+    assert(m_numLayers > 1);
 
     //    if (m_currentLayerIndex == i)
     //        m_controller->GetView()->Refresh();
@@ -190,7 +216,7 @@ StitchType XSModel::SetStitch(unsigned int squareX,
         unsigned int flossIndex,
         bool overwrite)
 {
-    clc::Log::debug(LOG_NAME, "%u %u %u", squareX, squareY, flossIndex);
+    Log::debug(LOG_NAME, "%u %u %u", squareX, squareY, flossIndex);
     StitchType st = m_layers[m_currentLayerIndex]->SetStitch(
             squareX, squareY, xPercent, yPercent, stitchType, flossIndex, overwrite);
 
@@ -224,7 +250,7 @@ void XSModel::SetSquareData(XSSquareIO const *square,
         unsigned int y,
         unsigned int layer)
 {
-    ASSERT(layer < m_numLayers);
+    assert(layer < m_numLayers);
     m_layers[layer]->SetSquareData(square, x, y);
     //    m_controller->GetView()->RefreshSquareContents(x, y);
 }
@@ -234,7 +260,7 @@ void XSModel::SetSquareDataNoInval(XSSquareIO const *square,
         unsigned int y,
         unsigned int layer)
 {
-    ASSERT(layer < m_numLayers);
+    assert(layer < m_numLayers);
     m_layers[layer]->SetSquareData(square, x, y);
 }
 
@@ -243,13 +269,13 @@ void XSModel::GetSquareData(XSSquareIO *square,
         unsigned int y,
         unsigned int layer) const
 {
-    ASSERT(layer < m_numLayers);
+    assert(layer < m_numLayers);
     m_layers[layer]->GetSquareData(square, x, y);
 }
 
 XSSquare &XSModel::getSquare(unsigned int x, unsigned int y, unsigned int layer)
 {
-    ASSERT(layer < m_numLayers);
+    assert(layer < m_numLayers);
     return *m_layers[layer]->getSquare(x, y);
 }
 
@@ -257,7 +283,7 @@ void XSModel::ClearSquare(unsigned int x,
         unsigned int y,
         unsigned int layer)
 {
-    ASSERT(layer < m_numLayers);
+    assert(layer < m_numLayers);
     m_layers[layer]->ClearSquare(x, y);
     //    m_controller->GetView()->RefreshSquareContents(x, y);
 }

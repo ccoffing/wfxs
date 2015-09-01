@@ -3,9 +3,7 @@
 
 #include <vector>
 
-namespace clc {
 class BitMask;
-};
 
 /**
  *  @brief The "path" that outlines a selection.
@@ -32,7 +30,7 @@ public:
      *  large enough to enclose the selection.  Ownership of mask transfers to caller.
      *  @return Newly allocated mask describing selection.
      */
-    virtual clc::BitMask *GetMask() = 0;
+    virtual BitMask *GetMask() = 0;
 
     /**
      *  Attempts to move by a single square in the specified direction.
@@ -86,7 +84,7 @@ public:
      */
     XSFreeFormSelectionPath();
 
-    clc::BitMask *GetMask();
+    BitMask *GetMask();
 
     /**
      *  Attempts to move by a single square in the specified direction.
@@ -151,7 +149,7 @@ public:
      */
     XSRectangularSelectionPath();
 
-    clc::BitMask *GetMask();
+    BitMask *GetMask();
 
     bool Move(MoveDirection m);
 

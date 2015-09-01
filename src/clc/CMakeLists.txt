@@ -6,16 +6,12 @@ include_directories(
 
 list(APPEND CLC_SOURCES
 	algorithm/Bitops.h
-	data/BitMask.cpp
-	data/BitMask.h
 	data/BitString.cpp
 	data/BitString.h
 	data/Buffer.cpp
 	data/Buffer.h
 	os/Clock.cpp
 	os/Clock.h
-	storage/Path.cpp
-	storage/Path.h
 	support/Intrinsics.h
 	support/ByteOrder.h
 	support/Debug.cpp

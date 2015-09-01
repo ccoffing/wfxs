@@ -15,7 +15,6 @@ include_directories(
 )
 add_definitions(-std=c++11)
 
-add_subdirectory(clc)
 add_subdirectory(xs)
 
 # Probe UI

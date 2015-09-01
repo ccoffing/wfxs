@@ -1,6 +1,16 @@
 project(wfxs)
 
 set(wfxsLibSources
+	ByteOrder.h
+	BitMask.cpp
+	BitMask.h
+	BitOps.h
+	BitString.cpp
+	BitString.h
+	BresenhamLine.h
+	LogAppenders.h
+	Logger.cpp
+	Logger.h
 	XSApplication.cpp
 	XSApplication.h
 	XSColor.cpp
@@ -44,6 +54,7 @@ set(wfxsLibSources
 	XSDataIO.cpp
 	XSDataIO.h
 	XSDocument.h
+	XSException.h
 	XSFile.cpp
 	XSFile.h
 	XSFileNative.cpp
@@ -83,9 +94,5 @@ set(wfxsLibSources
 )
 
 add_library(wfxs STATIC ${wfxsLibSources})
-target_link_libraries(wfxs
-	PUBLIC
-		clc
-	)
 
 add_subdirectory(tests)

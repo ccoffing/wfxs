@@ -4,7 +4,6 @@
 // FIXME:
 // This is only for the ProgressFn.  Seems that should go in some ABC for all the file loaders
 // that FileProber uses....
-// #include <clc/storage/MTFileProber.h>
 typedef void (*ProgressFn)(void *handle, unsigned int percent);
 
 #include "XSController.h"

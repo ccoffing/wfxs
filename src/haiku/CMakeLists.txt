@@ -23,4 +23,4 @@ set(wfxsHaiku_HEADERS
 )
 
 add_executable(wfxs-haiku ${wfxsHaiku_SOURCES} ${wfxsHaiku_HEADERS})
-target_link_libraries(wfxs-haiku wfxs clc)
+target_link_libraries(wfxs-haiku wfxs)

@@ -1,11 +1,9 @@
+#include "Logger.h"
 #include "XSApplication.h"
 #include "XSDataIO.h"
 #include "XSFlossPalette.h"
 #include "XSSkein.h"
 #include "XSSkeinPalette.h"
-
-#include "clc/storage/Path.h"
-#include "clc/support/Logger.h"
 
 #include <fstream>
 #include <sstream>
@@ -19,7 +17,7 @@ XSFlossPalette *makerFlossPalette[FM_NUMBER];
 
 // All makers known to the program.  This is the base set that a pattern
 // copies from to start with, but the pattern can come with its own, too.
-std::vector<clc::Buffer> makerNames;
+std::vector<std::string> makerNames;
 static char const *makerNamesCStr[] =
 {
     "DMC",
@@ -29,7 +27,7 @@ static char const *makerNamesCStr[] =
     "Mill Hill"
 };
 
-std::vector<clc::Buffer> productLineNames;
+std::vector<std::string> productLineNames;
 static char const *productLineNamesCStr[] =
 {
     "Embroidery Floss",
@@ -63,24 +61,24 @@ static void InitSkeinPalettes()
 
 #if 1
     // FIXME:  fix Makefile to package up things in a testable manner -- appdir, ...
-    clc::Buffer rsrc = "resources";
+    std::string rsrc = "resources";
 #else
-    clc::Buffer rsrc = wxStandardPaths::Get().GetResourcesDir();
+    std::string rsrc = wxStandardPaths::Get().GetResourcesDir();
 #endif
     for (unsigned int i = 0; toRead[i].name; ++i) {
-        clc::Buffer f = rsrc;
-        clc::Path::join(f, "floss");
-        clc::Path::join(f, toRead[i].name);
-        clc::Log::info(LOG_NAME, "Loading %s", f.c_str());
+        std::string f = rsrc;
+        f += "/floss";
+        f += toRead[i].name;
+        Log::info(LOG_NAME, "Loading %s", f.c_str());
         std::ifstream is;
         is.open(f.c_str());
 
-        clc::Log::debug(LOG_NAME, "Loading skeins");
+        Log::debug(LOG_NAME, "Loading skeins");
         XSSkeinPalette *sp = new XSSkeinPalette;
         sp->Unserialize(is);
         makerSkeinPalette[toRead[i].index] = sp;
 
-        clc::Log::debug(LOG_NAME, "Loading floss palette");
+        Log::debug(LOG_NAME, "Loading floss palette");
         XSFlossPalette *fp = new XSFlossPalette;
         fp->Unserialize(is);
         makerFlossPalette[toRead[i].index] = fp;
@@ -92,19 +90,19 @@ static void InitSkeinPalettes()
 
 static void InitMakers()
 {
-    clc::Log::info(LOG_NAME, "Loading makers");
+    Log::info(LOG_NAME, "Loading makers");
 
     for (unsigned int i = 0; i < FM_NUMBER; ++i) {
-        makerNames.push_back(clc::Buffer(makerNamesCStr[i]));
+        makerNames.push_back(std::string(makerNamesCStr[i]));
     }
 }
 
 static void InitProductLines()
 {
-    clc::Log::info(LOG_NAME, "Loading product lines");
+    Log::info(LOG_NAME, "Loading product lines");
 
     for (unsigned int i = 0; i < FPL_NUMBER; ++i) {
-        productLineNames.push_back(clc::Buffer(productLineNamesCStr[i]));
+        productLineNames.push_back(std::string(productLineNamesCStr[i]));
     }
 }
 

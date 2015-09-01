@@ -1,8 +1,7 @@
+#include "BitMask.h"
 #include "XSCommandFloodFill.h"
 #include "XSModel.h"
 #include "XSSquare.h"
-
-#include "clc/data/BitMask.h"
 
 
 XSCommandFloodFill::XSCommandFloodFill(unsigned int x,
@@ -21,8 +20,8 @@ int XSCommandFloodFill::Do()
     unsigned int dy = m_model->SquaresY();
     unsigned int layer = m_model->GetCurrentLayerIndex();
     XSSquare oldSquare = m_model->getSquare(m_x, m_y, layer);
-    clc::BitMask bitmask(dx, dy);
-    clc::BitMask flooded(bitmask);
+    BitMask bitmask(dx, dy);
+    BitMask flooded(bitmask);
 
     // If this is a performance bottleneck, take the BitMask.FloodFill algorithm and pull it
     // out and templatize it, so it can directly operate on XSSquare.

@@ -10,8 +10,7 @@ class XSFloss;
 
 /**
  */
-class XSFlossPalette
-{
+class XSFlossPalette {
 public:
     XSFlossPalette();
     XSFlossPalette(XSFlossPalette const &);

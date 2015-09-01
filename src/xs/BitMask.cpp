@@ -1,4 +1,4 @@
-#include "clc/data/BitMask.h"
+#include "xs/BitMask.h"
 
 #include <assert.h>
 #include <stddef.h>
@@ -6,8 +6,6 @@
 #include <string.h>
 #include <vector>
 
-
-namespace clc {
 
 BitMask::BitMask(unsigned int x,
         unsigned int y) :
@@ -102,5 +100,4 @@ void BitMask::Erase(BitMask const &b, unsigned int xoffset, unsigned int yoffset
 bool BitMask::Crop(int left, int top, int right, int bottom, bool fill)
 {
     // FIXME
-}
 }

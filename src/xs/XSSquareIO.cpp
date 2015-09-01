@@ -1,8 +1,7 @@
 #include "XSDataIO.h"
+#include "XSException.h"
 #include "XSSquare.h"
 #include "XSSquareIO.h"
-
-#include "clc/support/Exception.h"
 
 #include <assert.h>
 
@@ -76,5 +75,5 @@ void XSSquareIO::Unserialize(std::istream &file)
     return;
 
 fail:
-    throw clc::IllegalFormatException();
+    throw IllegalFormatException();
 }

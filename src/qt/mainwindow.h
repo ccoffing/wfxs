@@ -1,10 +1,11 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "xs/XSApplication.h"
 #include "xs/XSController.h"
-
 #include "qt/XSArea.h"
 
+#include <QApplication>
 #include <QMainWindow>
 
 class QAction;
@@ -103,6 +104,17 @@ private:
     XSArea *m_area;
 
     void updateStitchMessage();
+};
+
+class XSQApplication : public QApplication {
+    Q_OBJECT
+
+public:
+    XSQApplication(int &argc, char *argv[]);
+
+protected:
+    XSApplication m_app;
+    MainWindow m_window;
 };
 
 #endif

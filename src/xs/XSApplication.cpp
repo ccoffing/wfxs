@@ -1,21 +1,39 @@
+#include "LogAppenders.h"
+#include "Logger.h"
 #include "XSApplication.h"
 #include "XSData.h"
 
-#include "clc/support/LogAppenders.h"
-#include "clc/support/Logger.h"
-
 
 XSApplication *xs_app;
-static clc::LogAppenderCFile console(stderr);
+static LogAppenderCFile console(stderr);
 
-XSApplication::XSApplication()
+XSApplication::XSApplication(int argc, char *argv[])
 {
-#ifdef DEBUG
-    clc::Log::get("")->setLevel(clc::Log::Trace);
-#else
-    clc::Log::get("")->setLevel(clc::Log::Warn);
-#endif
-    clc::Log::get("")->setAppender(&console);
+    int i = 0;
+    int verbose = 0;
+
+    while (i < argc++) {
+        if (strcmp(argv[i], "-v") == 0)
+            verbose++;
+    }
+
+    Log::Level level;
+    switch (verbose) {
+    case 0:
+        level = Log::Warn;
+        break;
+    case 1:
+        level = Log::Info;
+        break;
+    case 2:
+        level = Log::Debug;
+        break;
+    default:
+        level = Log::Trace;
+        break;
+    }
+    Log::get("")->setLevel(level);
+    Log::get("")->setAppender(&console);
 
     xs_app = this;
     InitXSData();

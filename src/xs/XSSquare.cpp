@@ -1,8 +1,7 @@
 #include "XSSquare.h"
 #include "XSStitchTypes.h"
 
-#include "clc/support/Debug.h"
-
+#include <assert.h>
 
 const unsigned int XSSquare::MaxStitches = 4;
 const unsigned int XSSquare::MaxKnots = 8;
@@ -25,7 +24,7 @@ StitchTypeAndLocation XSSquare::rotateStitch(StitchTypeAndLocation stitch)
         /* StitchLoc_QuarterLR      --> */ StitchLoc_QuarterLL,
     };
 
-    ASSERT((unsigned int)stitch < sizeof(rotationTable) / sizeof(StitchTypeAndLocation));
+    assert((unsigned int)stitch < sizeof(rotationTable) / sizeof(StitchTypeAndLocation));
 
     return rotationTable[stitch];
 }
@@ -39,8 +38,8 @@ bool XSSquare::sameType(StitchTypeAndLocation s1, StitchType s2)
         -1, 0, 1, 1, 1, 1, 2, 2, 3, 3, 3, 3, 1, 2, 3
     };
 
-    ASSERT((unsigned int)s1 < sizeof(stitchTypes) / sizeof(char));
-    ASSERT((unsigned int)s2 < sizeof(stitchTypes) / sizeof(char));
+    assert((unsigned int)s1 < sizeof(stitchTypes) / sizeof(char));
+    assert((unsigned int)s2 < sizeof(stitchTypes) / sizeof(char));
 
     return stitchTypes[s1] == stitchTypes[s2];
 }
@@ -118,7 +117,7 @@ void XSSquare::clearStitchByIndex(unsigned int index)
     else if (index == 4)
         m_stitches.stitch4 = StitchLoc_None;
     else
-        ASSERT(0);
+        assert(0);
 }
 
 void XSSquare::setStitch(StitchTypeAndLocation stitchType, unsigned int flossIndex)
@@ -136,7 +135,7 @@ void XSSquare::setStitch(StitchTypeAndLocation stitchType, unsigned int flossInd
         m_stitches.stitch4 = stitchType;
         m_stitches.floss4 = flossIndex;
     } else {
-        ASSERT(0);
+        assert(0);
     }
 }
 

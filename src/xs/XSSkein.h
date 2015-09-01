@@ -8,8 +8,6 @@
 #include <iostream>
 #include <vector>
 
-#include "clc/data/Buffer.h"
-
 #include "XSColor.h"
 
 
@@ -54,8 +52,7 @@ typedef enum {
 /**
  *  Represents a particular skein of floss (maker, color, strands, etc).
  */
-class XSSkein
-{
+class XSSkein {
 public:
     XSSkein();
     virtual ~XSSkein();
@@ -75,14 +72,14 @@ public:
     void Unserialize(std::istream &src);
     void SerializeRef(std::ostream &file) const;
     static void UnserializeRef(std::istream &src, Maker_t &maker,
-            FlossProductLine_t &productLine, clc::Buffer &id);
+            FlossProductLine_t &productLine, std::string &id);
 
     // Identifying tuple:
     Maker_t m_maker;
     FlossProductLine_t m_productLine;
-    clc::Buffer m_id;
+    std::string m_id;
 
-    clc::Buffer m_description;
+    std::string m_description;
     std::vector<XSColor> m_colors;
     bool m_discontinued;
     FlossBlend_t m_blend;
