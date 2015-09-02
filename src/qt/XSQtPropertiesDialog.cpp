@@ -1,4 +1,4 @@
-#include "qt/XSPropertiesDialog.h"
+#include "qt/XSQtPropertiesDialog.h"
 
 #include <QtGui>
 
@@ -28,7 +28,7 @@ PatInstrTab::PatInstrTab(XSProperties &properties) :
 {
 }
 
-XSPropertiesDialog::XSPropertiesDialog(QWidget *parent, XSProperties &properties) :
+XSQtPropertiesDialog::XSQtPropertiesDialog(QWidget *parent, XSProperties &properties) :
     QDialog(parent),
     m_properties(properties)
 {
@@ -52,7 +52,7 @@ XSPropertiesDialog::XSPropertiesDialog(QWidget *parent, XSProperties &properties
     setWindowTitle(tr("Properties"));
 }
 
-void XSPropertiesDialog::saveClicked()
+void XSQtPropertiesDialog::saveClicked()
 {
     // TODO  read from form into m_properties
 }

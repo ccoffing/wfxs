@@ -1,5 +1,5 @@
-#include "qt/XSPropertiesDialog.h"
-#include "qt/mainwindow.h"
+#include "qt/XSQtPropertiesDialog.h"
+#include "qt/XSQtEditWindow.h"
 #include "xs/Logger.h"
 #include "xs/XSColor.h"
 #include "xs/XSFloss.h"
@@ -19,7 +19,7 @@ XSQApplication::XSQApplication(int &argc, char *argv[]) :
 }
 
 
-MainWindow::MainWindow() :
+XSQtEditWindow::XSQtEditWindow() :
     m_model(40, 40),
     m_controller(&m_model)
 {
@@ -32,6 +32,7 @@ MainWindow::MainWindow() :
     toolbar->setMovable(1);
     toolbar->setFloatable(1);
 
+    // TODO http://doc.qt.io/qt-4.8/qstyle.html  QStyle::standardIcon
     QPixmap openPix("resources/icons/open.xpm");
     QAction *openAct = toolbar->addAction(QIcon(openPix), "Open");
     connect(openAct, SIGNAL(triggered()), this, SLOT(open()));
@@ -68,7 +69,7 @@ MainWindow::MainWindow() :
     connect(signalMapper, SIGNAL(mapped(int)), this, SLOT(setFloss(int)));
 
     // Drawing area
-    m_area = new XSArea(m_model, m_controller, widget);
+    m_area = new XSQtCanvas(m_model, m_controller, widget);
     QScrollArea *scrollArea = new QScrollArea;
     scrollArea->setBackgroundRole(QPalette::Dark);
     scrollArea->setWidget(m_area);
@@ -96,7 +97,7 @@ MainWindow::MainWindow() :
     setWindowTitle(tr("Wildflower Cross Stitch"));
 }
 
-void MainWindow::contextMenuEvent(QContextMenuEvent *event)
+void XSQtEditWindow::contextMenuEvent(QContextMenuEvent *event)
 {
     QMenu menu(this);
 
@@ -106,17 +107,13 @@ void MainWindow::contextMenuEvent(QContextMenuEvent *event)
     menu.exec(event->globalPos());
 }
 
-void MainWindow::newFile()
+void XSQtEditWindow::newFile()
 {
-    m_controller.OnNew();
-
-    MainWindow *window = new MainWindow;
-    window->show();
-
-// http://qt-project.org/doc/qt-4.8/painting-basicdrawing.html
+    XSQtEditWindow *other = new XSQtEditWindow;
+    other->show();
 }
 
-void MainWindow::updateStitchMessage()
+void XSQtEditWindow::updateStitchMessage()
 {
     const char *message;
     StitchType stitchType = m_controller.GetStitchType();
@@ -170,89 +167,89 @@ void MainWindow::updateStitchMessage()
     statusBar()->showMessage(message);
 }
 
-void MainWindow::fullStitch()
+void XSQtEditWindow::fullStitch()
 {
     m_controller.OnFullStitch();
     updateStitchMessage();
 }
 
-void MainWindow::halfStitch()
+void XSQtEditWindow::halfStitch()
 {
     // TODO toggle among
     m_controller.OnHalfAutoStitch();
     updateStitchMessage();
 }
 
-void MainWindow::halfAutoStitch()
+void XSQtEditWindow::halfAutoStitch()
 {
     m_controller.OnHalfAutoStitch();
     updateStitchMessage();
 }
 
-void MainWindow::halfTopStitch()
+void XSQtEditWindow::halfTopStitch()
 {
     m_controller.OnHalfTopStitch();
     updateStitchMessage();
 }
 
-void MainWindow::halfBottomStitch()
+void XSQtEditWindow::halfBottomStitch()
 {
     m_controller.OnHalfBottomStitch();
     updateStitchMessage();
 }
 
-void MainWindow::threeQuarterAutoStitch()
+void XSQtEditWindow::threeQuarterAutoStitch()
 {
     m_controller.OnThreeQuarterAutoStitch();
     updateStitchMessage();
 }
 
-void MainWindow::threeQuarterULStitch()
+void XSQtEditWindow::threeQuarterULStitch()
 {
     m_controller.OnThreeQuarterULStitch();
     updateStitchMessage();
 }
 
-void MainWindow::threeQuarterURStitch()
+void XSQtEditWindow::threeQuarterURStitch()
 {
     m_controller.OnThreeQuarterURStitch();
     updateStitchMessage();
 }
 
-void MainWindow::threeQuarterLLStitch()
+void XSQtEditWindow::threeQuarterLLStitch()
 {
     m_controller.OnThreeQuarterLLStitch();
     updateStitchMessage();
 }
 
-void MainWindow::threeQuarterLRStitch()
+void XSQtEditWindow::threeQuarterLRStitch()
 {
     m_controller.OnThreeQuarterLRStitch();
     updateStitchMessage();
 }
 
-void MainWindow::quarterStitch()
+void XSQtEditWindow::quarterStitch()
 {
     // TODO:  alternate
     m_controller.OnQuarterAutoStitch();
     updateStitchMessage();
 }
 
-void MainWindow::setFloss(int i)
+void XSQtEditWindow::setFloss(int i)
 {
     Log::debug(LOG_NAME, "setFloss(%d)", i);
 
     m_controller.setFloss(i);
 }
 
-void MainWindow::overwrite()
+void XSQtEditWindow::overwrite()
 {
     Log::debug(LOG_NAME, "Overwrite");
 
     m_controller.OnOverwrite();
 }
 
-void MainWindow::open()
+void XSQtEditWindow::open()
 {
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open Pattern"),
             "",
@@ -274,7 +271,7 @@ void MainWindow::open()
     }
 }
 
-void MainWindow::save()
+void XSQtEditWindow::save()
 {
     QString fileName = QFileDialog::getSaveFileName(this, tr("Save Pattern"),
             "",
@@ -296,38 +293,38 @@ void MainWindow::save()
     }
 }
 
-void MainWindow::properties()
+void XSQtEditWindow::properties()
 {
-    XSPropertiesDialog *propertiesDialog = new XSPropertiesDialog(this, m_model.GetProperties());
+    XSQtPropertiesDialog *propertiesDialog = new XSQtPropertiesDialog(this, m_model.GetProperties());
 
     propertiesDialog->show();
 }
 
-void MainWindow::print()
+void XSQtEditWindow::print()
 {
 }
 
-void MainWindow::undo()
+void XSQtEditWindow::undo()
 {
 }
 
-void MainWindow::redo()
+void XSQtEditWindow::redo()
 {
 }
 
-void MainWindow::cut()
+void XSQtEditWindow::cut()
 {
 }
 
-void MainWindow::copy()
+void XSQtEditWindow::copy()
 {
 }
 
-void MainWindow::paste()
+void XSQtEditWindow::paste()
 {
 }
 
-void MainWindow::zoomIn()
+void XSQtEditWindow::zoomIn()
 {
     unsigned int zoom = m_model.GetZoom();
     unsigned int increment = zoom / 8;
@@ -339,7 +336,7 @@ void MainWindow::zoomIn()
     m_area->update();
 }
 
-void MainWindow::zoomOut()
+void XSQtEditWindow::zoomOut()
 {
     unsigned int zoom = m_model.GetZoom();
     unsigned int increment = zoom / 8;
@@ -351,37 +348,37 @@ void MainWindow::zoomOut()
     m_area->update();
 }
 
-void MainWindow::leftAlign()
+void XSQtEditWindow::leftAlign()
 {
 }
 
-void MainWindow::rightAlign()
+void XSQtEditWindow::rightAlign()
 {
 }
 
-void MainWindow::justify()
+void XSQtEditWindow::justify()
 {
 }
 
-void MainWindow::center()
+void XSQtEditWindow::center()
 {
 }
 
-void MainWindow::setLineSpacing()
+void XSQtEditWindow::setLineSpacing()
 {
 }
 
-void MainWindow::setParagraphSpacing()
+void XSQtEditWindow::setParagraphSpacing()
 {
 }
 
-void MainWindow::about()
+void XSQtEditWindow::about()
 {
     QMessageBox::about(this, tr("About Wildflower Cross Stitch"),
             tr("<center>Wildflower Cross Stitch<br>...grows freely anywhere...<br>version " WFXS_VERSION "</center>"));
 }
 
-void MainWindow::createActions()
+void XSQtEditWindow::createActions()
 {
     newAct = new QAction(tr("&New"), this);
     newAct->setShortcuts(QKeySequence::New);
@@ -529,7 +526,7 @@ void MainWindow::createActions()
     leftAlignAct->setChecked(true);
 }
 
-void MainWindow::createMenus()
+void XSQtEditWindow::createMenus()
 {
     fileMenu = menuBar()->addMenu(tr("&File"));
     fileMenu->addAction(newAct);

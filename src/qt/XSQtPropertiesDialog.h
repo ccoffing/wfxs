@@ -1,5 +1,5 @@
-#ifndef QT_XS_PROPERTIES_DIALOG_H
-#define QT_XS_PROPERTIES_DIALOG_H
+#ifndef XS_QT_PROPERTIES_DIALOG_H
+#define XS_QT_PROPERTIES_DIALOG_H
 
 #include "xs/XSModel.h"
 
@@ -36,11 +36,11 @@ protected:
     XSProperties &m_properties;
 };
 
-class XSPropertiesDialog : public QDialog {
+class XSQtPropertiesDialog : public QDialog {
     Q_OBJECT
 
 public:
-    XSPropertiesDialog(QWidget *parent, XSProperties &properties);
+    XSQtPropertiesDialog(QWidget *parent, XSProperties &properties);
 
 protected:
     XSProperties &m_properties;

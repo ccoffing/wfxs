@@ -51,11 +51,6 @@ void XSController::open(const char *filename)
     *m_model = std::move(model);
 }
 
-void XSController::OnNew()
-{
-    // TODO
-}
-
 void XSController::OnPatternStyle(CommandEvent &event)
 {
     m_commandStack.Do(new XSCommandSetStyle(DrawStyle_Pattern));

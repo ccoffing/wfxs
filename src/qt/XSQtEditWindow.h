@@ -1,9 +1,9 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef XS_QT_EDIT_WINDOW_H
+#define XS_QT_EDIT_WINDOW_H
 
 #include "xs/XSApplication.h"
 #include "xs/XSController.h"
-#include "qt/XSArea.h"
+#include "qt/XSQtCanvas.h"
 
 #include <QApplication>
 #include <QMainWindow>
@@ -13,11 +13,11 @@ class QActionGroup;
 class QLabel;
 class QMenu;
 
-class MainWindow : public QMainWindow {
+class XSQtEditWindow : public QMainWindow {
     Q_OBJECT
 
 public:
-    MainWindow();
+    XSQtEditWindow();
 
 protected:
     void contextMenuEvent(QContextMenuEvent *event);
@@ -101,7 +101,7 @@ private:
 
     XSModel m_model;
     XSController m_controller;
-    XSArea *m_area;
+    XSQtCanvas *m_area;
 
     void updateStitchMessage();
 };
@@ -114,7 +114,7 @@ public:
 
 protected:
     XSApplication m_app;
-    MainWindow m_window;
+    XSQtEditWindow m_window;
 };
 
 #endif

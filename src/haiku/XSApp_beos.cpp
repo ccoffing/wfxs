@@ -1,5 +1,5 @@
 #if 0
-EVT_MENU(_MSG_NEW, XSController::OnNew)
+EVT_MENU(_MSG_NEW, OnNew)
 EVT_MENU(_MSG_ABOUT, XSApplication::OnAbout)
 EVT_MENU(_MSG_PROPERTIES, XSController::OnProperties)
 EVT_MENU(_MSG_ZOOM_IN, XSController::OnZoomIn)

@@ -42,7 +42,6 @@ public:
     void OnLayerDel(CommandEvent &event);
     void OnLayerDown(CommandEvent &event);
     void OnLayerUp(CommandEvent &event);
-    void OnNew();
     void OnOverwrite();
     void OnPatternStyle(CommandEvent &event);
     void OnProperties(CommandEvent &event);

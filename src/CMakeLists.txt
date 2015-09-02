@@ -32,10 +32,10 @@ if(GTKMM_LIBRARIES)
 endif()
 set(UI_WX_DEF FALSE)
 
-option(UI_HAIKU "UI for Haiku and BeOS" ${UI_HAIKU_DEF})
+option(UI_HAIKU "UI for Haiku" ${UI_HAIKU_DEF})
 option(UI_QT "UI for Qt" ${UI_QT_DEF})
 option(UI_GTKMM "UI for GTK" ${UI_GTKMM_DEF})
-option(UI_WX "UI for WxWidgets" ${UI_WX_DEF})
+option(UI_WX "UI for WxWidgets (currently unmaintained)" ${UI_WX_DEF})
 
 if(UI_HAIKU)
     add_subdirectory(BAF)
@@ -47,7 +47,7 @@ if(UI_QT)
 endif()
 
 if(UI_GTKMM)
-    add_subdirectory(gtkmm)
+    add_subdirectory(gtk)
 endif()
 
 if(UI_WX)

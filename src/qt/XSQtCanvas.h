@@ -1,5 +1,5 @@
-#ifndef QT_XSAREA_H
-#define QT_XSAREA_H
+#ifndef XS_QT_CANVAS_H
+#define XS_QT_CANVAS_H
 
 #include "xs/XSController.h"
 #include "xs/XSModel.h"
@@ -11,11 +11,11 @@
 class XSSelectionPath;
 class BitMask;
 
-class XSArea : public QWidget {
+class XSQtCanvas : public QWidget {
     Q_OBJECT
 
 public:
-    XSArea(XSModel &model, XSController &controller, QWidget *parent = 0);
+    XSQtCanvas(XSModel &model, XSController &controller, QWidget *parent = 0);
 
     QSize minimumSizeHint() const;
     QSize sizeHint() const;

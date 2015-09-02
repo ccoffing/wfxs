@@ -1,4 +1,4 @@
-#include "qt/XSArea.h"
+#include "qt/XSQtCanvas.h"
 
 #include "xs/BresenhamLine.h"
 #include "xs/XSColor.h"
@@ -135,7 +135,7 @@ static bool DeJiggle(unsigned int x, unsigned int y, bool reset)
     return true;
 }
 
-XSArea::XSArea(XSModel &model, XSController &controller, QWidget *parent) :
+XSQtCanvas::XSQtCanvas(XSModel &model, XSController &controller, QWidget *parent) :
     QWidget(parent),
     m_model(model),
     m_controller(controller),
@@ -154,7 +154,7 @@ XSArea::XSArea(XSModel &model, XSController &controller, QWidget *parent) :
     setAutoFillBackground(true);
 }
 
-QSize XSArea::minimumSizeHint() const
+QSize XSQtCanvas::minimumSizeHint() const
 {
     unsigned int squaresX = m_model.SquaresX();
     unsigned int squaresY = m_model.SquaresY();
@@ -167,7 +167,7 @@ QSize XSArea::minimumSizeHint() const
     return QSize(squaresX * zoom + 1, squaresY * zoom + 1);
 }
 
-QSize XSArea::sizeHint() const
+QSize XSQtCanvas::sizeHint() const
 {
     unsigned int squaresX = m_model.SquaresX();
     unsigned int squaresY = m_model.SquaresY();
@@ -176,24 +176,24 @@ QSize XSArea::sizeHint() const
     return QSize(squaresX * zoom + 1, squaresY * zoom + 1);
 }
 
-QRect XSArea::squareInnerRect(unsigned int x, unsigned int y)
+QRect XSQtCanvas::squareInnerRect(unsigned int x, unsigned int y)
 {
     unsigned int zoom = m_model.GetZoom();
 
     return QRect(x * zoom + 1, y * zoom + 1, x * zoom + zoom - 1, y * zoom + zoom - 1);
 }
 
-void XSArea::refreshSquare(unsigned int squareX, unsigned int squareY)
+void XSQtCanvas::refreshSquare(unsigned int squareX, unsigned int squareY)
 {
     update(squareInnerRect(squareX, squareY));
 }
 
-void XSArea::mouseReleaseEvent(QMouseEvent *event)
+void XSQtCanvas::mouseReleaseEvent(QMouseEvent *event)
 {
     m_mouseDown = false;
 }
 
-void XSArea::mousePressEvent(QMouseEvent *event)
+void XSQtCanvas::mousePressEvent(QMouseEvent *event)
 {
     if (event->button() != Qt::LeftButton)
         return;
@@ -302,7 +302,7 @@ void XSArea::mousePressEvent(QMouseEvent *event)
     refreshSquare(squareX, squareY);
 }
 
-void XSArea::mouseMoveEvent(QMouseEvent *event)
+void XSQtCanvas::mouseMoveEvent(QMouseEvent *event)
 {
     if (!m_mouseDown)
         return;
@@ -345,7 +345,7 @@ void XSArea::mouseMoveEvent(QMouseEvent *event)
     }
 }
 
-void XSArea::paintEvent(QPaintEvent * /* event */)
+void XSQtCanvas::paintEvent(QPaintEvent * /* event */)
 {
     QPainter painter(this);
 
@@ -537,7 +537,7 @@ void XSArea::paintEvent(QPaintEvent * /* event */)
 #endif
 }
 
-void XSArea::DrawDesignSquare(QPainter &painter, XSSquareIO &square, double zx, double zy,
+void XSQtCanvas::DrawDesignSquare(QPainter &painter, XSSquareIO &square, double zx, double zy,
         unsigned int zoom, XSFlossPalette const &flossPalette)
 {
     const double line_width = 0.2;
@@ -617,12 +617,12 @@ void XSArea::DrawDesignSquare(QPainter &painter, XSSquareIO &square, double zx, 
     }
 }
 
-void XSArea::DrawPatternSquare(QPainter &painter, XSSquareIO &square, double zx, double zy,
+void XSQtCanvas::DrawPatternSquare(QPainter &painter, XSSquareIO &square, double zx, double zy,
         unsigned int zoom, XSFlossPalette const &flossPalette)
 {
 }
 
-void XSArea::DrawRealisticSquare(QPainter &painter, XSSquareIO &square, double zx, double zy,
+void XSQtCanvas::DrawRealisticSquare(QPainter &painter, XSSquareIO &square, double zx, double zy,
         unsigned int zoom, XSFlossPalette const &flossPalette)
 {
 }

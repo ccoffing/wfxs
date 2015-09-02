@@ -4,14 +4,14 @@ find_package(Qt4 REQUIRED)
 
 set(wfxsQt_SOURCES
 	main.cpp
-	mainwindow.cpp
-	XSArea.cpp
-	XSPropertiesDialog.cpp
+	XSQtEditWindow.cpp
+	XSQtCanvas.cpp
+	XSQtPropertiesDialog.cpp
 )
 set(wfxsQt_HEADERS
-	mainwindow.h
-	XSArea.h
-	XSPropertiesDialog.h
+	XSQtEditWindow.h
+	XSQtCanvas.h
+	XSQtPropertiesDialog.h
 )
 
 QT4_WRAP_CPP(wfxsQt_HEADERS_MOC ${wfxsQt_HEADERS})
