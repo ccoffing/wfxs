@@ -1,5 +1,5 @@
-#include "qt/XSQtPropertiesDialog.h"
 #include "qt/XSQtEditWindow.h"
+#include "qt/XSQtPropertiesDialog.h"
 #include "xs/Logger.h"
 #include "xs/XSColor.h"
 #include "xs/XSFloss.h"
@@ -9,14 +9,6 @@
 #include <QtGui>
 
 #define LOG_NAME "qt.main"
-
-
-XSQApplication::XSQApplication(int &argc, char *argv[]) :
-    QApplication(argc, argv),
-    m_app(argc, argv)
-{
-    m_window.show();
-}
 
 
 XSQtEditWindow::XSQtEditWindow() :

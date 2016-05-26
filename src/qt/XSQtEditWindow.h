@@ -1,11 +1,9 @@
 #ifndef XS_QT_EDIT_WINDOW_H
 #define XS_QT_EDIT_WINDOW_H
 
-#include "xs/XSApplication.h"
 #include "xs/XSController.h"
 #include "qt/XSQtCanvas.h"
 
-#include <QApplication>
 #include <QMainWindow>
 
 class QAction;
@@ -104,17 +102,6 @@ private:
     XSQtCanvas *m_area;
 
     void updateStitchMessage();
-};
-
-class XSQApplication : public QApplication {
-    Q_OBJECT
-
-public:
-    XSQApplication(int &argc, char *argv[]);
-
-protected:
-    XSApplication m_app;
-    XSQtEditWindow m_window;
 };
 
 #endif

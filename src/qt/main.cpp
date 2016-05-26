@@ -1,8 +1,8 @@
-#include "XSQtEditWindow.h"
+#include "XSQtApplication.h"
 
 int main(int argc, char *argv[])
 {
-    XSQApplication app(argc, argv);
+    XSQtApplication app(argc, argv);
 
     return app.exec();
 }

@@ -12,7 +12,7 @@ XSApplication::XSApplication(int argc, char *argv[])
     int i = 0;
     int verbose = 0;
 
-    while (i < argc++) {
+    while (++i < argc) {
         if (strcmp(argv[i], "-v") == 0)
             verbose++;
     }

@@ -3,14 +3,16 @@ project(wfxs-qt)
 find_package(Qt4 REQUIRED)
 
 set(wfxsQt_SOURCES
-	main.cpp
-	XSQtEditWindow.cpp
+	XSQtApplication.cpp
 	XSQtCanvas.cpp
+	XSQtEditWindow.cpp
 	XSQtPropertiesDialog.cpp
+	main.cpp
 )
 set(wfxsQt_HEADERS
-	XSQtEditWindow.h
+	XSQtApplication.h
 	XSQtCanvas.h
+	XSQtEditWindow.h
 	XSQtPropertiesDialog.h
 )
 

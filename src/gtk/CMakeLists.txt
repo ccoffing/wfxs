@@ -1,12 +1,14 @@
 project(wfxs-gtk)
 
 set(wfxsGtk_SOURCES
+    XSGtkApplication.cpp
     XSGtkCanvas.cpp
     XSGtkEditWindow.cpp
     main.cpp
 )
 
 set(wfxsGtk_HEADERS
+    XSGtkApplication.h
     XSGtkCanvas.h
     XSGtkEditWindow.h
 )

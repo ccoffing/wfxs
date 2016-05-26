@@ -53,10 +53,10 @@ static void InitSkeinPalettes()
         const char *name;
         Maker_t index;
     } toRead[] = {
-        { "dmc",     FM_DMC                                                                             },
-        { "anchor",  FM_ANCHOR                                                                          },
-        { "jpcoats", FM_JPCOATS                                                                         },
-        { 0,         FM_NUMBER                                                                          }
+        { "dmc",     FM_DMC     },
+        { "anchor",  FM_ANCHOR  },
+        { "jpcoats", FM_JPCOATS },
+        { 0,         FM_NUMBER  }
     };
 
 #if 1
