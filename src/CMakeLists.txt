@@ -1,5 +1,4 @@
-cmake_minimum_required(VERSION 2.8.11)
-enable_testing()
+cmake_minimum_required(VERSION 3.1.0)
 
 project(WildflowerCrossStitch)
 
@@ -13,7 +12,6 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}
 )
-add_definitions(-std=c++11)
 
 add_subdirectory(xs)
 
