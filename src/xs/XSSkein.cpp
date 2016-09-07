@@ -83,8 +83,7 @@ void XSSkein::Unserialize(std::istream &src)
         m_colors.push_back(rgb);
         color += ((r << 16) | (g << 8) | b);
     }
-    Log::debug(LOG_NAME, "%d %d %06x", m_maker, m_productLine,
-            color / colors);
+    Log::trace(LOG_NAME, "%d %d %d", m_maker, m_productLine, colors);
 }
 
 void XSSkein::Serialize(std::ostream &file) const
