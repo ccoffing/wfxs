@@ -67,7 +67,7 @@ static void InitSkeinPalettes()
 #endif
     for (unsigned int i = 0; toRead[i].name; ++i) {
         std::string f = rsrc;
-        f += "/floss";
+        f += "/floss/";
         f += toRead[i].name;
         Log::info(LOG_NAME, "Loading %s", f.c_str());
         std::ifstream is;
