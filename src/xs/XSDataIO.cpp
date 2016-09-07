@@ -137,7 +137,7 @@ size_t ReadCStr_exc(std::istream &dio,
             throw IOException();
         if (c == 0)
             return i;
-        dst.append(c, 1);
+        dst.append(1, c);
     }
     throw IllegalFormatException();
 }
