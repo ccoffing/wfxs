@@ -13,11 +13,11 @@ class XSProperties {
 public:
     XSProperties();
     ~XSProperties();
-    XSProperties(XSProperties const &ref);
-    XSProperties &operator=(XSProperties const &);
+    XSProperties(XSProperties const& ref);
+    XSProperties& operator=(XSProperties const&);
 
-    void Serialize(std::ostream &file) const;
-    void Unserialize(std::istream &file);
+    void Serialize(std::ostream& file) const;
+    void Unserialize(std::istream& file);
 
 private:
     void SetDefaults();

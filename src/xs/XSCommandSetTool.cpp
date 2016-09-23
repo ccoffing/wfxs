@@ -16,7 +16,7 @@ int XSCommandSetTool::Undo()
     return true;
 }
 
-char const *XSCommandSetTool::GetDescription() const
+char const* XSCommandSetTool::GetDescription() const
 {
     return _("");
 }

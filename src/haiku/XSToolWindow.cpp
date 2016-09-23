@@ -1,6 +1,6 @@
+#include "XSToolWindow.h"
 #include "XSApplication.h"
 #include "XSMessages.h"
-#include "XSToolWindow.h"
 
 #include <BAF/interface/LayoutAll.h>
 #include <BAF/interface/Pos.h>
@@ -8,11 +8,10 @@
 #include <support/Debug.h>
 
 
-XSToolWindow::XSToolWindow() :
-    BAF::Window(BAF::Layout::PosOriginFrame(), "Tool Window",
-                B_FLOATING_WINDOW_LOOK, B_FLOATING_APP_WINDOW_FEEL,
-                B_WILL_ACCEPT_FIRST_CLICK | B_ASYNCHRONOUS_CONTROLS |
-                B_NOT_CLOSABLE | B_NOT_ZOOMABLE | B_NOT_MINIMIZABLE)
+XSToolWindow::XSToolWindow()
+    : BAF::Window(BAF::Layout::PosOriginFrame(), "Tool Window", B_FLOATING_WINDOW_LOOK,
+              B_FLOATING_APP_WINDOW_FEEL, B_WILL_ACCEPT_FIRST_CLICK | B_ASYNCHRONOUS_CONTROLS
+                      | B_NOT_CLOSABLE | B_NOT_ZOOMABLE | B_NOT_MINIMIZABLE)
 {
     BAF::TabView *view =
         new BAF::TabView(
@@ -23,11 +22,11 @@ XSToolWindow::XSToolWindow() :
                         new BAF::Button("2", XS_EVT_HALF_AUTO_STITCH),
                         0),
 #else
-                        new BAF::PictureButton("full", "full",
-                                new BMessage(XS_EVT_FULL_STITCH), B_TWO_STATE_BUTTON),
-//                    new BAF::PictureButton(HalfOff, HalfOn,
-//                        new BMessage(XS_EVT_FULL_STITCH), B_TWO_STATE_BUTTON),
-                        0),
+                    new BAF::PictureButton("full", "full", new BMessage(XS_EVT_FULL_STITCH),
+                                    B_TWO_STATE_BUTTON),
+                    //                    new BAF::PictureButton(HalfOff, HalfOn,
+                    //                        new BMessage(XS_EVT_FULL_STITCH), B_TWO_STATE_BUTTON),
+                    0),
 #endif
                 "E",
                 new BAF::VGroup(B_ALIGN_LEFT,
@@ -51,13 +50,12 @@ bool XSToolWindow::QuitRequested()
     return false;  // No, you can't close me (but the app might).
 }
 
-void XSToolWindow::MessageReceived(BMessage *message)
+void XSToolWindow::MessageReceived(BMessage* message)
 {
     switch (message->what) {
-    case XS_EVT_HIGHLIGHT_TOOL:
-    {
+    case XS_EVT_HIGHLIGHT_TOOL: {
         Tool tool;
-        status_t r = message->FindInt32("Tool", 0, (int32 *)&tool);
+        status_t r = message->FindInt32("Tool", 0, (int32*)&tool);
         ASSERT(r == B_OK);
         HighlightTool(tool);
         break;

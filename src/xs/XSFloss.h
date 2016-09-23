@@ -22,19 +22,19 @@ public:
 
     XSFloss();
     ~XSFloss();
-    XSFloss(std::istream &src, XSSymbolPalette *);
-    XSFloss(XSSkein const *skein, unsigned int number, XSSymbolPalette *);
+    XSFloss(std::istream& src, XSSymbolPalette*);
+    XSFloss(XSSkein const* skein, unsigned int number, XSSymbolPalette*);
 
-    bool AddSkein(XSSkein const *skein, unsigned int number);
+    bool AddSkein(XSSkein const* skein, unsigned int number);
 
     XSColor GetColor() const;
 
-    void SetSymbol(char const *);
+    void SetSymbol(char const*);
 
-    void Serialize(std::ostream &file) const;
-    void Unserialize(std::istream &src);
+    void Serialize(std::ostream& file) const;
+    void Unserialize(std::istream& src);
     unsigned int m_numskeins;
-    XSSkein const *m_skeins[MaxSkeins];
+    XSSkein const* m_skeins[MaxSkeins];
 
     unsigned int m_strands[MaxSkeins];
 
@@ -42,8 +42,8 @@ public:
      *  The m_symbol pointer points to an entry in the m_symbolPalette.
      *  It is not a copy.
      */
-    char const *m_symbol;
-    XSSymbolPalette *m_symbolPalette;
+    char const* m_symbol;
+    XSSymbolPalette* m_symbolPalette;
 };
 
 #endif

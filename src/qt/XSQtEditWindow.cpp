@@ -11,49 +11,49 @@
 #define LOG_NAME "qt.main"
 
 
-XSQtEditWindow::XSQtEditWindow() :
-    m_model(40, 40),
-    m_controller(&m_model)
+XSQtEditWindow::XSQtEditWindow()
+    : m_model(40, 40)
+    , m_controller(&m_model)
 {
-    QWidget *widget = new QWidget;
+    QWidget* widget = new QWidget;
 
     setCentralWidget(widget);
 
     // Toolbar
-    QToolBar *toolbar = addToolBar(tr("Test"));
+    QToolBar* toolbar = addToolBar(tr("Test"));
     toolbar->setMovable(1);
     toolbar->setFloatable(1);
 
     // TODO http://doc.qt.io/qt-4.8/qstyle.html  QStyle::standardIcon
     QPixmap openPix("resources/icons/open.xpm");
-    QAction *openAct = toolbar->addAction(QIcon(openPix), "Open");
+    QAction* openAct = toolbar->addAction(QIcon(openPix), "Open");
     connect(openAct, SIGNAL(triggered()), this, SLOT(open()));
 
     QPixmap savePix("resources/icons/save.xpm");
-    QAction *saveAct = toolbar->addAction(QIcon(savePix), "Save");
+    QAction* saveAct = toolbar->addAction(QIcon(savePix), "Save");
     connect(saveAct, SIGNAL(triggered()), this, SLOT(save()));
 
     QPixmap toolPix("resources/icons/full.bmp");
-    QAction *toolAct = toolbar->addAction(QIcon(toolPix), "Full Stitch");
+    QAction* toolAct = toolbar->addAction(QIcon(toolPix), "Full Stitch");
     connect(toolAct, SIGNAL(triggered()), this, SLOT(fullStitch()));
 
     QPixmap halfPix("resources/icons/half.bmp");
-    QAction *halfAct = toolbar->addAction(QIcon(halfPix), "Half Stitch");
+    QAction* halfAct = toolbar->addAction(QIcon(halfPix), "Half Stitch");
     connect(halfAct, SIGNAL(triggered()), this, SLOT(halfStitch()));
 
     QPixmap quarterPix("resources/icons/quarter.bmp");
-    QAction *quarterAct = toolbar->addAction(QIcon(quarterPix), "Quarter Stitch");
+    QAction* quarterAct = toolbar->addAction(QIcon(quarterPix), "Quarter Stitch");
     connect(quarterAct, SIGNAL(triggered()), this, SLOT(quarterStitch()));
 
     // m_model.m_toolState.m_flossIndex
-    QSignalMapper *signalMapper = new QSignalMapper(this);
+    QSignalMapper* signalMapper = new QSignalMapper(this);
     for (unsigned int i = 0; i < m_model.m_toolState.m_flossPalette.size(); ++i) {
-        XSFloss &floss = m_model.m_toolState.m_flossPalette.GetFloss(i);
+        XSFloss& floss = m_model.m_toolState.m_flossPalette.GetFloss(i);
         XSColor c = floss.GetColor();
         QColor color(c.red, c.green, c.blue);
         QPixmap px(20, 20);
         px.fill(color);
-        QAction *flossAct = toolbar->addAction(QIcon(px), "Floss");
+        QAction* flossAct = toolbar->addAction(QIcon(px), "Floss");
         // connect(flossAct, SIGNAL(triggered()), this, SLOT(setFloss(i)));
         connect(flossAct, SIGNAL(triggered()), signalMapper, SLOT(map()));
         signalMapper->setMapping(flossAct, i);
@@ -62,11 +62,11 @@ XSQtEditWindow::XSQtEditWindow() :
 
     // Drawing area
     m_area = new XSQtCanvas(m_model, m_controller, widget);
-    QScrollArea *scrollArea = new QScrollArea;
+    QScrollArea* scrollArea = new QScrollArea;
     scrollArea->setBackgroundRole(QPalette::Dark);
     scrollArea->setWidget(m_area);
 
-    QWidget *topFiller = scrollArea;
+    QWidget* topFiller = scrollArea;
     topFiller->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
 #if 0
@@ -76,7 +76,7 @@ XSQtEditWindow::XSQtEditWindow() :
     infoLabel->setAlignment(Qt::AlignCenter);
 #endif
 
-    QVBoxLayout *layout = new QVBoxLayout;
+    QVBoxLayout* layout = new QVBoxLayout;
     layout->setMargin(5);
     layout->addWidget(topFiller);
     widget->setLayout(layout);
@@ -89,7 +89,7 @@ XSQtEditWindow::XSQtEditWindow() :
     setWindowTitle(tr("Wildflower Cross Stitch"));
 }
 
-void XSQtEditWindow::contextMenuEvent(QContextMenuEvent *event)
+void XSQtEditWindow::contextMenuEvent(QContextMenuEvent* event)
 {
     QMenu menu(this);
 
@@ -101,13 +101,13 @@ void XSQtEditWindow::contextMenuEvent(QContextMenuEvent *event)
 
 void XSQtEditWindow::newFile()
 {
-    XSQtEditWindow *other = new XSQtEditWindow;
+    XSQtEditWindow* other = new XSQtEditWindow;
     other->show();
 }
 
 void XSQtEditWindow::updateStitchMessage()
 {
-    const char *message;
+    const char* message;
     StitchType stitchType = m_controller.GetStitchType();
 
     switch (stitchType) {
@@ -243,14 +243,13 @@ void XSQtEditWindow::overwrite()
 
 void XSQtEditWindow::open()
 {
-    QString fileName = QFileDialog::getOpenFileName(this, tr("Open Pattern"),
-            "",
-            tr("All files (*.*)"));
+    QString fileName
+            = QFileDialog::getOpenFileName(this, tr("Open Pattern"), "", tr("All files (*.*)"));
 
     if (!fileName.isNull()) {
         try {
             m_controller.open(fileName.toUtf8().constData());
-        } catch (std::exception &e) {
+        } catch (std::exception& e) {
             Log::error(LOG_NAME, "Failed to open file: %s", e.what());
             QMessageBox msgBox;
             QString msg("The file could not be opened: ");
@@ -265,15 +264,13 @@ void XSQtEditWindow::open()
 
 void XSQtEditWindow::save()
 {
-    QString fileName = QFileDialog::getSaveFileName(this, tr("Save Pattern"),
-            "",
-            "", 0,
-            QFileDialog::HideNameFilterDetails);
+    QString fileName = QFileDialog::getSaveFileName(
+            this, tr("Save Pattern"), "", "", 0, QFileDialog::HideNameFilterDetails);
 
     if (!fileName.isNull()) {
         try {
             m_controller.save(m_model, fileName.toUtf8().constData());
-        } catch (std::exception &e) {
+        } catch (std::exception& e) {
             Log::error(LOG_NAME, "Failed to save file: %s", e.what());
             QMessageBox msgBox;
             QString msg("The file could not be saved: ");
@@ -287,7 +284,8 @@ void XSQtEditWindow::save()
 
 void XSQtEditWindow::properties()
 {
-    XSQtPropertiesDialog *propertiesDialog = new XSQtPropertiesDialog(this, m_model.GetProperties());
+    XSQtPropertiesDialog* propertiesDialog
+            = new XSQtPropertiesDialog(this, m_model.GetProperties());
 
     propertiesDialog->show();
 }
@@ -367,7 +365,8 @@ void XSQtEditWindow::setParagraphSpacing()
 void XSQtEditWindow::about()
 {
     QMessageBox::about(this, tr("About Wildflower Cross Stitch"),
-            tr("<center>Wildflower Cross Stitch<br>...grows freely anywhere...<br>version " WFXS_VERSION "</center>"));
+            tr("<center>Wildflower Cross Stitch<br>...grows freely "
+               "anywhere...<br>version " WFXS_VERSION "</center>"));
 }
 
 void XSQtEditWindow::createActions()
@@ -428,19 +427,19 @@ void XSQtEditWindow::createActions()
     cutAct = new QAction(tr("Cu&t"), this);
     cutAct->setShortcuts(QKeySequence::Cut);
     cutAct->setStatusTip(tr("Cut the current selection's contents to the "
-                    "clipboard"));
+                            "clipboard"));
     connect(cutAct, SIGNAL(triggered()), this, SLOT(cut()));
 
     copyAct = new QAction(tr("&Copy"), this);
     copyAct->setShortcuts(QKeySequence::Copy);
     copyAct->setStatusTip(tr("Copy the current selection's contents to the "
-                    "clipboard"));
+                             "clipboard"));
     connect(copyAct, SIGNAL(triggered()), this, SLOT(copy()));
 
     pasteAct = new QAction(tr("&Paste"), this);
     pasteAct->setShortcuts(QKeySequence::Paste);
     pasteAct->setStatusTip(tr("Paste the clipboard's contents into the current "
-                    "selection"));
+                              "selection"));
     connect(pasteAct, SIGNAL(triggered()), this, SLOT(paste()));
 
     fullStitchAct = new QAction(tr("Full Stitch"), this);
@@ -474,13 +473,12 @@ void XSQtEditWindow::createActions()
 
     setLineSpacingAct = new QAction(tr("Set &Line Spacing..."), this);
     setLineSpacingAct->setStatusTip(tr("Change the gap between the lines of a "
-                    "paragraph"));
+                                       "paragraph"));
     connect(setLineSpacingAct, SIGNAL(triggered()), this, SLOT(setLineSpacing()));
 
     setParagraphSpacingAct = new QAction(tr("Set &Paragraph Spacing..."), this);
     setLineSpacingAct->setStatusTip(tr("Change the gap between paragraphs"));
-    connect(setParagraphSpacingAct, SIGNAL(triggered()),
-            this, SLOT(setParagraphSpacing()));
+    connect(setParagraphSpacingAct, SIGNAL(triggered()), this, SLOT(setParagraphSpacing()));
 
     aboutAct = new QAction(tr("&About"), this);
     aboutAct->setStatusTip(tr("Show the application's About box"));
@@ -565,11 +563,11 @@ void XSQtEditWindow::createMenus()
 
     toolsMenu = menuBar()->addMenu(tr("&Tools"));
     toolsMenu->addAction(fullStitchAct);
-    QMenu *halfStitchMenu = toolsMenu->addMenu(tr("Half Stitches"));
+    QMenu* halfStitchMenu = toolsMenu->addMenu(tr("Half Stitches"));
     halfStitchMenu->addAction(halfAutoStitchAct);
     halfStitchMenu->addAction(halfTopStitchAct);
     halfStitchMenu->addAction(halfBottomStitchAct);
-    QMenu *threeQuarterMenu = toolsMenu->addMenu(tr("Three-quarter Stitches"));
+    QMenu* threeQuarterMenu = toolsMenu->addMenu(tr("Three-quarter Stitches"));
     threeQuarterMenu->addAction(threeQuarterAutoStitchAct);
     threeQuarterMenu->addAction(threeQuarterULStitchAct);
     threeQuarterMenu->addAction(threeQuarterURStitchAct);

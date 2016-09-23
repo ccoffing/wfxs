@@ -6,12 +6,12 @@
 #include <stdlib.h>
 #include <string>
 
-std::string formatList(const char *fmt, va_list argList)
+std::string formatList(const char* fmt, va_list argList)
 {
     std::string s;
 
-#if 1 // TODO:  HAVE_VASPRINTF
-    char *buf;
+#if 1  // TODO:  HAVE_VASPRINTF
+    char* buf;
     int len = vasprintf(&buf, fmt, argList);
     if (len >= 0) {
         s.assign(buf, len);
@@ -22,16 +22,16 @@ std::string formatList(const char *fmt, va_list argList)
     va_copy(argList2, argList);
     int len = vsnprintf(NULL, 0, fmt, argList2) + 1;  // measure,
     va_end(argList2);
-    char *buf = (char *)alloca(len);
-    int printed = vsnprintf(buf, len, fmt, argList); // format,
+    char* buf = (char*)alloca(len);
+    int printed = vsnprintf(buf, len, fmt, argList);  // format,
     assert(printed + 1 == len);
     (void)printed;
-    _DetachWith(buf, len - 1, len - 1);              // copy
+    _DetachWith(buf, len - 1, len - 1);  // copy
 #endif
     return s;
 }
 
-std::string format(const char *fmt, ...)
+std::string format(const char* fmt, ...)
 {
     va_list argList;
 
@@ -41,10 +41,10 @@ std::string format(const char *fmt, ...)
     return s;
 }
 
-std::string &appendFormatList(std::string &s, const char *fmt, va_list argList)
+std::string& appendFormatList(std::string& s, const char* fmt, va_list argList)
 {
 #if 1  // TODO:  HAVE_VASPRINTF
-    char *buf;
+    char* buf;
     int len = vasprintf(&buf, fmt, argList);
     if (len >= 0) {
         s.append(buf, len);
@@ -55,16 +55,16 @@ std::string &appendFormatList(std::string &s, const char *fmt, va_list argList)
     va_copy(argList2, argList);
     int len = vsnprintf(NULL, 0, fmt, argList2) + 1;  // measure,
     va_end(argList2);
-    char *buf = (char *)alloca(len);
-    int printed = vsnprintf(buf, len, fmt, argList); // format,
+    char* buf = (char*)alloca(len);
+    int printed = vsnprintf(buf, len, fmt, argList);  // format,
     assert(printed + 1 == len);
     (void)printed;
-    _DoAppend(buf, len - 1);                         // copy
+    _DoAppend(buf, len - 1);  // copy
 #endif
     return s;
 }
 
-std::string &appendFormat(std::string &s, const char *fmt, ...)
+std::string& appendFormat(std::string& s, const char* fmt, ...)
 {
     va_list argList;
 

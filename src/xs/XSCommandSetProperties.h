@@ -8,19 +8,19 @@
  */
 class XSCommandSetProperties : public XSCommand {
 public:
-    XSCommandSetProperties(XSProperties const &properties);
+    XSCommandSetProperties(XSProperties const& properties);
 
     virtual int Do();
     virtual int Undo();
-    virtual char const *GetDescription() const;
+    virtual char const* GetDescription() const;
 
 private:
     XSProperties m_oldProperties;
     XSProperties m_newProperties;
 
     // Disallow copying
-    XSCommandSetProperties(XSCommandSetProperties const &);
-    XSCommandSetProperties &operator=(XSCommandSetProperties const &);
+    XSCommandSetProperties(XSCommandSetProperties const&);
+    XSCommandSetProperties& operator=(XSCommandSetProperties const&);
 };
 
 #endif

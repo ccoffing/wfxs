@@ -8,14 +8,14 @@ class BString;
 
 class XSWindowMenuUpdater : public BAF::MenuUpdater {
 public:
-    XSWindowMenuUpdater(XSController *);
+    XSWindowMenuUpdater(XSController*);
 
     virtual bool IsEnabled(uint32_t what) const;
     virtual bool IsMarked(uint32_t what) const;
-    virtual bool GetLabel(uint32_t what, BString &label) const;
+    virtual bool GetLabel(uint32_t what, BString& label) const;
 
 private:
-    XSController *m_controller;
+    XSController* m_controller;
 };
 
 

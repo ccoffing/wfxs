@@ -14,7 +14,7 @@ int XSCommandLayerAdd::Undo()
     return true;
 }
 
-char const *XSCommandLayerAdd::GetDescription() const
+char const* XSCommandLayerAdd::GetDescription() const
 {
     return _("new layer");
 }
@@ -31,7 +31,7 @@ int XSCommandLayerDel::Undo()
     return false;
 }
 
-char const *XSCommandLayerDel::GetDescription() const
+char const* XSCommandLayerDel::GetDescription() const
 {
     return _("delete layer");
 }
@@ -51,7 +51,7 @@ int XSCommandLayerUp::Undo()
     return true;
 }
 
-char const *XSCommandLayerUp::GetDescription() const
+char const* XSCommandLayerUp::GetDescription() const
 {
     return _("layer up");
 }
@@ -71,7 +71,7 @@ int XSCommandLayerDown::Undo()
     return true;
 }
 
-char const *XSCommandLayerDown::GetDescription() const
+char const* XSCommandLayerDown::GetDescription() const
 {
     return _("layer down");
 }

@@ -1,5 +1,5 @@
-#include "xs/BitOps.h"
 #include "xs/BitString.h"
+#include "xs/BitOps.h"
 
 #include <assert.h>
 #include <stdint.h>
@@ -21,23 +21,23 @@ inline unsigned int getFinalMask(unsigned int bits)
 }
 
 
-BitString::BitString(unsigned int bits) :
-    m_numBits(bits),
-    m_bits(new uint32_t[getWords(m_numBits)])
+BitString::BitString(unsigned int bits)
+    : m_numBits(bits)
+    , m_bits(new uint32_t[getWords(m_numBits)])
 {
     clear();
 }
 
 
-BitString::BitString(BitString const &rhs) :
-    m_numBits(rhs.m_numBits),
-    m_bits(new uint32_t[getWords(m_numBits)])
+BitString::BitString(BitString const& rhs)
+    : m_numBits(rhs.m_numBits)
+    , m_bits(new uint32_t[getWords(m_numBits)])
 {
     memcpy(m_bits, rhs.m_bits, (m_numBits + 7) >> 3);
 }
 
 
-BitString &BitString::operator=(BitString const &rhs)
+BitString& BitString::operator=(BitString const& rhs)
 {
     if (this != &rhs) {
         m_numBits = rhs.m_numBits;
@@ -57,7 +57,7 @@ BitString::~BitString()
 bool BitString::test(unsigned int i) const
 {
     assert(i < m_numBits);
-    uint32_t *set = m_bits;
+    uint32_t* set = m_bits;
     set += (i >> 5);
     return *set & (1 << (i & 31));
 }
@@ -82,14 +82,13 @@ void BitString::invert()
 void BitString::clear(unsigned int i)
 {
     assert(i < m_numBits);
-    uint32_t *set = m_bits;
+    uint32_t* set = m_bits;
     set += (i >> 5);
     *set &= ~(1 << (i & 31));
 }
 
 
-void BitString::clear(unsigned int offset,
-        unsigned int n)
+void BitString::clear(unsigned int offset, unsigned int n)
 {
     assert(offset < m_numBits);
     assert(n <= m_numBits);
@@ -112,14 +111,13 @@ void BitString::set()
 void BitString::set(unsigned int i)
 {
     assert(i < m_numBits);
-    uint32_t *set = m_bits;
+    uint32_t* set = m_bits;
     set += (i >> 5);
     *set |= 1 << (i & 31);
 }
 
 
-void BitString::set(unsigned int offset,
-        unsigned int n)
+void BitString::set(unsigned int offset, unsigned int n)
 {
     assert(offset < m_numBits);
     assert(n <= m_numBits);
@@ -131,9 +129,7 @@ void BitString::set(unsigned int offset,
 }
 
 
-void BitString::change(unsigned int i,
-        unsigned int n,
-        bool doSet)
+void BitString::change(unsigned int i, unsigned int n, bool doSet)
 {
     if (doSet)
         set(i, n);
@@ -142,9 +138,7 @@ void BitString::change(unsigned int i,
 }
 
 
-unsigned int BitString::first(unsigned int start,
-        unsigned int stop,
-        bool set)
+unsigned int BitString::first(unsigned int start, unsigned int stop, bool set)
 {
     unsigned int i;
 

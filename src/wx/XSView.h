@@ -17,12 +17,12 @@ public:
     XSView();
     virtual ~XSView();
 
-    bool OnCreate(wxDocument *doc, long flags);
-    void OnDraw(wxDC *dc);
-    void OnUpdate(wxView *sender, wxObject *hint = (wxObject *)NULL);
+    bool OnCreate(wxDocument* doc, long flags);
+    void OnDraw(wxDC* dc);
+    void OnUpdate(wxView* sender, wxObject* hint = (wxObject*)NULL);
     bool OnClose(bool deleteWindow = true);
 
-    void OnCut(wxCommandEvent &event);
+    void OnCut(wxCommandEvent& event);
 };
 
 

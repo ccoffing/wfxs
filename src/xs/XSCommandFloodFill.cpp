@@ -1,16 +1,14 @@
-#include "BitMask.h"
 #include "XSCommandFloodFill.h"
+#include "BitMask.h"
 #include "XSModel.h"
 #include "XSSquare.h"
 
 
-XSCommandFloodFill::XSCommandFloodFill(unsigned int x,
-        unsigned int y,
-        XSSquareIO const &newSquare) :
-    m_x(x),
-    m_y(y),
-    m_newSquare(newSquare),
-    m_selection()
+XSCommandFloodFill::XSCommandFloodFill(unsigned int x, unsigned int y, XSSquareIO const& newSquare)
+    : m_x(x)
+    , m_y(y)
+    , m_newSquare(newSquare)
+    , m_selection()
 {
 }
 
@@ -57,7 +55,7 @@ int XSCommandFloodFill::Undo()
     return false;
 }
 
-char const *XSCommandFloodFill::GetDescription() const
+char const* XSCommandFloodFill::GetDescription() const
 {
     return "flood fill";
 }

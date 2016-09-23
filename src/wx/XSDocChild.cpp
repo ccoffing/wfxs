@@ -16,7 +16,6 @@
 #include "XSView.h"
 
 
-
 BEGIN_EVENT_TABLE(XSDocChild, wxDocChildFrame)
 EVT_MENU(wxID_NEW, XSDocChild::OnNew)
 EVT_MENU(wxID_ABOUT, XSApplication::OnAbout)
@@ -59,15 +58,15 @@ EVT_MENU(XS_EVT_EDIT_PALETTE, XSDocChild::OnEditFlossPalette)
 END_EVENT_TABLE()
 
 
-XSDocChild::XSDocChild(XSDocument *doc,
-        XSView *view) :
-    wxDocChildFrame(doc, view, toolWindow, wxID_ANY, wxT("Untitled")),
-    m_document(doc),
-    m_view(new XSCanvasPage(this, this)),
-    m_menuBar(new wxMenuBar()),
-    m_flossPaletteView(new XSFlossPaletteView(&m_document->m_toolState.m_flossPalette, &m_document->m_toolState.m_flossIndex)),
-    m_propertiesWindow(0),
-    m_editFlossWindow(0)
+XSDocChild::XSDocChild(XSDocument* doc, XSView* view)
+    : wxDocChildFrame(doc, view, toolWindow, wxID_ANY, wxT("Untitled"))
+    , m_document(doc)
+    , m_view(new XSCanvasPage(this, this))
+    , m_menuBar(new wxMenuBar())
+    , m_flossPaletteView(new XSFlossPaletteView(
+              &m_document->m_toolState.m_flossPalette, &m_document->m_toolState.m_flossIndex))
+    , m_propertiesWindow(0)
+    , m_editFlossWindow(0)
 {
     m_document->SetDocChild(this);
     m_document->Resize(50, 50);
@@ -190,25 +189,25 @@ void XSDocChild::HighlightTool(Tool tool)
 }
 
 
-void XSDocChild::OnNew(wxCommandEvent &WXUNUSED(event))
+void XSDocChild::OnNew(wxCommandEvent& WXUNUSED(event))
 {
     toolWindow->OnNew();
 }
 
 
-void XSDocChild::OnImport(wxCommandEvent &WXUNUSED(event))
+void XSDocChild::OnImport(wxCommandEvent& WXUNUSED(event))
 {
     // FIXME
 }
 
 
-void XSDocChild::OnExport(wxCommandEvent &WXUNUSED(event))
+void XSDocChild::OnExport(wxCommandEvent& WXUNUSED(event))
 {
     // FIXME
 }
 
 
-void XSDocChild::OnProperties(wxCommandEvent &WXUNUSED(event))
+void XSDocChild::OnProperties(wxCommandEvent& WXUNUSED(event))
 {
     if (m_propertiesWindow)
         m_propertiesWindow->Show();
@@ -217,31 +216,31 @@ void XSDocChild::OnProperties(wxCommandEvent &WXUNUSED(event))
 }
 
 
-void XSDocChild::OnEditFlossPalette(wxCommandEvent &WXUNUSED(event))
+void XSDocChild::OnEditFlossPalette(wxCommandEvent& WXUNUSED(event))
 {
     m_editFlossWindow = new XSEditFlossWindow(this, m_document->ToolState().m_flossPalette);
 }
 
 
-void XSDocChild::OnPatternStyle(wxCommandEvent &WXUNUSED(event))
+void XSDocChild::OnPatternStyle(wxCommandEvent& WXUNUSED(event))
 {
     m_document->SubmitDrawStyle(DrawStyle_Pattern);
 }
 
 
-void XSDocChild::OnDesignStyle(wxCommandEvent &WXUNUSED(event))
+void XSDocChild::OnDesignStyle(wxCommandEvent& WXUNUSED(event))
 {
     m_document->SubmitDrawStyle(DrawStyle_Design);
 }
 
 
-void XSDocChild::OnRealisticStyle(wxCommandEvent &WXUNUSED(event))
+void XSDocChild::OnRealisticStyle(wxCommandEvent& WXUNUSED(event))
 {
     m_document->SubmitDrawStyle(DrawStyle_Realistic);
 }
 
 
-void XSDocChild::OnShowGrid(wxCommandEvent &WXUNUSED(event))
+void XSDocChild::OnShowGrid(wxCommandEvent& WXUNUSED(event))
 {
     m_document->SubmitToggleShowGrid();
 }
@@ -306,7 +305,7 @@ void x()
 #endif
 
 
-void XSDocChild::OnZoomIn(wxCommandEvent &WXUNUSED(event))
+void XSDocChild::OnZoomIn(wxCommandEvent& WXUNUSED(event))
 {
     unsigned int zoom = m_document->GetZoom();
     unsigned int increment = zoom / 8;
@@ -317,7 +316,7 @@ void XSDocChild::OnZoomIn(wxCommandEvent &WXUNUSED(event))
     m_document->SubmitSetZoom(zoom);
 }
 
-void XSDocChild::OnZoomOut(wxCommandEvent &WXUNUSED(event))
+void XSDocChild::OnZoomOut(wxCommandEvent& WXUNUSED(event))
 {
     unsigned int zoom = m_document->GetZoom();
     unsigned int increment = zoom / 8;
@@ -328,150 +327,150 @@ void XSDocChild::OnZoomOut(wxCommandEvent &WXUNUSED(event))
     m_document->SubmitSetZoom(zoom);
 }
 
-void XSDocChild::OnOverwrite(wxCommandEvent &WXUNUSED(event))
+void XSDocChild::OnOverwrite(wxCommandEvent& WXUNUSED(event))
 {
     m_document->ToolState().m_overwrite = !m_document->ToolState().m_overwrite;
 }
 
-void XSDocChild::OnFullStitch(wxCommandEvent &WXUNUSED(event))
+void XSDocChild::OnFullStitch(wxCommandEvent& WXUNUSED(event))
 {
     m_document->ToolState().m_toolType = ToolType_Stitch;
     m_document->ToolState().m_stitchType = Stitch_Full;
     HighlightTool(Tool_FullStitch);
 }
 
-void XSDocChild::OnHalfAutoStitch(wxCommandEvent &WXUNUSED(event))
+void XSDocChild::OnHalfAutoStitch(wxCommandEvent& WXUNUSED(event))
 {
     m_document->ToolState().m_toolType = ToolType_Stitch;
     m_document->ToolState().m_stitchType = Stitch_HalfAuto;
     HighlightTool(Tool_HalfAutoStitch);
 }
 
-void XSDocChild::OnHalfTopStitch(wxCommandEvent &WXUNUSED(event))
+void XSDocChild::OnHalfTopStitch(wxCommandEvent& WXUNUSED(event))
 {
     m_document->ToolState().m_toolType = ToolType_Stitch;
     m_document->ToolState().m_stitchType = Stitch_HalfTop;
     HighlightTool(Tool_HalfTopStitch);
 }
 
-void XSDocChild::OnHalfBottomStitch(wxCommandEvent &WXUNUSED(event))
+void XSDocChild::OnHalfBottomStitch(wxCommandEvent& WXUNUSED(event))
 {
     m_document->ToolState().m_toolType = ToolType_Stitch;
     m_document->ToolState().m_stitchType = Stitch_HalfBottom;
     HighlightTool(Tool_HalfBottomStitch);
 }
 
-void XSDocChild::OnThreeQuarterAutoStitch(wxCommandEvent &WXUNUSED(event))
+void XSDocChild::OnThreeQuarterAutoStitch(wxCommandEvent& WXUNUSED(event))
 {
     m_document->ToolState().m_toolType = ToolType_Stitch;
     m_document->ToolState().m_stitchType = Stitch_ThreeQuarterAuto;
     HighlightTool(Tool_ThreeQuarterAutoStitch);
 }
 
-void XSDocChild::OnThreeQuarterULStitch(wxCommandEvent &WXUNUSED(event))
+void XSDocChild::OnThreeQuarterULStitch(wxCommandEvent& WXUNUSED(event))
 {
     m_document->ToolState().m_toolType = ToolType_Stitch;
     m_document->ToolState().m_stitchType = Stitch_ThreeQuarterUL;
     HighlightTool(Tool_ThreeQuarterULStitch);
 }
 
-void XSDocChild::OnThreeQuarterURStitch(wxCommandEvent &WXUNUSED(event))
+void XSDocChild::OnThreeQuarterURStitch(wxCommandEvent& WXUNUSED(event))
 {
     m_document->ToolState().m_toolType = ToolType_Stitch;
     m_document->ToolState().m_stitchType = Stitch_ThreeQuarterUR;
     HighlightTool(Tool_ThreeQuarterURStitch);
 }
 
-void XSDocChild::OnThreeQuarterLLStitch(wxCommandEvent &WXUNUSED(event))
+void XSDocChild::OnThreeQuarterLLStitch(wxCommandEvent& WXUNUSED(event))
 {
     m_document->ToolState().m_toolType = ToolType_Stitch;
     m_document->ToolState().m_stitchType = Stitch_ThreeQuarterLL;
     HighlightTool(Tool_ThreeQuarterLLStitch);
 }
 
-void XSDocChild::OnThreeQuarterLRStitch(wxCommandEvent &WXUNUSED(event))
+void XSDocChild::OnThreeQuarterLRStitch(wxCommandEvent& WXUNUSED(event))
 {
     m_document->ToolState().m_toolType = ToolType_Stitch;
     m_document->ToolState().m_stitchType = Stitch_ThreeQuarterLR;
     HighlightTool(Tool_ThreeQuarterLRStitch);
 }
 
-void XSDocChild::OnQuarterAutoStitch(wxCommandEvent &WXUNUSED(event))
+void XSDocChild::OnQuarterAutoStitch(wxCommandEvent& WXUNUSED(event))
 {
     m_document->ToolState().m_toolType = ToolType_Stitch;
     m_document->ToolState().m_stitchType = Stitch_QuarterAuto;
     HighlightTool(Tool_QuarterAutoStitch);
 }
 
-void XSDocChild::OnQuarterULStitch(wxCommandEvent &WXUNUSED(event))
+void XSDocChild::OnQuarterULStitch(wxCommandEvent& WXUNUSED(event))
 {
     m_document->ToolState().m_toolType = ToolType_Stitch;
     m_document->ToolState().m_stitchType = Stitch_QuarterUL;
     HighlightTool(Tool_QuarterULStitch);
 }
 
-void XSDocChild::OnQuarterURStitch(wxCommandEvent &WXUNUSED(event))
+void XSDocChild::OnQuarterURStitch(wxCommandEvent& WXUNUSED(event))
 {
     m_document->ToolState().m_toolType = ToolType_Stitch;
     m_document->ToolState().m_stitchType = Stitch_QuarterUR;
     HighlightTool(Tool_QuarterURStitch);
 }
 
-void XSDocChild::OnQuarterLLStitch(wxCommandEvent &WXUNUSED(event))
+void XSDocChild::OnQuarterLLStitch(wxCommandEvent& WXUNUSED(event))
 {
     m_document->ToolState().m_toolType = ToolType_Stitch;
     m_document->ToolState().m_stitchType = Stitch_QuarterLL;
     HighlightTool(Tool_QuarterLLStitch);
 }
 
-void XSDocChild::OnQuarterLRStitch(wxCommandEvent &WXUNUSED(event))
+void XSDocChild::OnQuarterLRStitch(wxCommandEvent& WXUNUSED(event))
 {
     m_document->ToolState().m_toolType = ToolType_Stitch;
     m_document->ToolState().m_stitchType = Stitch_QuarterLR;
     HighlightTool(Tool_QuarterLRStitch);
 }
 
-void XSDocChild::OnLayerAdd(wxCommandEvent &WXUNUSED(event))
+void XSDocChild::OnLayerAdd(wxCommandEvent& WXUNUSED(event))
 {
     m_document->SubmitLayerAdd();
 }
 
-void XSDocChild::OnLayerDel(wxCommandEvent &WXUNUSED(event))
+void XSDocChild::OnLayerDel(wxCommandEvent& WXUNUSED(event))
 {
     m_document->SubmitLayerDel();
 }
 
-void XSDocChild::OnLayerUp(wxCommandEvent &WXUNUSED(event))
+void XSDocChild::OnLayerUp(wxCommandEvent& WXUNUSED(event))
 {
     m_document->SubmitLayerUp();
 }
 
-void XSDocChild::OnLayerDown(wxCommandEvent &WXUNUSED(event))
+void XSDocChild::OnLayerDown(wxCommandEvent& WXUNUSED(event))
 {
     m_document->SubmitLayerDown();
 }
 
-void XSDocChild::OnToolEraserSmall(wxCommandEvent &WXUNUSED(event))
+void XSDocChild::OnToolEraserSmall(wxCommandEvent& WXUNUSED(event))
 {
     m_document->ToolState().m_toolType = ToolType_Eraser;
 }
 
-void XSDocChild::OnToolEraserMedium(wxCommandEvent &WXUNUSED(event))
+void XSDocChild::OnToolEraserMedium(wxCommandEvent& WXUNUSED(event))
 {
     m_document->ToolState().m_toolType = ToolType_Eraser;
 }
 
-void XSDocChild::OnToolEraserLarge(wxCommandEvent &WXUNUSED(event))
+void XSDocChild::OnToolEraserLarge(wxCommandEvent& WXUNUSED(event))
 {
     m_document->ToolState().m_toolType = ToolType_Eraser;
 }
 
-void XSDocChild::OnToolFloodFill(wxCommandEvent &WXUNUSED(event))
+void XSDocChild::OnToolFloodFill(wxCommandEvent& WXUNUSED(event))
 {
     m_document->ToolState().m_toolType = ToolType_FloodFill;
 }
 
-void XSDocChild::OnColorPicker(wxCommandEvent &WXUNUSED(event))
+void XSDocChild::OnColorPicker(wxCommandEvent& WXUNUSED(event))
 {
     m_document->ToolState().m_toolType = ToolType_ColorPicker;
 }
@@ -573,53 +572,48 @@ void XSDocChild::SetTool(Tool tool)
 #endif
 
 
-void XSDocChild::PropertiesWindowClosing(XSProperties const &properties)
+void XSDocChild::PropertiesWindowClosing(XSProperties const& properties)
 {
     m_propertiesWindow = 0;
     m_document->SubmitProperties(properties);
 }
 
 
-void XSDocChild::FlossPaletteWindowClosing(XSFlossPalette const &flossPalette)
+void XSDocChild::FlossPaletteWindowClosing(XSFlossPalette const& flossPalette)
 {
     m_editFlossWindow = 0;
     m_document->SubmitFlossPalette(flossPalette);
 }
 
 
-void XSDocChild::OnClearSquare(unsigned int x,
-        unsigned int y)
+void XSDocChild::OnClearSquare(unsigned int x, unsigned int y)
 {
     m_document->SubmitClearSquare(x, y, m_document->GetCurrentLayerIndex());
 }
 
 
-void XSDocChild::OnClearSquares(std::vector<wxPoint> const &points)
+void XSDocChild::OnClearSquares(std::vector<wxPoint> const& points)
 {
     m_document->SubmitClearSquares(points, m_document->GetCurrentLayerIndex());
 }
 
 
-void XSDocChild::OnSetKnot(unsigned int x,
-        unsigned int y,
-        unsigned int region)
+void XSDocChild::OnSetKnot(unsigned int x, unsigned int y, unsigned int region)
 {
-    m_document->SubmitSetKnot(x, y, region, m_document->ToolState().m_knotType, m_document->ToolState().m_flossIndex,
-            m_document->ToolState().m_overwrite);
+    m_document->SubmitSetKnot(x, y, region, m_document->ToolState().m_knotType,
+            m_document->ToolState().m_flossIndex, m_document->ToolState().m_overwrite);
 }
 
 
-void XSDocChild::OnSetStitches(std::vector<wxPoint> &points)
+void XSDocChild::OnSetStitches(std::vector<wxPoint>& points)
 {
-    m_document->SubmitSetStitches(points, m_document->ToolState().m_stitchTypeContinued, m_document->ToolState().m_flossIndex,
-            m_document->ToolState().m_overwrite);
+    m_document->SubmitSetStitches(points, m_document->ToolState().m_stitchTypeContinued,
+            m_document->ToolState().m_flossIndex, m_document->ToolState().m_overwrite);
 }
 
 
-void XSDocChild::OnSetStitch(unsigned int x,
-        unsigned int y,
-        unsigned int xPercent,
-        unsigned int yPercent)
+void XSDocChild::OnSetStitch(
+        unsigned int x, unsigned int y, unsigned int xPercent, unsigned int yPercent)
 {
     m_document->SubmitSetStitch(x, y, xPercent, yPercent, m_document->ToolState().m_stitchType,
             m_document->ToolState().m_flossIndex, m_document->ToolState().m_overwrite);
@@ -627,20 +621,17 @@ void XSDocChild::OnSetStitch(unsigned int x,
 }
 
 
-void XSDocChild::OnFloodFill(unsigned int x,
-        unsigned int y,
-        XSSquareIO const &oldSquare,
-        XSSquareIO const &newSquare)
+void XSDocChild::OnFloodFill(
+        unsigned int x, unsigned int y, XSSquareIO const& oldSquare, XSSquareIO const& newSquare)
 {
     m_document->SubmitFloodFill(x, y, oldSquare, newSquare);
 }
 
 
-void XSDocChild::OnSetBead(unsigned int x,
-        unsigned int y,
-        unsigned int region)
+void XSDocChild::OnSetBead(unsigned int x, unsigned int y, unsigned int region)
 {
-    m_document->SubmitSetBead(x, y, region, m_document->ToolState().m_beadIndex, m_document->ToolState().m_overwrite);
+    m_document->SubmitSetBead(
+            x, y, region, m_document->ToolState().m_beadIndex, m_document->ToolState().m_overwrite);
 }
 
 
@@ -656,7 +647,7 @@ ToolType XSDocChild::GetToolType() const
 }
 
 
-void XSDocChild::OnCloseWindow(wxCloseEvent &event)
+void XSDocChild::OnCloseWindow(wxCloseEvent& event)
 {
     bool can_close = false;
 
@@ -666,9 +657,10 @@ void XSDocChild::OnCloseWindow(wxCloseEvent &event)
         // FIXME  close properties window
     }
     if (m_document->IsModified()) {
-        wxMessageDialog *dialog = new wxMessageDialog(this,
+        wxMessageDialog* dialog = new wxMessageDialog(this,
                 wxT("Do you want to save changes to this pattern before closing it?  "
-                        "If you don't save, your changes will be lost."), wxT("My app"), wxYES_NO | wxCANCEL);
+                    "If you don't save, your changes will be lost."),
+                wxT("My app"), wxYES_NO | wxCANCEL);
         int ans = dialog->ShowModal();
         dialog->Destroy();
         switch (ans) {
@@ -718,7 +710,7 @@ wxRect XSDocChild::GetPreferredFrame(unsigned int x,
 #endif
 
 
-void XSDocChild::OnKeyDown(wxKeyEvent &event)
+void XSDocChild::OnKeyDown(wxKeyEvent& event)
 {
     unsigned int zoom = m_document->GetZoom();
 
@@ -751,8 +743,7 @@ void XSDocChild::OnKeyDown(wxKeyEvent &event)
     case WXK_DOWN:
         GetCanvas()->MoveCursorBy(0, 1);
         break;
-    case ' ':
-    {
+    case ' ': {
         GetCanvas()->KeyboardClick();
         break;
     }

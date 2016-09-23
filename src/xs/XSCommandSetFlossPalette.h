@@ -9,19 +9,19 @@
  */
 class XSCommandSetFlossPalette : public XSCommand {
 public:
-    XSCommandSetFlossPalette(XSFlossPalette const &flossPalette);
+    XSCommandSetFlossPalette(XSFlossPalette const& flossPalette);
 
     virtual int Do();
     virtual int Undo();
-    virtual char const *GetDescription() const;
+    virtual char const* GetDescription() const;
 
 private:
     XSFlossPalette m_oldFlossPalette;
     XSFlossPalette m_newFlossPalette;
 
     // Disallow copying
-    XSCommandSetFlossPalette(XSCommandSetFlossPalette const &);
-    XSCommandSetFlossPalette &operator=(XSCommandSetFlossPalette const &);
+    XSCommandSetFlossPalette(XSCommandSetFlossPalette const&);
+    XSCommandSetFlossPalette& operator=(XSCommandSetFlossPalette const&);
 };
 
 #endif

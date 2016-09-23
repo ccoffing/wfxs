@@ -10,40 +10,40 @@ class PatSizeTab : public QWidget {
     Q_OBJECT
 
 public:
-    PatSizeTab(XSProperties &properties);
+    PatSizeTab(XSProperties& properties);
 
 protected:
-    XSProperties &m_properties;
+    XSProperties& m_properties;
 };
 
 class PatDescrTab : public QWidget {
     Q_OBJECT
 
 public:
-    PatDescrTab(XSProperties &properties);
+    PatDescrTab(XSProperties& properties);
 
 protected:
-    XSProperties &m_properties;
+    XSProperties& m_properties;
 };
 
 class PatInstrTab : public QWidget {
     Q_OBJECT
 
 public:
-    PatInstrTab(XSProperties &properties);
+    PatInstrTab(XSProperties& properties);
 
 protected:
-    XSProperties &m_properties;
+    XSProperties& m_properties;
 };
 
 class XSQtPropertiesDialog : public QDialog {
     Q_OBJECT
 
 public:
-    XSQtPropertiesDialog(QWidget *parent, XSProperties &properties);
+    XSQtPropertiesDialog(QWidget* parent, XSProperties& properties);
 
 protected:
-    XSProperties &m_properties;
+    XSProperties& m_properties;
 
 private slots:
     void saveClicked();

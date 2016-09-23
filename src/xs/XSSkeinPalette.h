@@ -16,10 +16,10 @@ class XSSkeinPalette {
 public:
     XSSkeinPalette();
 
-    XSSkein const *Lookup(Maker_t maker, FlossProductLine_t productLine, std::string const &id);
+    XSSkein const* Lookup(Maker_t maker, FlossProductLine_t productLine, std::string const& id);
 
-    void Serialize(std::ostream &file) const;
-    void Unserialize(std::istream &src);
+    void Serialize(std::ostream& file) const;
+    void Unserialize(std::istream& src);
 
 private:
     std::vector<XSSkein> m_skeins;

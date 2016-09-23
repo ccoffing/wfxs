@@ -10,9 +10,7 @@ class XSModel;
  */
 class Command {
 public:
-    virtual ~Command()
-    {
-    };
+    virtual ~Command(){};
 
     /**
      *  Attempts to perform the command.  If the command failed to be performed (e.g., trying to
@@ -45,7 +43,7 @@ public:
      *  Returns an internationalized description in UTF-8.  The description should describe the
      *  action in general terms.  Do not include "undo" or "redo" in the description.
      */
-    virtual char const *GetDescription() const = 0;
+    virtual char const* GetDescription() const = 0;
 };
 
 /** Base class for cross-stitch commands.
@@ -56,17 +54,17 @@ public:
  */
 class XSCommand : public Command {
 public:
-    XSCommand() :
-        m_model(0)
+    XSCommand()
+        : m_model(0)
     {
     }
 
-    void Init(XSModel *model);
+    void Init(XSModel* model);
 
-    char const *GetDescription() const;
+    char const* GetDescription() const;
 
 protected:
-    XSModel *m_model;
+    XSModel* m_model;
 };
 
 #endif

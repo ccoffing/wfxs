@@ -3,5 +3,6 @@
 
 #include "XSModel.h"
 
-TEST_CASE("XSModel") {
+TEST_CASE("XSModel")
+{
 }

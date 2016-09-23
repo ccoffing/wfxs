@@ -6,15 +6,15 @@
  */
 class XSApplication {
 public:
-    XSApplication(int argc, char *argv[]);
+    XSApplication(int argc, char* argv[]);
     virtual ~XSApplication();
 
 private:
     // Disallow copying
-    XSApplication(XSApplication const &);
-    XSApplication &operator=(XSApplication const &);
+    XSApplication(XSApplication const&);
+    XSApplication& operator=(XSApplication const&);
 };
 
-extern XSApplication *xs_app;
+extern XSApplication* xs_app;
 
 #endif

@@ -13,26 +13,26 @@ class XSFloss;
 class XSFlossPalette {
 public:
     XSFlossPalette();
-    XSFlossPalette(XSFlossPalette const &);
-    XSFlossPalette(std::istream &src);
+    XSFlossPalette(XSFlossPalette const&);
+    XSFlossPalette(std::istream& src);
     ~XSFlossPalette();
 
-    XSFlossPalette &operator=(XSFlossPalette const &);
-    XSFloss &operator[](unsigned int i) const;
-    XSFloss &operator[](unsigned int i);
+    XSFlossPalette& operator=(XSFlossPalette const&);
+    XSFloss& operator[](unsigned int i) const;
+    XSFloss& operator[](unsigned int i);
 
-    XSFloss &GetFloss(unsigned int i) const;
+    XSFloss& GetFloss(unsigned int i) const;
     unsigned int size() const;
 
-    void Serialize(std::ostream &file) const;
-    void Unserialize(std::istream &src);
-    void UnserializeAll(std::istream &src);
+    void Serialize(std::ostream& file) const;
+    void Unserialize(std::istream& src);
+    void UnserializeAll(std::istream& src);
 
 private:
     void ResizePalette(unsigned int);
 
     unsigned int m_paletteSize;
-    XSFloss *m_palette;
+    XSFloss* m_palette;
     XSSymbolPalette m_symbolPalette;
 };
 

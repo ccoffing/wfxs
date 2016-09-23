@@ -7,16 +7,16 @@
 #include "XSMessages.h"
 #include "XSPropertiesWindow.h"
 
-XSPropertiesWindow::XSPropertiesWindow(XSDocChild *parent,
-        XSProperties const &properties) :
-    wxFrame(parent, wxID_ANY, wxT("Properties"), wxPoint(100, 100), wxSize(100, 100)),
+XSPropertiesWindow::XSPropertiesWindow(XSDocChild* parent, XSProperties const& properties)
+    : wxFrame(parent, wxID_ANY, wxT("Properties"), wxPoint(100, 100), wxSize(100, 100))
+    ,
     // wxDefaultPosition, wxDefaultSize),
-    m_properties(properties),
-    m_document(parent),
-    m_save(false)
+    m_properties(properties)
+    , m_document(parent)
+    , m_save(false)
 {
     // wxPanel *panel = new wxPanel( this, wxID_ANY );
-    wxBoxSizer *topsizer = new wxBoxSizer(wxVERTICAL);
+    wxBoxSizer* topsizer = new wxBoxSizer(wxVERTICAL);
 
 #if 0
     topsizer->Add(new wxStaticBox(this, wxID_ANY, wxT("stuff")));
@@ -62,7 +62,7 @@ XSPropertiesWindow::~XSPropertiesWindow()
 
 void XSPropertiesWindow::GetProperties()
 {
-    m_properties.m_title  = m_title->GetValue();
+    m_properties.m_title = m_title->GetValue();
     m_properties.m_author = m_author->GetValue();
     m_properties.m_fabric = m_fabric->GetValue();
     m_properties.m_instructions = m_instructions->GetValue();

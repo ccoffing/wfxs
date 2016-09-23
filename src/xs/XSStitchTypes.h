@@ -40,16 +40,8 @@ typedef enum _StitchType {
     Stitch_QuarterAuto
 } StitchType;
 
-typedef enum _KnotType {
-    Knot_French = 0,
-    Knot_LazyDaisyKnot,
-    Knot_MAX
-} KnotType;
+typedef enum _KnotType { Knot_French = 0, Knot_LazyDaisyKnot, Knot_MAX } KnotType;
 
-typedef enum _EmbelType {
-    EmbelType_Bead = 0,
-    EmbelType_Knot,
-    EmbelType_MAX
-} EmbelType;
+typedef enum _EmbelType { EmbelType_Bead = 0, EmbelType_Knot, EmbelType_MAX } EmbelType;
 
 #endif

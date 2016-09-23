@@ -8,26 +8,22 @@
  */
 class XSFileInPCStitch : public XSFileIn {
 public:
-    XSFileInPCStitch(std::istream &file,
-            ProgressFn *progressFn,
-            void *handle);
+    XSFileInPCStitch(std::istream& file, ProgressFn* progressFn, void* handle);
     ~XSFileInPCStitch();
 
-    static bool IsHandled(std::istream &file);
+    static bool IsHandled(std::istream& file);
 
-    virtual XSController *Read();
+    virtual XSController* Read();
 };
 
 /**
  */
 class XSFileOutPCStitch : public XSFileOut {
 public:
-    XSFileOutPCStitch(std::ostream &file,
-            ProgressFn *progressFn,
-            void *handle);
+    XSFileOutPCStitch(std::ostream& file, ProgressFn* progressFn, void* handle);
     ~XSFileOutPCStitch();
 
-    virtual void Write(XSController *);
+    virtual void Write(XSController*);
 };
 
 #endif

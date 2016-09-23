@@ -2,9 +2,9 @@
 #include "XSModel.h"
 
 
-XSCommandShowGrid::XSCommandShowGrid(bool showGrid) :
-    m_oldShowGrid(showGrid /* meaninless, to pacify compiler*/),
-    m_newShowGrid(showGrid)
+XSCommandShowGrid::XSCommandShowGrid(bool showGrid)
+    : m_oldShowGrid(showGrid /* meaninless, to pacify compiler*/)
+    , m_newShowGrid(showGrid)
 {
 }
 
@@ -21,7 +21,7 @@ int XSCommandShowGrid::Undo()
     return true;
 }
 
-char const *XSCommandShowGrid::GetDescription() const
+char const* XSCommandShowGrid::GetDescription() const
 {
     return _("show grid");
 }

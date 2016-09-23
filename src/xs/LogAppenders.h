@@ -14,7 +14,7 @@ class Logger;
  */
 class LogAppenderNull : public LogAppender {
 public:
-    void append(std::string &)
+    void append(std::string&)
     {
     }
 };
@@ -39,18 +39,18 @@ public:
  */
 class LogAppenderCFile : public LogAppender {
 public:
-    LogAppenderCFile(FILE *f) :
-        m_f(f)
+    LogAppenderCFile(FILE* f)
+        : m_f(f)
     {
     }
 
-    void append(std::string &s)
+    void append(std::string& s)
     {
         fprintf(m_f, "%s", s.c_str());
     }
 
 protected:
-    FILE *m_f;
+    FILE* m_f;
 };
 
 #endif

@@ -15,7 +15,7 @@ struct XSSquareIO;
 class XSLayer {
 public:
     XSLayer(unsigned int sizeX, unsigned int sizeY);
-    XSLayer(const XSLayer &);
+    XSLayer(const XSLayer&);
     ~XSLayer();
 
     /**
@@ -27,8 +27,7 @@ public:
     void Resize(unsigned int sizeX, unsigned int sizeY);
 
     StitchType SetStitch(unsigned int squareX, unsigned int squareY, unsigned int xPercent,
-            unsigned int yPercent, StitchType stitchType, unsigned int flossIndex,
-            bool overwrite);
+            unsigned int yPercent, StitchType stitchType, unsigned int flossIndex, bool overwrite);
 
     void SetKnot(unsigned int x, unsigned int y, unsigned int region, KnotType knotType,
             unsigned int flossIndex, bool overwrite);
@@ -38,9 +37,9 @@ public:
 
     void ClearSquare(unsigned int squareX, unsigned int squareY);
 
-    void SetSquareData(XSSquareIO const *square, unsigned int x, unsigned int y);
+    void SetSquareData(XSSquareIO const* square, unsigned int x, unsigned int y);
 
-    void GetSquareData(XSSquareIO *square, unsigned int squareX, unsigned int squareY);
+    void GetSquareData(XSSquareIO* square, unsigned int squareX, unsigned int squareY);
 
     void Backstitch();
 
@@ -54,15 +53,15 @@ public:
         return m_sizeY;
     }
 
-    XSSquare *getSquare(unsigned int x, unsigned int y) const;
+    XSSquare* getSquare(unsigned int x, unsigned int y) const;
 
 protected:
     StitchTypeAndLocation autoStitch(unsigned int squareX, unsigned int squareY,
             unsigned int xPercent, unsigned int yPercent, StitchType stitchType,
             unsigned int flossIndex);
 
-    void replaceStitch(unsigned int squareX, unsigned int squareY,
-            StitchTypeAndLocation stitchType, unsigned int flossIndex, bool overwrite);
+    void replaceStitch(unsigned int squareX, unsigned int squareY, StitchTypeAndLocation stitchType,
+            unsigned int flossIndex, bool overwrite);
 
     void SetEmbelishment(EmbelType type, unsigned int x, unsigned int y, unsigned int region,
             KnotType knotType, unsigned int index, bool overwrite);
@@ -75,18 +74,18 @@ protected:
 
 private:
     // Unimplemented; disallowed.
-    XSLayer &operator=(XSLayer const &);
+    XSLayer& operator=(XSLayer const&);
 
     unsigned int m_sizeX;
     unsigned int m_sizeY;
 
-    XSSquare *m_grid;
+    XSSquare* m_grid;
 
     struct EmbLocation {
         unsigned int x;
         unsigned int y;
         unsigned int region;
-        bool operator<(struct EmbLocation const &B) const
+        bool operator<(struct EmbLocation const& B) const
         {
             return x < B.x || y < B.y || region < B.region;
         }

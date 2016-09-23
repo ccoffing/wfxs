@@ -17,8 +17,7 @@ class XSDocChild;
  */
 class XSPropertiesWindow : public wxFrame {
 public:
-    XSPropertiesWindow(XSDocChild *parent,
-            XSProperties const &properties);
+    XSPropertiesWindow(XSDocChild* parent, XSProperties const& properties);
     virtual ~XSPropertiesWindow();
 
     XSProperties m_properties;
@@ -28,13 +27,13 @@ protected:
     void SetProperties();
 
 private:
-    XSDocChild *m_document;
+    XSDocChild* m_document;
     bool m_save;
 
-    wxTextCtrl *m_author;
-    wxTextCtrl *m_fabric;
-    wxTextCtrl *m_title;
-    wxTextCtrl *m_instructions;
+    wxTextCtrl* m_author;
+    wxTextCtrl* m_fabric;
+    wxTextCtrl* m_title;
+    wxTextCtrl* m_instructions;
 };
 
 #endif

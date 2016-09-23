@@ -3,8 +3,10 @@
 
 #include "XSColor.h"
 
-TEST_CASE("XSColor") {
-    SECTION("Constructor") {
+TEST_CASE("XSColor")
+{
+    SECTION("Constructor")
+    {
         XSColor a(0x12, 0x89, 0xab, 0x8f);
         XSColor b(0x12, 0x89, 0xab, 0x8f);
         XSColor c(0x12, 0x89, 0xac, 0x8f);

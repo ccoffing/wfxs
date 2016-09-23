@@ -5,9 +5,7 @@
  */
 class XSSelection {
 public:
-    XSSelection()
-    {
-    };
+    XSSelection(){};
 
 private:
 };

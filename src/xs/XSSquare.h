@@ -14,10 +14,10 @@ struct SquareData {
     uint8_t floss2;
     uint8_t floss3;
     uint8_t floss4;
-    StitchTypeAndLocation stitch1   : 4;
-    StitchTypeAndLocation stitch2   : 4;
-    StitchTypeAndLocation stitch3   : 4;
-    StitchTypeAndLocation stitch4   : 4;
+    StitchTypeAndLocation stitch1 : 4;
+    StitchTypeAndLocation stitch2 : 4;
+    StitchTypeAndLocation stitch3 : 4;
+    StitchTypeAndLocation stitch4 : 4;
     /** These num_* fields track the number of the respective
      *  elements in the hashtables -- a way to optimize out many
      *  useless hashtable searches during screen redraws.
@@ -35,15 +35,15 @@ public:
     static const unsigned int MaxKnots;
     static const unsigned int MaxBeads;
 
-    XSSquare() :
-        m_squareData(0)
+    XSSquare()
+        : m_squareData(0)
     {
     }
 
     void setStitch(StitchTypeAndLocation stitchType, unsigned int flossIndex);
 
-    bool findUniqueStitch(StitchType stitchType, unsigned int flossIndex, unsigned int *index,
-            StitchTypeAndLocation *stitch);
+    bool findUniqueStitch(StitchType stitchType, unsigned int flossIndex, unsigned int* index,
+            StitchTypeAndLocation* stitch);
 
     unsigned int findOverlappingStitch(StitchTypeAndLocation new_stitch) const;
 
@@ -55,7 +55,7 @@ public:
      *  @return true if the stitch(es) are the same type and same floss.  Embellishments such
      *      as knots and beads are not considered.
      */
-    bool sameStitch(XSSquare &rhs);
+    bool sameStitch(XSSquare& rhs);
 
     void clearStitchByIndex(unsigned int index);
 
@@ -63,9 +63,9 @@ public:
 
     /**
      */
-    void GetSquareData(XSSquareIO *square) const;
+    void GetSquareData(XSSquareIO* square) const;
 
-    void SetSquareData(XSSquareIO const *square);
+    void SetSquareData(XSSquareIO const* square);
 
 protected:
     union {

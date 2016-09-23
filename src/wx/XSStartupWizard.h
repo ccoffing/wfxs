@@ -14,7 +14,7 @@ class XSStartupWizard : public wxDialog {
     DECLARE_EVENT_TABLE()
 
 public:
-    XSStartupWizard(wxWindow *parent);
+    XSStartupWizard(wxWindow* parent);
 };
 
 #endif

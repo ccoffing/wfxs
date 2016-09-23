@@ -4,10 +4,10 @@
 
 #include <gtkmm.h>
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
-    Glib::RefPtr<Gtk::Application> app = Gtk::Application::create(argc, argv,
-            "org.uscoffings.wfxs");
+    Glib::RefPtr<Gtk::Application> app
+            = Gtk::Application::create(argc, argv, "org.uscoffings.wfxs");
 
     XSGtkApplication xsapp(argc, argv);
     XSGtkEditWindow window;

@@ -12,26 +12,25 @@ class PopUpMenuBar;
 
 class XSEditFlossWindow : public BAF::Window {
 public:
-    XSEditFlossWindow(XSDocument *document,
-            XSFlossPalette const &flossPalette);
+    XSEditFlossWindow(XSDocument* document, XSFlossPalette const& flossPalette);
     virtual ~XSEditFlossWindow();
 
     bool QuitRequested();
 
-    virtual void MessageReceived(BMessage *message);
+    virtual void MessageReceived(BMessage* message);
 
 private:
     XSFlossPalette m_flossPalette;
     unsigned int m_flossIndex;
-    XSFlossPaletteView *m_flossPaletteView;
-    BAF::PopUpMenuBar *m_makerList;
+    XSFlossPaletteView* m_flossPaletteView;
+    BAF::PopUpMenuBar* m_makerList;
 
-    XSDocument *m_document;
+    XSDocument* m_document;
     bool m_save;
 
     // Disallow copying
-    XSEditFlossWindow(XSEditFlossWindow const &);
-    XSEditFlossWindow &operator=(XSEditFlossWindow const &);
+    XSEditFlossWindow(XSEditFlossWindow const&);
+    XSEditFlossWindow& operator=(XSEditFlossWindow const&);
 };
 
 #endif

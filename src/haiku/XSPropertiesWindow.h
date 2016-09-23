@@ -13,11 +13,10 @@ class XSDocument;
 
 class XSPropertiesWindow : public BAF::Window {
 public:
-    XSPropertiesWindow(XSDocument *document,
-            XSProperties const &properties);
+    XSPropertiesWindow(XSDocument* document, XSProperties const& properties);
 
     bool QuitRequested();
-    virtual void MessageReceived(BMessage *message);
+    virtual void MessageReceived(BMessage* message);
 
     XSProperties m_properties;
 
@@ -26,13 +25,13 @@ protected:
     void SetProperties();
 
 private:
-    XSDocument *m_document;
+    XSDocument* m_document;
     bool m_save;
 
-    BAF::TextControl *m_author;
-    BAF::TextControl *m_fabric;
-    BAF::TextControl *m_title;
-    BAF::TextView *m_instructions;
+    BAF::TextControl* m_author;
+    BAF::TextControl* m_fabric;
+    BAF::TextControl* m_title;
+    BAF::TextView* m_instructions;
 };
 
 #endif

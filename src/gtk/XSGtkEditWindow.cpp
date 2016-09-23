@@ -1,12 +1,12 @@
-#include "xs/XSController.h"
 #include "gtk/XSGtkEditWindow.h"
+#include "xs/XSController.h"
 
 #include <iostream>
 
 
-XSGtkEditWindow::XSGtkEditWindow() :
-    m_model(40, 40),
-    m_controller(&m_model)
+XSGtkEditWindow::XSGtkEditWindow()
+    : m_model(40, 40)
+    , m_controller(&m_model)
 {
     add(m_box);
 

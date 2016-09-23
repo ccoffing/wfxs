@@ -3,8 +3,10 @@
 
 #include "XSFloss.h"
 
-TEST_CASE("XSFloss") {
-    SECTION("Parse") {
+TEST_CASE("XSFloss")
+{
+    SECTION("Parse")
+    {
         XSFloss floss;
 
         // 2 skeins, first of 2 strands,

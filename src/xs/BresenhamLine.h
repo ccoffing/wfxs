@@ -20,8 +20,7 @@
  *  @param[in] y1  Ending Y value.
  *  @param[out] points
  */
-template<class T>
-void BresenhamLine(int x0, int y0, int x1, int y1, std::vector<T> &points)
+template <class T> void BresenhamLine(int x0, int y0, int x1, int y1, std::vector<T>& points)
 {
     int rangex = abs(x1 - x0);
     int rangey = abs(y1 - y0);

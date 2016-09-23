@@ -1,8 +1,8 @@
+#include "XSFloss.h"
 #include "Logger.h"
 #include "XSData.h"
 #include "XSDataIO.h"
 #include "XSException.h"
-#include "XSFloss.h"
 #include "XSSkein.h"
 #include "XSSkeinPalette.h"
 #include "XSSymbolPalette.h"
@@ -11,12 +11,12 @@
 
 #define LOG_NAME "xs.Floss"
 
-XSFloss::XSFloss() :
-    m_numskeins(0),
-    m_skeins(),
-    m_strands(),
-    m_symbol(0),
-    m_symbolPalette(0)
+XSFloss::XSFloss()
+    : m_numskeins(0)
+    , m_skeins()
+    , m_strands()
+    , m_symbol(0)
+    , m_symbolPalette(0)
 {
 }
 
@@ -24,18 +24,17 @@ XSFloss::~XSFloss()
 {
 }
 
-XSFloss::XSFloss(std::istream &src,
-        XSSymbolPalette *symbolPalette) :
-    m_numskeins(0),
-    m_skeins(),
-    m_strands(),
-    m_symbol(0),
-    m_symbolPalette(symbolPalette)
+XSFloss::XSFloss(std::istream& src, XSSymbolPalette* symbolPalette)
+    : m_numskeins(0)
+    , m_skeins()
+    , m_strands()
+    , m_symbol(0)
+    , m_symbolPalette(symbolPalette)
 {
     Unserialize(src);
 }
 
-void XSFloss::Serialize(std::ostream &file) const
+void XSFloss::Serialize(std::ostream& file) const
 {
     Write8_exc(file, m_numskeins);
     for (unsigned int skein = 0; skein < m_numskeins; ++skein) {
@@ -45,7 +44,7 @@ void XSFloss::Serialize(std::ostream &file) const
     WriteCStr_exc(file, m_symbol);
 }
 
-void XSFloss::Unserialize(std::istream &src)
+void XSFloss::Unserialize(std::istream& src)
 {
     uint8_t numskeins;
 
@@ -64,9 +63,10 @@ void XSFloss::Unserialize(std::istream &src)
         FlossProductLine_t productLine;
         std::string id;
         XSSkein::UnserializeRef(src, maker, productLine, id);
-        Log::info(LOG_NAME, "Floss:  skein ref:  maker %d   prodLine %d   id %s", maker, productLine, id.c_str());
+        Log::info(LOG_NAME, "Floss:  skein ref:  maker %d   prodLine %d   id %s", maker,
+                productLine, id.c_str());
 
-        XSSkein const *skein = makerSkeinPalette[maker]->Lookup(maker, productLine, id);
+        XSSkein const* skein = makerSkeinPalette[maker]->Lookup(maker, productLine, id);
         if (skein) {
             m_skeins[i] = skein;
         } else {
@@ -77,20 +77,18 @@ void XSFloss::Unserialize(std::istream &src)
     }
 
     uint32_t symbol;
-    char *symbolp = (char *)&symbol;
+    char* symbolp = (char*)&symbol;
     ReadCStr_exc(src, symbolp, sizeof(symbol));
     m_symbolPalette->ReserveSymbol(m_symbolPalette->AddSymbol(symbolp));
     SetSymbol(symbolp);
 }
 
-XSFloss::XSFloss(XSSkein const *skein,
-        unsigned int strands,
-        XSSymbolPalette *symbolPalette) :
-    m_numskeins(1),
-    m_skeins(),
-    m_strands(),
-    m_symbol(0),
-    m_symbolPalette(symbolPalette)
+XSFloss::XSFloss(XSSkein const* skein, unsigned int strands, XSSymbolPalette* symbolPalette)
+    : m_numskeins(1)
+    , m_skeins()
+    , m_strands()
+    , m_symbol(0)
+    , m_symbolPalette(symbolPalette)
 {
     m_skeins[0] = skein;
     m_strands[0] = strands;
@@ -116,7 +114,7 @@ XSFloss::XSFloss(XSSkein const *skein0,
 
 #endif
 
-bool XSFloss::AddSkein(XSSkein const *skein, unsigned int strands)
+bool XSFloss::AddSkein(XSSkein const* skein, unsigned int strands)
 {
     if (m_numskeins == 0) {
         m_skeins[0] = skein;
@@ -162,7 +160,7 @@ XSColor XSFloss::GetColor() const
     return c;
 }
 
-void XSFloss::SetSymbol(char const *symbol)
+void XSFloss::SetSymbol(char const* symbol)
 {
     // FIXME:  copy only the first UTF8 character
     m_symbol = symbol;

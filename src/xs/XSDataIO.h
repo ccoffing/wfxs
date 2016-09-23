@@ -24,16 +24,16 @@
  *         MTSerializeExc if data is of wrong form (namely, if string is
  *         > 255 bytes when writing PStr).
  */
-size_t Write_exc(std::ostream &pio, char const *src, size_t size);
-size_t Write8_exc(std::ostream &pio, uint8_t i);
-size_t WriteLE16_exc(std::ostream &pio, uint16_t i);
-size_t WriteLE32_exc(std::ostream &pio, uint32_t i);
-size_t WriteBE16_exc(std::ostream &pio, uint16_t i);
-size_t WriteBE32_exc(std::ostream &pio, uint32_t i);
-size_t WriteCStr_exc(std::ostream &pio, std::string const &src);
-size_t WriteCStr_exc(std::ostream &pio, char const *src);
-size_t WritePStr_exc(std::ostream &dio, std::string const &src);
-size_t WritePStr_exc(std::ostream &dio, char const *src);
+size_t Write_exc(std::ostream& pio, char const* src, size_t size);
+size_t Write8_exc(std::ostream& pio, uint8_t i);
+size_t WriteLE16_exc(std::ostream& pio, uint16_t i);
+size_t WriteLE32_exc(std::ostream& pio, uint32_t i);
+size_t WriteBE16_exc(std::ostream& pio, uint16_t i);
+size_t WriteBE32_exc(std::ostream& pio, uint32_t i);
+size_t WriteCStr_exc(std::ostream& pio, std::string const& src);
+size_t WriteCStr_exc(std::ostream& pio, char const* src);
+size_t WritePStr_exc(std::ostream& dio, std::string const& src);
+size_t WritePStr_exc(std::ostream& dio, char const* src);
 
 /** Reads data from the stream.
  *
@@ -57,19 +57,19 @@ size_t WritePStr_exc(std::ostream &dio, char const *src);
  *         IllegalFormatException if data is of wrong form (namely, if maximums
  *         are exceeded).
  */
-size_t Read_exc(std::istream &pio, char *dst, size_t size);
-size_t Read8_exc(std::istream &pio, uint8_t &i);
-size_t ReadLE16_exc(std::istream &pio, uint16_t &i);
-size_t ReadLE32_exc(std::istream &pio, uint32_t &i);
-size_t ReadBE16_exc(std::istream &pio, uint16_t &i);
-size_t ReadBE32_exc(std::istream &pio, uint32_t &i);
-size_t ReadCStr_exc(std::istream &pio, std::string &dst, unsigned int max = 0);
-size_t ReadCStr_exc(std::istream &pio, char *dst, unsigned int max = 0);
-size_t ReadPStr_exc(std::istream &dio, std::string &src, unsigned int max = 0);
-size_t ReadPStr_exc(std::istream &dio, char *dst, unsigned int max = 0);
+size_t Read_exc(std::istream& pio, char* dst, size_t size);
+size_t Read8_exc(std::istream& pio, uint8_t& i);
+size_t ReadLE16_exc(std::istream& pio, uint16_t& i);
+size_t ReadLE32_exc(std::istream& pio, uint32_t& i);
+size_t ReadBE16_exc(std::istream& pio, uint16_t& i);
+size_t ReadBE32_exc(std::istream& pio, uint32_t& i);
+size_t ReadCStr_exc(std::istream& pio, std::string& dst, unsigned int max = 0);
+size_t ReadCStr_exc(std::istream& pio, char* dst, unsigned int max = 0);
+size_t ReadPStr_exc(std::istream& dio, std::string& src, unsigned int max = 0);
+size_t ReadPStr_exc(std::istream& dio, char* dst, unsigned int max = 0);
 
 /**
  */
-off_t GetRemaining(std::istream &pio);
+off_t GetRemaining(std::istream& pio);
 
 #endif

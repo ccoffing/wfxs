@@ -5,7 +5,7 @@
 
 class XSGtkApplication : public XSApplication {
 public:
-    XSGtkApplication(int &argc, char *argv[]);
+    XSGtkApplication(int& argc, char* argv[]);
 };
 
 #endif

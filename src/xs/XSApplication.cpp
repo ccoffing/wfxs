@@ -1,13 +1,13 @@
+#include "XSApplication.h"
 #include "LogAppenders.h"
 #include "Logger.h"
-#include "XSApplication.h"
 #include "XSData.h"
 
 
-XSApplication *xs_app;
+XSApplication* xs_app;
 static LogAppenderCFile console(stderr);
 
-XSApplication::XSApplication(int argc, char *argv[])
+XSApplication::XSApplication(int argc, char* argv[])
 {
     int i = 0;
     int verbose = 0;

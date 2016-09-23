@@ -1,20 +1,20 @@
+#include "XSSkein.h"
 #include "Logger.h"
 #include "XSDataIO.h"
 #include "XSException.h"
-#include "XSSkein.h"
 #include "XSSymbolPalette.h"
 
 #define LOG_NAME "xs.Skein"
 
 
-XSSkein::XSSkein() :
-    m_maker((Maker_t)-1),
-    m_productLine((FlossProductLine_t)-1),
-    m_id(),
-    m_description(),
-    m_colors(),
-    m_discontinued(false),
-    m_blend(FB_NONE)
+XSSkein::XSSkein()
+    : m_maker((Maker_t)-1)
+    , m_productLine((FlossProductLine_t)-1)
+    , m_id()
+    , m_description()
+    , m_colors()
+    , m_discontinued(false)
+    , m_blend(FB_NONE)
 {
 }
 
@@ -22,30 +22,25 @@ XSSkein::~XSSkein()
 {
 }
 
-XSSkein::XSSkein(Maker_t maker,
-        FlossProductLine_t productLine,
-        const char *id,
-        const char *description,
-        XSColor color,
-        bool discontinued,
-        FlossBlend_t blend) :
-    m_maker(maker),
-    m_productLine(productLine),
-    m_id(id),
-    m_description(description),
-    m_colors(),
-    m_discontinued(discontinued),
-    m_blend(blend)
+XSSkein::XSSkein(Maker_t maker, FlossProductLine_t productLine, const char* id,
+        const char* description, XSColor color, bool discontinued, FlossBlend_t blend)
+    : m_maker(maker)
+    , m_productLine(productLine)
+    , m_id(id)
+    , m_description(description)
+    , m_colors()
+    , m_discontinued(discontinued)
+    , m_blend(blend)
 {
     m_colors.push_back(color);
 }
 
-XSSkein::XSSkein(std::istream &src)
+XSSkein::XSSkein(std::istream& src)
 {
     Unserialize(src);
 }
 
-void XSSkein::Unserialize(std::istream &src)
+void XSSkein::Unserialize(std::istream& src)
 {
     uint8_t ui8;
 
@@ -86,7 +81,7 @@ void XSSkein::Unserialize(std::istream &src)
     Log::trace(LOG_NAME, "%d %d %d", m_maker, m_productLine, colors);
 }
 
-void XSSkein::Serialize(std::ostream &file) const
+void XSSkein::Serialize(std::ostream& file) const
 {
     Write8_exc(file, (uint8_t)m_maker);
     Write8_exc(file, (uint8_t)m_productLine);
@@ -108,10 +103,8 @@ void XSSkein::Serialize(std::ostream &file) const
     }
 }
 
-void XSSkein::UnserializeRef(std::istream &src,
-        Maker_t &maker,
-        FlossProductLine_t &productLine,
-        std::string &id)
+void XSSkein::UnserializeRef(
+        std::istream& src, Maker_t& maker, FlossProductLine_t& productLine, std::string& id)
 {
     uint8_t ui8;
 
@@ -128,35 +121,35 @@ void XSSkein::UnserializeRef(std::istream &src,
     ReadCStr_exc(src, id, MAX_FLOSS_ID_LEN);
 }
 
-void XSSkein::SerializeRef(std::ostream &file) const
+void XSSkein::SerializeRef(std::ostream& file) const
 {
     Write8_exc(file, m_maker);
     Write8_exc(file, m_productLine);
     WriteCStr_exc(file, m_id);
 }
 
-XSSkein::XSSkein(XSSkein const &rhs) :
-    m_maker(rhs.m_maker),
-    m_productLine(rhs.m_productLine),
-    m_id(rhs.m_id),
-    m_description(rhs.m_description),
-    m_colors(rhs.m_colors),
-    m_discontinued(rhs.m_discontinued),
-    m_blend(rhs.m_blend)
+XSSkein::XSSkein(XSSkein const& rhs)
+    : m_maker(rhs.m_maker)
+    , m_productLine(rhs.m_productLine)
+    , m_id(rhs.m_id)
+    , m_description(rhs.m_description)
+    , m_colors(rhs.m_colors)
+    , m_discontinued(rhs.m_discontinued)
+    , m_blend(rhs.m_blend)
 {
 }
 
-XSSkein &XSSkein::operator=(XSSkein const &rhs)
+XSSkein& XSSkein::operator=(XSSkein const& rhs)
 {
     if (this != &rhs) {
-        m_maker        = rhs.m_maker;
-        m_productLine  = rhs.m_productLine;
-        m_id           = rhs.m_id;
+        m_maker = rhs.m_maker;
+        m_productLine = rhs.m_productLine;
+        m_id = rhs.m_id;
 
-        m_description  = rhs.m_description;
-        m_colors       = rhs.m_colors;
+        m_description = rhs.m_description;
+        m_colors = rhs.m_colors;
         m_discontinued = rhs.m_discontinued;
-        m_blend        = rhs.m_blend;
+        m_blend = rhs.m_blend;
     }
     return *this;
 }

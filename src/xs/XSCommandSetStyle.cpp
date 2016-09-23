@@ -2,9 +2,9 @@
 #include "XSModel.h"
 
 
-XSCommandSetStyle::XSCommandSetStyle(enum DrawStyle style) :
-    m_newStyle(style),
-    m_oldStyle(style)
+XSCommandSetStyle::XSCommandSetStyle(enum DrawStyle style)
+    : m_newStyle(style)
+    , m_oldStyle(style)
 {
 }
 
@@ -21,7 +21,7 @@ int XSCommandSetStyle::Undo()
     return true;
 }
 
-char const *XSCommandSetStyle::GetDescription() const
+char const* XSCommandSetStyle::GetDescription() const
 {
     return _("set style");
 }

@@ -22,7 +22,7 @@ typedef enum _Tool {
     Tool_QuarterULStitch,
     Tool_QuarterURStitch,
     Tool_RectangularSelect,
-    Tool_SpecialStitch,   // FIXME:  enumerate these?
+    Tool_SpecialStitch,  // FIXME:  enumerate these?
     Tool_Text,
     Tool_ThreeQuarterAutoStitch,
     Tool_ThreeQuarterLLStitch,
@@ -46,10 +46,8 @@ typedef enum _ToolType {
 
 inline bool ToolTypeUsesCursor(ToolType toolType)
 {
-    return toolType != ToolType_Couching &&
-           toolType != ToolType_Backstitch &&
-           toolType != ToolType_Text &&
-           toolType != ToolType_Select;
+    return toolType != ToolType_Couching && toolType != ToolType_Backstitch
+            && toolType != ToolType_Text && toolType != ToolType_Select;
 }
 
 #endif

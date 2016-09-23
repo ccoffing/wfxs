@@ -17,7 +17,10 @@ class XSSelectionPath {
 public:
     enum MoveDirection {
         // Code optimization expects opposite directions to have opposite signs.
-        LEFT=-1, RIGHT=1, UP=-2, DOWN=2
+        LEFT = -1,
+        RIGHT = 1,
+        UP = -2,
+        DOWN = 2
     };
 
     virtual ~XSSelectionPath()
@@ -30,7 +33,7 @@ public:
      *  large enough to enclose the selection.  Ownership of mask transfers to caller.
      *  @return Newly allocated mask describing selection.
      */
-    virtual BitMask *GetMask() = 0;
+    virtual BitMask* GetMask() = 0;
 
     /**
      *  Attempts to move by a single square in the specified direction.
@@ -58,15 +61,15 @@ public:
      *  @param[in,out] width The width.
      *  @param[in,out] height The height.
      */
-    virtual void GetDimensions(unsigned int *width, unsigned int *height) = 0;
+    virtual void GetDimensions(unsigned int* width, unsigned int* height) = 0;
 
     /**
      *
      */
-    virtual void GetEnd(unsigned int *x, unsigned int *y) = 0;
+    virtual void GetEnd(unsigned int* x, unsigned int* y) = 0;
 
 protected:
-    static void Move(MoveDirection move, int *x, int *y);
+    static void Move(MoveDirection move, int* x, int* y);
 };
 
 
@@ -84,7 +87,7 @@ public:
      */
     XSFreeFormSelectionPath();
 
-    BitMask *GetMask();
+    BitMask* GetMask();
 
     /**
      *  Attempts to move by a single square in the specified direction.
@@ -107,9 +110,9 @@ public:
      */
     bool Complete();
 
-    void GetDimensions(unsigned int *width, unsigned int *height);
+    void GetDimensions(unsigned int* width, unsigned int* height);
 
-    void GetEnd(unsigned int *x, unsigned int *y);
+    void GetEnd(unsigned int* x, unsigned int* y);
 
 protected:
     void UpdateCache();
@@ -124,11 +127,12 @@ protected:
      *  param[out] dx1  Optional; X offset of starting point.
      *  param[out] dy1  Optional; Y offset of starting point.
      */
-    void WalkPath(unsigned int *width, unsigned int *height, int *dx2, int *dy2, int *dx1, int *dy1);
+    void WalkPath(
+            unsigned int* width, unsigned int* height, int* dx2, int* dy2, int* dx1, int* dy1);
 
     std::vector<MoveDirection> m_moves;
     unsigned int m_width, m_height;
-    int m_x1, m_y1;    // Starting offsets (may change as path progresses and moves origin)
+    int m_x1, m_y1;  // Starting offsets (may change as path progresses and moves origin)
     int m_x, m_y;
     bool m_complete;
     bool m_validCache;
@@ -149,7 +153,7 @@ public:
      */
     XSRectangularSelectionPath();
 
-    BitMask *GetMask();
+    BitMask* GetMask();
 
     bool Move(MoveDirection m);
 
@@ -165,9 +169,9 @@ public:
      */
     bool Complete();
 
-    void GetDimensions(unsigned int *width, unsigned int *height);
+    void GetDimensions(unsigned int* width, unsigned int* height);
 
-    void GetEnd(unsigned int *x, unsigned int *y);
+    void GetEnd(unsigned int* x, unsigned int* y);
 
 private:
     int m_x, m_y;

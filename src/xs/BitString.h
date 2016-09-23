@@ -14,8 +14,8 @@ public:
      */
     BitString(unsigned int bits);
 
-    BitString(BitString const &);
-    BitString &operator=(BitString const &);
+    BitString(BitString const&);
+    BitString& operator=(BitString const&);
 
     ~BitString();
 
@@ -51,7 +51,7 @@ public:
 
 private:
     unsigned int m_numBits;
-    uint32_t *m_bits;
+    uint32_t* m_bits;
 };
 
 #endif

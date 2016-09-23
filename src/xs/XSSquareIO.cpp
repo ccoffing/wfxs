@@ -1,12 +1,12 @@
+#include "XSSquare.h"
 #include "XSDataIO.h"
 #include "XSException.h"
-#include "XSSquare.h"
 #include "XSSquareIO.h"
 
 #include <assert.h>
 
 
-void XSSquareIO::Serialize(std::ostream &file) const
+void XSSquareIO::Serialize(std::ostream& file) const
 {
     /*
      *  RLE encoding elsewhere depends on the high bit of the first byte
@@ -29,7 +29,7 @@ void XSSquareIO::Serialize(std::ostream &file) const
     }
 }
 
-void XSSquareIO::Unserialize(std::istream &file)
+void XSSquareIO::Unserialize(std::istream& file)
 {
     uint8_t ui8, b;
 

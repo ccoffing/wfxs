@@ -5,8 +5,7 @@
 #include <stdint.h>
 
 
-static uint8_t const XSStaticSymbols[] =
-{
+static uint8_t const XSStaticSymbols[] = {
     0x21, 0x00, 0x00, 0x00,
     0x23, 0x00, 0x00, 0x00,
     0x24, 0x00, 0x00, 0x00,
@@ -177,12 +176,12 @@ static uint8_t const XSStaticSymbols[] =
 };
 
 
-XSSymbolPalette::XSSymbolPalette() :
-    numStatic(sizeof(XSStaticSymbols) / 4),
-    numTotal(numStatic),
-    isUsed(new bool[numTotal]),
-    symbols(new char[numTotal * 4]),
-    m_lastReservedIndex(-1)
+XSSymbolPalette::XSSymbolPalette()
+    : numStatic(sizeof(XSStaticSymbols) / 4)
+    , numTotal(numStatic)
+    , isUsed(new bool[numTotal])
+    , symbols(new char[numTotal * 4])
+    , m_lastReservedIndex(-1)
 {
     memcpy(symbols, XSStaticSymbols, sizeof(XSStaticSymbols));
     for (unsigned int i = 0; i < numTotal; ++i) {
@@ -190,12 +189,12 @@ XSSymbolPalette::XSSymbolPalette() :
     }
 }
 
-XSSymbolPalette::XSSymbolPalette(XSSymbolPalette const &rhs) :
-    numStatic(rhs.numStatic),
-    numTotal(rhs.numTotal),
-    isUsed(new bool[numTotal]),
-    symbols(new char[numTotal * 4]),
-    m_lastReservedIndex(rhs.m_lastReservedIndex)
+XSSymbolPalette::XSSymbolPalette(XSSymbolPalette const& rhs)
+    : numStatic(rhs.numStatic)
+    , numTotal(rhs.numTotal)
+    , isUsed(new bool[numTotal])
+    , symbols(new char[numTotal * 4])
+    , m_lastReservedIndex(rhs.m_lastReservedIndex)
 {
     memcpy(symbols, rhs.symbols, numTotal * 4);
     memcpy(isUsed, rhs.isUsed, numTotal * sizeof(bool));
@@ -207,20 +206,20 @@ XSSymbolPalette::~XSSymbolPalette()
     delete[] symbols;
 }
 
-char const *XSSymbolPalette::SymbolAtIndex(unsigned int i)
+char const* XSSymbolPalette::SymbolAtIndex(unsigned int i)
 {
     assert(i < numTotal);
     // printf("SymbolAtIndex %d is %p %s\n", i, symbols+i*4, symbols+i*4);
     return symbols + i * 4;
 }
 
-char *XSSymbolPalette::EditSymbolAtIndex(unsigned int i)
+char* XSSymbolPalette::EditSymbolAtIndex(unsigned int i)
 {
     assert(i < numTotal);
     return symbols + i * 4;
 }
 
-char const *XSSymbolPalette::ReserveNextSymbol()
+char const* XSSymbolPalette::ReserveNextSymbol()
 {
     for (unsigned int index = m_lastReservedIndex + 1; index < numTotal; ++index) {
         if (!isUsed[index]) {
@@ -237,7 +236,7 @@ char const *XSSymbolPalette::ReserveNextSymbol()
     return NULL;
 }
 
-char const *XSSymbolPalette::ReserveSymbol(unsigned int index)
+char const* XSSymbolPalette::ReserveSymbol(unsigned int index)
 {
     assert(index < numTotal);
     isUsed[index] = true;
@@ -245,7 +244,7 @@ char const *XSSymbolPalette::ReserveSymbol(unsigned int index)
     return SymbolAtIndex(index);
 }
 
-void XSSymbolPalette::FreeSymbol(char const *symbol)
+void XSSymbolPalette::FreeSymbol(char const* symbol)
 {
     unsigned int index = (symbol - symbols) / 4;
 
@@ -253,7 +252,7 @@ void XSSymbolPalette::FreeSymbol(char const *symbol)
     isUsed[index] = false;
 }
 
-unsigned int XSSymbolPalette::AddSymbol(char const *symbol)
+unsigned int XSSymbolPalette::AddSymbol(char const* symbol)
 {
     // printf("AddSymbol: len %d: %s\n", strlen(symbol), symbol);
     for (unsigned int index = 0; index < numTotal; ++index) {
@@ -262,7 +261,7 @@ unsigned int XSSymbolPalette::AddSymbol(char const *symbol)
         }
     }
 
-    char *newSymbols = new char [(numTotal + 1) * 4];
+    char* newSymbols = new char[(numTotal + 1) * 4];
     memcpy(newSymbols, symbols, numTotal * 4);
     ++numTotal;
     strncpy(EditSymbolAtIndex(numTotal - 1), symbol, 4);

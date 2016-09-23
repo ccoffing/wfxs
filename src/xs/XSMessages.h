@@ -52,9 +52,6 @@ enum {
     XS_EVT_V_CENTER,
 };
 
-enum XSWindowDialogs {
-    XS_DIALOG_PROPERTIES             = 1,
-    XS_DIALOG_EDIT_FLOSS
-};
+enum XSWindowDialogs { XS_DIALOG_PROPERTIES = 1, XS_DIALOG_EDIT_FLOSS };
 
 #endif

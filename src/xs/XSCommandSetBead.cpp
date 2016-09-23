@@ -2,17 +2,14 @@
 #include "XSModel.h"
 
 
-XSCommandSetBead::XSCommandSetBead(unsigned int x,
-        unsigned int y,
-        unsigned int region,
-        unsigned int colorIndex,
-        bool overwrite) :
-    m_layer((unsigned int)-1),
-    m_x(x),
-    m_y(y),
-    m_region(region),
-    m_colorIndex(colorIndex),
-    m_overwrite(overwrite)
+XSCommandSetBead::XSCommandSetBead(unsigned int x, unsigned int y, unsigned int region,
+        unsigned int colorIndex, bool overwrite)
+    : m_layer((unsigned int)-1)
+    , m_x(x)
+    , m_y(y)
+    , m_region(region)
+    , m_colorIndex(colorIndex)
+    , m_overwrite(overwrite)
 {
 }
 
@@ -30,7 +27,7 @@ int XSCommandSetBead::Undo()
     return true;
 }
 
-char const *XSCommandSetBead::GetDescription() const
+char const* XSCommandSetBead::GetDescription() const
 {
     return _("bead");
 }

@@ -1,14 +1,12 @@
-#include "BitMask.h"
 #include "XSSelection.h"
+#include "BitMask.h"
 #include "XSSelectionPath.h"
 
 #include <algorithm>
 #include <vector>
 
 
-void XSSelectionPath::Move(MoveDirection move,
-        int *x,
-        int *y)
+void XSSelectionPath::Move(MoveDirection move, int* x, int* y)
 {
     switch (move) {
     case UP:
@@ -28,18 +26,18 @@ void XSSelectionPath::Move(MoveDirection move,
     }
 }
 
-XSFreeFormSelectionPath::XSFreeFormSelectionPath() :
-    m_moves(),
-    m_width(0),
-    m_height(0),
-    m_x(0),
-    m_y(0),
-    m_complete(false),
-    m_validCache(true)
+XSFreeFormSelectionPath::XSFreeFormSelectionPath()
+    : m_moves()
+    , m_width(0)
+    , m_height(0)
+    , m_x(0)
+    , m_y(0)
+    , m_complete(false)
+    , m_validCache(true)
 {
 }
 
-BitMask *XSFreeFormSelectionPath::GetMask()
+BitMask* XSFreeFormSelectionPath::GetMask()
 {
     UpdateCache();
     if (!m_complete)
@@ -54,7 +52,7 @@ BitMask *XSFreeFormSelectionPath::GetMask()
 
     assert(m_width > 0);
     assert(m_height > 0);
-    BitMask *mask = new BitMask(m_width + 2, m_height + 2);
+    BitMask* mask = new BitMask(m_width + 2, m_height + 2);
     bool tracing = false;
     int x = m_x1, y = m_y1;  // Offsets at start
     int clockwise = 0, flood_x = -1, flood_y = 0;
@@ -82,8 +80,8 @@ BitMask *XSFreeFormSelectionPath::GetMask()
             // Offsets are for when going...
             //   ccw UP, ccw LEFT, (unused), ccw RIGHT, ccw DOWN,
             //   cw  UP, cw  LEFT, (unused), cw  RIGHT, cw  DOWN
-            int const x_offsets[] = { 0,  0, 99, -1, -1, -1, 0, 99, -1,  0 };
-            int const y_offsets[] = { 0, -1, 99,  0, -1,  0, 0, 99, -1, -1 };
+            int const x_offsets[] = { 0, 0, 99, -1, -1, -1, 0, 99, -1, 0 };
+            int const y_offsets[] = { 0, -1, 99, 0, -1, 0, 0, 99, -1, -1 };
             unsigned int bx = x + x_offsets[i];
             unsigned int by = y + y_offsets[i];
             if (mask->test(bx, by))
@@ -145,16 +143,14 @@ bool XSFreeFormSelectionPath::Complete()
     return false;
 }
 
-void XSFreeFormSelectionPath::GetDimensions(unsigned int *width,
-        unsigned int *height)
+void XSFreeFormSelectionPath::GetDimensions(unsigned int* width, unsigned int* height)
 {
     UpdateCache();
     *width = m_width;
     *height = m_height;
 }
 
-void XSFreeFormSelectionPath::GetEnd(unsigned int *x,
-        unsigned int *y)
+void XSFreeFormSelectionPath::GetEnd(unsigned int* x, unsigned int* y)
 {
     UpdateCache();
     *x = m_x;
@@ -170,12 +166,8 @@ void XSFreeFormSelectionPath::UpdateCache()
     m_complete = (m_x == 0 && m_y == 0 && !m_moves.empty());
 }
 
-void XSFreeFormSelectionPath::WalkPath(unsigned int *width,
-        unsigned int *height,
-        int *dx2,
-        int *dy2,
-        int *dx1,
-        int *dy1)
+void XSFreeFormSelectionPath::WalkPath(
+        unsigned int* width, unsigned int* height, int* dx2, int* dy2, int* dx1, int* dy1)
 {
     int x = 0, minx = 0, maxx = 0;
     int y = 0, miny = 0, maxy = 0;
@@ -199,14 +191,14 @@ void XSFreeFormSelectionPath::WalkPath(unsigned int *width,
         *dy1 = y - maxy;
 }
 
-XSRectangularSelectionPath::XSRectangularSelectionPath() :
-    m_x(0),
-    m_y(0),
-    m_complete(false)
+XSRectangularSelectionPath::XSRectangularSelectionPath()
+    : m_x(0)
+    , m_y(0)
+    , m_complete(false)
 {
 }
 
-BitMask *XSRectangularSelectionPath::GetMask()
+BitMask* XSRectangularSelectionPath::GetMask()
 {
     if (!m_complete)
         return 0;
@@ -220,15 +212,13 @@ bool XSRectangularSelectionPath::Move(MoveDirection m)
     return true;
 }
 
-void XSRectangularSelectionPath::GetDimensions(unsigned int *width,
-        unsigned int *height)
+void XSRectangularSelectionPath::GetDimensions(unsigned int* width, unsigned int* height)
 {
     *width = (m_x < 0) ? -m_x : m_x;
     *height = (m_y < 0) ? -m_y : m_y;
 }
 
-void XSRectangularSelectionPath::GetEnd(unsigned int *x,
-        unsigned int *y)
+void XSRectangularSelectionPath::GetEnd(unsigned int* x, unsigned int* y)
 {
     *x = m_x;
     *y = m_y;

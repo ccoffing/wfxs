@@ -2,9 +2,9 @@
 #include "XSModel.h"
 
 
-XSCommandShowRulers::XSCommandShowRulers(bool showRulers) :
-    m_oldShowRulers(showRulers /* meaninless, to pacify compiler*/),
-    m_newShowRulers(showRulers)
+XSCommandShowRulers::XSCommandShowRulers(bool showRulers)
+    : m_oldShowRulers(showRulers /* meaninless, to pacify compiler*/)
+    , m_newShowRulers(showRulers)
 {
 }
 
@@ -21,7 +21,7 @@ int XSCommandShowRulers::Undo()
     return true;
 }
 
-char const *XSCommandShowRulers::GetDescription() const
+char const* XSCommandShowRulers::GetDescription() const
 {
     return _("show rulers");
 }

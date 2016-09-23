@@ -8,13 +8,14 @@
 static const int NONE = -2;
 
 
-CommandStack::CommandStack() :
-    m_allocated(100),
-    m_used(0),
-    m_current(0),
+CommandStack::CommandStack()
+    : m_allocated(100)
+    , m_used(0)
+    , m_current(0)
+    ,
     // m_lastSave(NONE),
-    m_lastSave(m_current - 1),
-    m_commands(new Command * [m_allocated])
+    m_lastSave(m_current - 1)
+    , m_commands(new Command*[m_allocated])
 {
 }
 
@@ -26,21 +27,21 @@ CommandStack::~CommandStack()
     delete[] m_commands;
 }
 
-Command const *CommandStack::GetUndoCommand() const
+Command const* CommandStack::GetUndoCommand() const
 {
     if (!CanUndo())
         return 0;
     return m_commands[m_current - 1];
 }
 
-Command const *CommandStack::GetReDoCommand() const
+Command const* CommandStack::GetReDoCommand() const
 {
     if (!CanReDo())
         return 0;
     return m_commands[m_current];
 }
 
-int CommandStack::Do(Command *command)
+int CommandStack::Do(Command* command)
 {
     if (m_current < m_used) {
         for (int i = m_current; i < m_used; ++i) {
@@ -72,7 +73,8 @@ int CommandStack::Do(Command *command)
 int CommandStack::ReDo()
 {
     assert(CanReDo());
-    // printf("redoing %d of %d (%s)\n", m_current, m_used, m_commands[m_current]->GetDescription());
+    // printf("redoing %d of %d (%s)\n", m_current, m_used,
+    // m_commands[m_current]->GetDescription());
     int error = m_commands[m_current]->ReDo();
     if (!error)
         ++m_current;
@@ -82,7 +84,8 @@ int CommandStack::ReDo()
 int CommandStack::Undo()
 {
     assert(CanUndo());
-    // printf("undoing %d of %d (%s)\n", m_current-1, m_used, m_commands[m_current-1]->GetDescription());
+    // printf("undoing %d of %d (%s)\n", m_current-1, m_used,
+    // m_commands[m_current-1]->GetDescription());
     int error = m_commands[m_current - 1]->Undo();
     if (!error)
         --m_current;
@@ -109,12 +112,12 @@ bool CommandStack::IsModified() const
     return m_lastSave != m_current - 1;
 }
 
-XSCommandStack::XSCommandStack(XSModel *model) :
-    m_model(model)
+XSCommandStack::XSCommandStack(XSModel* model)
+    : m_model(model)
 {
 }
 
-int XSCommandStack::Do(XSCommand *command)
+int XSCommandStack::Do(XSCommand* command)
 {
     command->Init(m_model);
     return CommandStack::Do(command);

@@ -10,17 +10,17 @@ static wxColour black(0, 0, 0);
 static wxColour white(0xff, 0xff, 0xff);
 
 
-XSFlossPaletteView::XSFlossPaletteView(XSFlossPalette const *flossPalette,
-        unsigned int *currentIndex) :
-    wxScrolledWindow(),
-    m_flossPalette(flossPalette),
-    m_wellWidth(20),
-    m_wellHeight(20),
-    m_wellPadding(5),
-    m_rows(0),
-    m_cols(0),
-    m_horizontal(true),
-    m_currentIndex(currentIndex)
+XSFlossPaletteView::XSFlossPaletteView(
+        XSFlossPalette const* flossPalette, unsigned int* currentIndex)
+    : wxScrolledWindow()
+    , m_flossPalette(flossPalette)
+    , m_wellWidth(20)
+    , m_wellHeight(20)
+    , m_wellPadding(5)
+    , m_rows(0)
+    , m_cols(0)
+    , m_horizontal(true)
+    , m_currentIndex(currentIndex)
 {
     // FIXME:  do this post-init
     // ResetScrollBars();
@@ -36,8 +36,7 @@ void XSFlossPaletteView::RefreshWell(unsigned int index)
 }
 
 
-void XSFlossPaletteView::RefreshWell(unsigned int x,
-        unsigned int y)
+void XSFlossPaletteView::RefreshWell(unsigned int x, unsigned int y)
 {
     int lx = m_wellPadding + x * (m_wellWidth + m_wellPadding);
     int ly = m_wellPadding + y * (m_wellHeight + m_wellPadding);
@@ -56,7 +55,7 @@ void XSFlossPaletteView::RefreshAllWells()
 }
 
 
-void XSFlossPaletteView::OnMouseEvent(wxMouseEvent &event)
+void XSFlossPaletteView::OnMouseEvent(wxMouseEvent& event)
 {
     int lx, ly;
 
@@ -79,11 +78,7 @@ void XSFlossPaletteView::OnMouseEvent(wxMouseEvent &event)
 }
 
 
-void XSFlossPaletteView::DrawWell(wxDC &dc,
-        float x,
-        float y,
-        wxColour const &color,
-        bool highlight)
+void XSFlossPaletteView::DrawWell(wxDC& dc, float x, float y, wxColour const& color, bool highlight)
 {
     dc.SetBrush(wxBrush(color));
     dc.SetPen(wxPen(black, highlight ? 3.0 : 1.0));
@@ -91,22 +86,19 @@ void XSFlossPaletteView::DrawWell(wxDC &dc,
 }
 
 
-void XSFlossPaletteView::GetXY(unsigned int index,
-        unsigned int *x,
-        unsigned int *y)
+void XSFlossPaletteView::GetXY(unsigned int index, unsigned int* x, unsigned int* y)
 {
     if (m_horizontal) {
         *x = (index % m_cols);
         *y = index / m_cols;
-    } else   {
+    } else {
         *x = index / m_rows;
         *y = (index % m_rows);
     }
 }
 
 
-unsigned int XSFlossPaletteView::GetIndex(unsigned int x,
-        unsigned int y)
+unsigned int XSFlossPaletteView::GetIndex(unsigned int x, unsigned int y)
 {
     if (m_horizontal)
         return y * m_cols + x;
@@ -115,13 +107,13 @@ unsigned int XSFlossPaletteView::GetIndex(unsigned int x,
 }
 
 
-void XSFlossPaletteView::GetWellFromPoint(wxPoint p,
-        unsigned int *wx,
-        unsigned int *wy,
-        bool *valid)
+void XSFlossPaletteView::GetWellFromPoint(
+        wxPoint p, unsigned int* wx, unsigned int* wy, bool* valid)
 {
-    unsigned int x = ((unsigned int)(p.x + m_wellPadding / 2.0)) / (unsigned int)(m_wellWidth + m_wellPadding);
-    unsigned int y = ((unsigned int)(p.y + m_wellPadding / 2.0)) / (unsigned int)(m_wellHeight + m_wellPadding);
+    unsigned int x = ((unsigned int)(p.x + m_wellPadding / 2.0))
+            / (unsigned int)(m_wellWidth + m_wellPadding);
+    unsigned int y = ((unsigned int)(p.y + m_wellPadding / 2.0))
+            / (unsigned int)(m_wellHeight + m_wellPadding);
 
     *valid = (GetIndex(x, y) < m_flossPalette->size());
 
@@ -130,9 +122,9 @@ void XSFlossPaletteView::GetWellFromPoint(wxPoint p,
 }
 
 
-void XSFlossPaletteView::OnDraw(wxDC &dc)
+void XSFlossPaletteView::OnDraw(wxDC& dc)
 {
-//    printf("XSFlossPaletteView::Draw...\n");
+    //    printf("XSFlossPaletteView::Draw...\n");
     wxCoord x, y, width, height;
 
     dc.GetClippingBox(&x, &y, &width, &height);
@@ -155,8 +147,8 @@ void XSFlossPaletteView::OnDraw(wxDC &dc)
         stopY = m_rows ? m_rows - 1 : 0;
     if (stopX >= m_cols)
         stopX = m_cols ? m_cols - 1 : 0;
-// printf("starty %d  stopy %d\n", startY, stopY);
-// printf("startx %d  stopx %d\n", startX, stopX);
+    // printf("starty %d  stopy %d\n", startY, stopY);
+    // printf("startx %d  stopx %d\n", startX, stopX);
     for (unsigned int y = startY; y <= stopY; y++) {
         for (unsigned int x = startX; x <= stopX; x++) {
             unsigned int i = y * m_cols + x;
@@ -164,16 +156,14 @@ void XSFlossPaletteView::OnDraw(wxDC &dc)
                 continue;  // partial final column or row
             DrawWell(dc, m_wellPadding + x * (m_wellWidth + m_wellPadding),
                     m_wellPadding + y * (m_wellHeight + m_wellPadding),
-                    m_flossPalette->GetFloss(i).GetColor(),
-                    (i == *m_currentIndex));
+                    m_flossPalette->GetFloss(i).GetColor(), (i == *m_currentIndex));
         }
     }
-//    printf("XSFlossPaletteView::Draw done!\n");
+    //    printf("XSFlossPaletteView::Draw done!\n");
 }
 
 
-void XSFlossPaletteView::GetHorizontalLayout(unsigned int *x,
-        unsigned int *y)
+void XSFlossPaletteView::GetHorizontalLayout(unsigned int* x, unsigned int* y)
 {
     int w, h;
 
@@ -186,8 +176,7 @@ void XSFlossPaletteView::GetHorizontalLayout(unsigned int *x,
 }
 
 
-void XSFlossPaletteView::GetVerticalLayout(unsigned int *x,
-        unsigned int *y)
+void XSFlossPaletteView::GetVerticalLayout(unsigned int* x, unsigned int* y)
 {
     int w, h;
 

@@ -24,7 +24,7 @@ public:
     /**
      *  Creates a bitmask, by copying another.
      */
-    BitMask(BitMask const &);
+    BitMask(BitMask const&);
 
     /**
      *  Clears all bits.
@@ -68,7 +68,7 @@ public:
     void FloodFill(unsigned int x, unsigned int y, bool fill);
 
     /** Erases mask b from mask a (a &= ~b) */
-    void Erase(BitMask const &b, unsigned int xoffset = 0, unsigned int yoffset = 0);
+    void Erase(BitMask const& b, unsigned int xoffset = 0, unsigned int yoffset = 0);
 
     /**
      *  Crops the mask.

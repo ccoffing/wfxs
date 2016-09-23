@@ -1,25 +1,23 @@
+#include "XSWindowMenuUpdater.h"
 #include "XSCommand.h"
 #include "XSController.h"
 #include "XSMessages.h"
-#include "XSWindowMenuUpdater.h"
 #include <BAF/app/Messages.h>
 #include <mt/app/Command.h>
 
-XSWindowMenuUpdater::XSWindowMenuUpdater(XSController *controller) :
-    m_controller(controller)
+XSWindowMenuUpdater::XSWindowMenuUpdater(XSController* controller)
+    : m_controller(controller)
 {
 }
 
 bool XSWindowMenuUpdater::IsEnabled(uint32_t what) const
 {
     switch (what) {
-    case BAF_MSG_REVERT_TO_SAVED:
-    {
+    case BAF_MSG_REVERT_TO_SAVED: {
         if (!m_controller->CommandStack()->IsModified())
             return false;
 
-        XSProperties const &properties =
-            m_controller->GetModel()->GetProperties();
+        XSProperties const& properties = m_controller->GetModel()->GetProperties();
         return properties.m_filename.Length() != 0;
     }
 
@@ -34,15 +32,14 @@ bool XSWindowMenuUpdater::IsEnabled(uint32_t what) const
     case BAF_MSG_CENTER:
     case BAF_MSG_CUT:
     case BAF_MSG_COPY:
-        return false;      // FIXME:  anything selected?
+        return false;  // FIXME:  anything selected?
 
     case BAF_MSG_PASTE:
-        return false;     // FIXME:  anything in the clipboard?
+        return false;  // FIXME:  anything in the clipboard?
 
     case BAF_MSG_ZOOM_IN:
-    case BAF_MSG_ZOOM_OUT:
-    {
-        XSModel *model = m_controller->GetModel();
+    case BAF_MSG_ZOOM_OUT: {
+        XSModel* model = m_controller->GetModel();
         unsigned int zoom = model->GetZoom();
         unsigned int min, max;
         model->GetZoomRange(&min, &max);
@@ -107,20 +104,18 @@ bool XSWindowMenuUpdater::IsMarked(uint32_t what) const
     return false;
 }
 
-bool XSWindowMenuUpdater::GetLabel(uint32_t what,
-        BString &label) const
+bool XSWindowMenuUpdater::GetLabel(uint32_t what, BString& label) const
 {
     switch (what) {
     case BAF_MSG_UNDO:
-    case BAF_MSG_REDO:
-    {
-        static char const *prevDescs[2];
-        mt::Command const *mc;
+    case BAF_MSG_REDO: {
+        static char const* prevDescs[2];
+        mt::Command const* mc;
         if (what == BAF_MSG_UNDO)
             mc = m_controller->CommandStack()->GetUnDoCommand();
         else
             mc = m_controller->CommandStack()->GetReDoCommand();
-        char const *desc = 0;
+        char const* desc = 0;
         if (mc)
             desc = mc->GetDescription();
         if (desc != prevDescs[what == BAF_MSG_UNDO ? 0 : 1]) {

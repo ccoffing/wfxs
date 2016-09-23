@@ -1,9 +1,9 @@
+#include "XSWindow.h"
 #include "XSApplication.h"
 #include "XSDocument.h"
 #include "XSFlossPaletteView.h"
 #include "XSMessages.h"
 #include "XSView.h"
-#include "XSWindow.h"
 #include "XSWindowMenuUpdater.h"
 
 #include <app/Message.h>
@@ -20,18 +20,14 @@
 class XSDocument;
 
 
-XSWindow::XSWindow(unsigned int x,
-        unsigned int y,
-        XSDocument *document) :
-    BWindow(XSWindow::GetPreferredFrame(x, y), NULL, B_DOCUMENT_WINDOW, 0),
-    m_document(document),
-    m_menuBar(new BAF::MenuBar(BRect(), "XSWindowMenuBar")),
-    m_view(new XSView(document, Bounds(), B_FOLLOW_ALL)),
-    m_flossPaletteView(new XSFlossPaletteView(
-                           &document->GetToolState()->m_flossPalette,
-                           &document->GetToolState()->m_flossIndex,
-                           B_FOLLOW_LEFT_RIGHT | B_FOLLOW_BOTTOM)),
-    m_controller(document->getModel(), m_view, m_flossPaletteView)
+XSWindow::XSWindow(unsigned int x, unsigned int y, XSDocument* document)
+    : BWindow(XSWindow::GetPreferredFrame(x, y), NULL, B_DOCUMENT_WINDOW, 0)
+    , m_document(document)
+    , m_menuBar(new BAF::MenuBar(BRect(), "XSWindowMenuBar"))
+    , m_view(new XSView(document, Bounds(), B_FOLLOW_ALL))
+    , m_flossPaletteView(new XSFlossPaletteView(&document->GetToolState()->m_flossPalette,
+              &document->GetToolState()->m_flossIndex, B_FOLLOW_LEFT_RIGHT | B_FOLLOW_BOTTOM))
+    , m_controller(document->getModel(), m_view, m_flossPaletteView)
 
 {
     BAF::Menu *menu, *submenu, *subsubmenu;
@@ -76,8 +72,8 @@ XSWindow::XSWindow(unsigned int x,
     menu->AddItem(new BAF::MenuItem("Show Grid", XS_EVT_SHOW_GRID));
     menu->AddItem(new BAF::MenuItem("Show Rulers", XS_EVT_SHOW_RULERS));
     submenu = new BAF::Menu("Style");
-    submenu->AddItem(new BAF::MenuItem("Pattern",   XS_EVT_PATTERN_STYLE));
-    submenu->AddItem(new BAF::MenuItem("Design",    XS_EVT_DESIGN_STYLE));
+    submenu->AddItem(new BAF::MenuItem("Pattern", XS_EVT_PATTERN_STYLE));
+    submenu->AddItem(new BAF::MenuItem("Design", XS_EVT_DESIGN_STYLE));
     submenu->AddItem(new BAF::MenuItem("Realistic", XS_EVT_REALISTIC_STYLE));
     menu->AddItem(submenu);
     submenu = new BAF::Menu("Zoom");
@@ -95,17 +91,17 @@ XSWindow::XSWindow(unsigned int x,
     subsubmenu->AddItem(new BAF::MenuItem("Bottom", XS_EVT_HALF_BOTTOM_STITCH));
     submenu->AddItem(subsubmenu);
     subsubmenu = new BAF::Menu("Three-quarter");
-    subsubmenu->AddItem(new BAF::MenuItem("Automatic",   XS_EVT_THREEQUARTER_AUTO_STITCH, '3'));
-    subsubmenu->AddItem(new BAF::MenuItem("Upper left",  XS_EVT_THREEQUARTER_UL_STITCH));
+    subsubmenu->AddItem(new BAF::MenuItem("Automatic", XS_EVT_THREEQUARTER_AUTO_STITCH, '3'));
+    subsubmenu->AddItem(new BAF::MenuItem("Upper left", XS_EVT_THREEQUARTER_UL_STITCH));
     subsubmenu->AddItem(new BAF::MenuItem("Upper right", XS_EVT_THREEQUARTER_UR_STITCH));
-    subsubmenu->AddItem(new BAF::MenuItem("Lower left",  XS_EVT_THREEQUARTER_LL_STITCH));
+    subsubmenu->AddItem(new BAF::MenuItem("Lower left", XS_EVT_THREEQUARTER_LL_STITCH));
     subsubmenu->AddItem(new BAF::MenuItem("Lower right", XS_EVT_THREEQUARTER_LR_STITCH));
     submenu->AddItem(subsubmenu);
     subsubmenu = new BAF::Menu("Quarter");
-    subsubmenu->AddItem(new BAF::MenuItem("Automatic",   XS_EVT_QUARTER_AUTO_STITCH, '4'));
-    subsubmenu->AddItem(new BAF::MenuItem("Upper left",  XS_EVT_QUARTER_UL_STITCH));
+    subsubmenu->AddItem(new BAF::MenuItem("Automatic", XS_EVT_QUARTER_AUTO_STITCH, '4'));
+    subsubmenu->AddItem(new BAF::MenuItem("Upper left", XS_EVT_QUARTER_UL_STITCH));
     subsubmenu->AddItem(new BAF::MenuItem("Upper right", XS_EVT_QUARTER_UR_STITCH));
-    subsubmenu->AddItem(new BAF::MenuItem("Lower left",  XS_EVT_QUARTER_LL_STITCH));
+    subsubmenu->AddItem(new BAF::MenuItem("Lower left", XS_EVT_QUARTER_LL_STITCH));
     subsubmenu->AddItem(new BAF::MenuItem("Lower right", XS_EVT_QUARTER_LR_STITCH));
     submenu->AddItem(subsubmenu);
     menu->AddItem(submenu);
@@ -151,18 +147,15 @@ XSWindow::XSWindow(unsigned int x,
     float y = m_menuBar->Bounds().Height();
     m_view->MoveTo(0, y);
     m_view->ResizeBy(-B_V_SCROLL_BAR_WIDTH, -y - B_H_SCROLL_BAR_HEIGHT);
-    BScrollView *scrollView =
-        new BScrollView(NULL, m_view, m_view->ResizingMode(), B_WILL_DRAW,
-                true, true);
+    BScrollView* scrollView
+            = new BScrollView(NULL, m_view, m_view->ResizingMode(), B_WILL_DRAW, true, true);
 
     y += scrollView->Bounds().Height();
     m_flossPaletteView->MoveTo(0, y);
     MinMaxView mmv = m_flossPaletteView->layoutprefs();
     m_flossPaletteView->ResizeTo(m_view->Bounds().Width(), mmv.min.y);
-    BScrollView *scrollFlossPaletteView =
-        new BScrollView(NULL, m_flossPaletteView,
-                m_flossPaletteView->ResizingMode(), B_WILL_DRAW, true,
-                false);
+    BScrollView* scrollFlossPaletteView = new BScrollView(
+            NULL, m_flossPaletteView, m_flossPaletteView->ResizingMode(), B_WILL_DRAW, true, false);
 
     ResizeBy(0, scrollFlossPaletteView->Bounds().Height());
 
@@ -188,7 +181,7 @@ bool XSWindow::QuitRequested()
     return false;
 }
 
-void XSWindow::MessageReceived(BMessage *message)
+void XSWindow::MessageReceived(BMessage* message)
 {
     switch (message->what) {
     case BAF_MSG_QUIT_APP:
@@ -197,8 +190,7 @@ void XSWindow::MessageReceived(BMessage *message)
     case B_ABOUT_REQUESTED:
         xs_app->PostMessage(B_ABOUT_REQUESTED);
         break;
-    case B_SAVE_REQUESTED:
-    {
+    case B_SAVE_REQUESTED: {
         XSProperties properties = m_document->getModel().GetPropertiesCopy();
 
         entry_ref directory;
@@ -213,12 +205,12 @@ void XSWindow::MessageReceived(BMessage *message)
         Save(properties.m_filename);
         break;
     }
-    case BAF_MSG_PROPERTIES:
-    {
+    case BAF_MSG_PROPERTIES: {
         if (m_propertiesWindow)
             m_propertiesWindow->Show();
         else
-            m_propertiesWindow = new XSPropertiesWindow(this, m_document->getModel().GetProperties());
+            m_propertiesWindow
+                    = new XSPropertiesWindow(this, m_document->getModel().GetProperties());
         break;
     }
 
@@ -231,8 +223,7 @@ void XSWindow::MessageReceived(BMessage *message)
     case XS_EVT_REALISTIC_STYLE:
         m_controller.OnRealisticStyle();
         break;
-    case BAF_MSG_DIALOG_CLOSING:
-    {
+    case BAF_MSG_DIALOG_CLOSING: {
         status_t s;
         int32_t dialog, button;
 
@@ -260,33 +251,32 @@ void XSWindow::MessageReceived(BMessage *message)
         break;
     }
 
-    case BAF_MSG_CLOSE:
-    {
+    case BAF_MSG_CLOSE: {
         if (m_propertiesWindow) {
             m_propertiesWindow->PostMessage(BAF_MSG_QUIT_REQUESTED);
             m_propertiesWindow = 0;
         }
         if (m_commandStack.IsModified()) {
-            BAlert *alert = new BAlert("title",
+            BAlert* alert = new BAlert("title",
                     "Do you want to save changes to this pattern before closing it?  "
                     "If you don't save, your changes will be lost.",
-                    "Cancel", "Don't save", "Save",
-                    B_WIDTH_AS_USUAL, B_OFFSET_SPACING, B_WARNING_ALERT);
+                    "Cancel", "Don't save", "Save", B_WIDTH_AS_USUAL, B_OFFSET_SPACING,
+                    B_WARNING_ALERT);
             alert->SetShortcut(0, B_ESCAPE);
             int32 button_index = alert->Go();
-            if (button_index == 2) {         // save
+            if (button_index == 2) {  // save
                 Save();
                 if (m_commandStack.IsModified()) {
                     printf("save apparently failed... not closing.\n");
                     break;
                 }
-            } else if (button_index == 0) // cancel
+            } else if (button_index == 0)  // cancel
                 break;
-            else                          // don't save
-                ;                         // so fall through; clean up...
+            else   // don't save
+                ;  // so fall through; clean up...
         }
 
-// FIXME:  send reply msg instead
+        // FIXME:  send reply msg instead
         m_allowClose = true;
         break;
     }
@@ -299,12 +289,11 @@ void XSWindow::MessageReceived(BMessage *message)
         SaveAs();
         break;
 
-    case BAF_MSG_REVERT_TO_SAVED:
-    {
-        BAlert *alert = new BAlert("Revert to saved?",
+    case BAF_MSG_REVERT_TO_SAVED: {
+        BAlert* alert = new BAlert("Revert to saved?",
                 "Do you want to discard your changes, and revert to the previously saved version?",
-                "Cancel", "Discard & Revert", NULL,
-                B_WIDTH_AS_USUAL, B_OFFSET_SPACING, B_WARNING_ALERT);
+                "Cancel", "Discard & Revert", NULL, B_WIDTH_AS_USUAL, B_OFFSET_SPACING,
+                B_WARNING_ALERT);
         alert->SetShortcut(0, B_ESCAPE);
         int32 button_index = alert->Go();
         if (button_index == 1) {
@@ -410,7 +399,7 @@ void XSWindow::MessageReceived(BMessage *message)
     case BAF_MSG_PRINT_PREVIEW:
     case BAF_MSG_HELP:
     case BAF_MSG_TIP_OF_THE_DAY:
-        printf("FIXME:  XSDocument: '%4s' not implemented yet\n", (char *)&message->what);
+        printf("FIXME:  XSDocument: '%4s' not implemented yet\n", (char*)&message->what);
         break;
 
     default:
@@ -420,14 +409,13 @@ void XSWindow::MessageReceived(BMessage *message)
     return true;
 }
 
-XSFlossPaletteView *XSWindow::GetFlossPaletteView()
+XSFlossPaletteView* XSWindow::GetFlossPaletteView()
 {
     return m_flossPaletteView;
 }
 
 // FIXME:  move this into mt-framework
-BRect XSWindow::GetPreferredFrame(unsigned int x,
-        unsigned int y)
+BRect XSWindow::GetPreferredFrame(unsigned int x, unsigned int y)
 {
     unsigned int zoom = XSView::GetPreferredZoom();
     BRect frame(0, 0, x * zoom, y * zoom);

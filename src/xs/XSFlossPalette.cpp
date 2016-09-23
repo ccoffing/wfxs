@@ -1,6 +1,6 @@
+#include "XSFloss.h"
 #include "Logger.h"
 #include "XSDataIO.h"
-#include "XSFloss.h"
 #include "XSFlossPalette.h"
 
 #include <assert.h>
@@ -8,17 +8,17 @@
 #define LOG "wfxs.FlossPalette"
 
 
-XSFlossPalette::XSFlossPalette() :
-    m_paletteSize(0),
-    m_palette(0),
-    m_symbolPalette()
+XSFlossPalette::XSFlossPalette()
+    : m_paletteSize(0)
+    , m_palette(0)
+    , m_symbolPalette()
 {
 }
 
-XSFlossPalette::XSFlossPalette(XSFlossPalette const &flossPalette) :
-    m_paletteSize(0),
-    m_palette(0),
-    m_symbolPalette(flossPalette.m_symbolPalette)
+XSFlossPalette::XSFlossPalette(XSFlossPalette const& flossPalette)
+    : m_paletteSize(0)
+    , m_palette(0)
+    , m_symbolPalette(flossPalette.m_symbolPalette)
 {
     ResizePalette(flossPalette.m_paletteSize);
     for (unsigned int i = 0; i < m_paletteSize; ++i) {
@@ -26,15 +26,15 @@ XSFlossPalette::XSFlossPalette(XSFlossPalette const &flossPalette) :
     }
 }
 
-XSFlossPalette::XSFlossPalette(std::istream &src) :
-    m_paletteSize(0),
-    m_palette(0),
-    m_symbolPalette()
+XSFlossPalette::XSFlossPalette(std::istream& src)
+    : m_paletteSize(0)
+    , m_palette(0)
+    , m_symbolPalette()
 {
     UnserializeAll(src);
 }
 
-void XSFlossPalette::UnserializeAll(std::istream &src)
+void XSFlossPalette::UnserializeAll(std::istream& src)
 {
     unsigned int i = 0;
 
@@ -45,7 +45,7 @@ void XSFlossPalette::UnserializeAll(std::istream &src)
     }
 }
 
-void XSFlossPalette::Unserialize(std::istream &src)
+void XSFlossPalette::Unserialize(std::istream& src)
 {
     unsigned int i = 0;
     uint16_t size;
@@ -58,7 +58,7 @@ void XSFlossPalette::Unserialize(std::istream &src)
     }
 }
 
-void XSFlossPalette::Serialize(std::ostream &file) const
+void XSFlossPalette::Serialize(std::ostream& file) const
 {
     WriteLE32_exc(file, m_paletteSize);
     for (unsigned int i = 0; i < m_paletteSize; ++i) {
@@ -66,7 +66,7 @@ void XSFlossPalette::Serialize(std::ostream &file) const
     }
 }
 
-XSFlossPalette &XSFlossPalette::operator=(XSFlossPalette const &rhs)
+XSFlossPalette& XSFlossPalette::operator=(XSFlossPalette const& rhs)
 {
     ResizePalette(rhs.m_paletteSize);
     for (unsigned int i = 0; i < m_paletteSize; ++i) {
@@ -82,7 +82,7 @@ XSFlossPalette::~XSFlossPalette()
 
 void XSFlossPalette::ResizePalette(unsigned int newSize)
 {
-    XSFloss *f = new XSFloss[newSize];
+    XSFloss* f = new XSFloss[newSize];
 
     if (m_palette) {
         unsigned int toCopy = (newSize < m_paletteSize) ? newSize : m_paletteSize;
@@ -95,7 +95,7 @@ void XSFlossPalette::ResizePalette(unsigned int newSize)
     m_paletteSize = newSize;
 }
 
-XSFloss &XSFlossPalette::operator[](unsigned int i)
+XSFloss& XSFlossPalette::operator[](unsigned int i)
 {
     assert(!(i > m_paletteSize));
     if (i == m_paletteSize)
@@ -103,13 +103,13 @@ XSFloss &XSFlossPalette::operator[](unsigned int i)
     return m_palette[i];
 }
 
-XSFloss &XSFlossPalette::operator[](unsigned int i) const
+XSFloss& XSFlossPalette::operator[](unsigned int i) const
 {
     assert(!(i >= m_paletteSize));
     return m_palette[i];
 }
 
-XSFloss &XSFlossPalette::GetFloss(unsigned int i) const
+XSFloss& XSFlossPalette::GetFloss(unsigned int i) const
 {
     assert(i < m_paletteSize);
     return m_palette[i];

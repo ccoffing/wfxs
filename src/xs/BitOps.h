@@ -22,7 +22,7 @@ inline int32_t absolute(int32_t x)
 /**
  *  Swaps a and b in-place.
  */
-inline void swap(int &a, int &b)
+inline void swap(int& a, int& b)
 {
     // Hacker's Delight, p 38
     a ^= b;

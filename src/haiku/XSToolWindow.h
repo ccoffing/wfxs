@@ -12,10 +12,10 @@ public:
 
     void HighlightTool(Tool tool);
 
-    virtual void MessageReceived(BMessage *message);
+    virtual void MessageReceived(BMessage* message);
     virtual bool QuitRequested();
 };
 
-extern XSToolWindow *toolWindow;
+extern XSToolWindow* toolWindow;
 
 #endif

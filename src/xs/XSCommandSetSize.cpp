@@ -2,12 +2,11 @@
 #include "XSModel.h"
 
 
-XSCommandSetSize::XSCommandSetSize(unsigned int x,
-        unsigned int y) :
-    m_newX(x),
-    m_newY(y),
-    m_oldX(0),
-    m_oldY(0)
+XSCommandSetSize::XSCommandSetSize(unsigned int x, unsigned int y)
+    : m_newX(x)
+    , m_newY(y)
+    , m_oldX(0)
+    , m_oldY(0)
 {
 }
 
@@ -27,7 +26,7 @@ int XSCommandSetSize::Undo()
     return true;
 }
 
-char const *XSCommandSetSize::GetDescription() const
+char const* XSCommandSetSize::GetDescription() const
 {
     return _("resize");
 }

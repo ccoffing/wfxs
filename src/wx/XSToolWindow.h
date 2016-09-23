@@ -13,18 +13,18 @@
  *  @brief TODO
  */
 class XSToolWindow : public wxDocParentFrame {
-//    DECLARE_CLASS(XSToolWindow)
+    //    DECLARE_CLASS(XSToolWindow)
     DECLARE_EVENT_TABLE()
 
 public:
-    XSToolWindow(wxDocManager *manager);  // const wxPoint &pos, const wxSize &size, long type);
+    XSToolWindow(wxDocManager* manager);  // const wxPoint &pos, const wxSize &size, long type);
 
-    void OnButton(wxCommandEvent &event);
+    void OnButton(wxCommandEvent& event);
     void OnNew();
 
     void HighlightTool(Tool tool);
 };
 
-extern XSToolWindow *toolWindow;
+extern XSToolWindow* toolWindow;
 
 #endif

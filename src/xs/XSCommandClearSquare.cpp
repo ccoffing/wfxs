@@ -5,13 +5,11 @@
 #include <vector>
 
 
-XSCommandClearSquare::XSCommandClearSquare(unsigned int x,
-        unsigned int y,
-        unsigned int layer) :
-    m_layer(layer),
-    m_x(x),
-    m_y(y),
-    m_oldSquare()
+XSCommandClearSquare::XSCommandClearSquare(unsigned int x, unsigned int y, unsigned int layer)
+    : m_layer(layer)
+    , m_x(x)
+    , m_y(y)
+    , m_oldSquare()
 {
 }
 
@@ -28,16 +26,15 @@ int XSCommandClearSquare::Undo()
     return true;
 }
 
-char const *XSCommandClearSquare::GetDescription() const
+char const* XSCommandClearSquare::GetDescription() const
 {
     return _("erase square");
 }
 
-XSCommandClearSquares::XSCommandClearSquares(std::vector<XSPoint> const &points,
-        unsigned int layer) :
-    m_layer(layer),
-    m_points(points),
-    m_oldSquares()
+XSCommandClearSquares::XSCommandClearSquares(std::vector<XSPoint> const& points, unsigned int layer)
+    : m_layer(layer)
+    , m_points(points)
+    , m_oldSquares()
 {
     m_oldSquares.reserve(points.size());
 }
@@ -63,7 +60,7 @@ int XSCommandClearSquares::Undo()
     return true;
 }
 
-char const *XSCommandClearSquares::GetDescription() const
+char const* XSCommandClearSquares::GetDescription() const
 {
     return _("erase squares");
 }

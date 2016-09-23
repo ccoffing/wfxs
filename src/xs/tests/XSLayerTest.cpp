@@ -3,8 +3,10 @@
 
 #include "XSLayer.h"
 
-TEST_CASE("XSLayer") {
-    SECTION("Size") {
+TEST_CASE("XSLayer")
+{
+    SECTION("Size")
+    {
         unsigned int x = 50;
         unsigned int y = 60;
         XSLayer l(x, y);
@@ -22,6 +24,7 @@ TEST_CASE("XSLayer") {
         CHECK_EQUAL(y, l2.getY());
     }
 
-    SECTION("SetStitch") {
+    SECTION("SetStitch")
+    {
     }
 }

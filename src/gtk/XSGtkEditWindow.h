@@ -1,8 +1,8 @@
 #ifndef XS_GTK_EDIT_WINDOW_H
 #define XS_GTK_EDIT_WINDOW_H
 
-#include "xs/XSController.h"
 #include "gtk/XSGtkCanvas.h"
+#include "xs/XSController.h"
 
 #include <gtkmm/hvbox.h>
 #include <gtkmm/stock.h>

@@ -1,8 +1,8 @@
+#include "XSFile.h"
 #include "XSApplication.h"
 #include "XSController.h"
 #include "XSDataIO.h"
 #include "XSException.h"
-#include "XSFile.h"
 #include "XSFileNative.h"
 #include "XSFloss.h"
 #include "XSSkein.h"
@@ -15,9 +15,8 @@
 
 static unsigned int g_version = 1;
 
-static void StreamOutNativeSquare(std::ostream &stream,
-        XSSquareIO *square,
-        unsigned int repeatCount)
+static void StreamOutNativeSquare(
+        std::ostream& stream, XSSquareIO* square, unsigned int repeatCount)
 {
     assert(repeatCount > 0 && repeatCount < 0x80);
 
@@ -26,8 +25,7 @@ static void StreamOutNativeSquare(std::ostream &stream,
     square->Serialize(stream);
 }
 
-void StreamOutNative(std::ostream &stream,
-        const XSModel *model)
+void StreamOutNative(std::ostream& stream, const XSModel* model)
 {
     XSToolState const toolState = model->ToolState();
     unsigned int squaresX = model->SquaresX();
@@ -67,7 +65,7 @@ void StreamOutNative(std::ostream &stream,
     // Mark all that are used
     unsigned int used = 0;
     for (unsigned int i = 0; i < toolState.m_flossPalette.size(); ++i) {
-        XSFloss const &floss = toolState.m_flossPalette[i];
+        XSFloss const& floss = toolState.m_flossPalette[i];
         for (unsigned int j = 0; j < floss.m_numskeins; ++j) {
             if (makers[floss.m_skeins[j]->m_maker] == 0) {
                 makers[floss.m_skeins[j]->m_maker] = 1;
@@ -122,8 +120,8 @@ void StreamOutNative(std::ostream &stream,
                     ++repeatPreviousSquare;
                 } else {
                     assert(repeatPreviousSquare < 128);
-                    if (repeatPreviousSquare < 127 &&
-                        memcmp(&previousSquare, &square, sizeof(XSSquareIO)) == 0) {
+                    if (repeatPreviousSquare < 127
+                            && memcmp(&previousSquare, &square, sizeof(XSSquareIO)) == 0) {
                         ++repeatPreviousSquare;
                     } else {
                         // They differ, or the previous run hit the max length.
@@ -141,8 +139,7 @@ void StreamOutNative(std::ostream &stream,
     }
 }
 
-void StreamInNative(std::istream &stream,
-        XSModel *doc)
+void StreamInNative(std::istream& stream, XSModel* doc)
 {
     do {
         uint32_t u32, squaresX, squaresY, layers;

@@ -16,7 +16,7 @@ public:
 
     virtual int Do();
     virtual int Undo();
-    virtual char const *GetDescription() const;
+    virtual char const* GetDescription() const;
 
 private:
     bool m_oldShowRulers;

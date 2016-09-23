@@ -16,23 +16,26 @@ public:
         return 0;
     }
 
-    char const *GetDescription() const
+    char const* GetDescription() const
     {
         return "test command that always succeeds.";
     }
 };
 
-TEST_CASE("CommandStack") {
+TEST_CASE("CommandStack")
+{
     CommandStack cs;
 
-    SECTION("init") {
+    SECTION("init")
+    {
         CHECK_FALSE(cs.CanReDo());
         CHECK_FALSE(cs.CanUndo());
         CHECK_FALSE(cs.IsModified());
     }
 
-    SECTION("undo") {
-        Command *c = new TestXSCommand;
+    SECTION("undo")
+    {
+        Command* c = new TestXSCommand;
 
         cs.Do(c);
         CHECK_FALSE(cs.CanReDo());

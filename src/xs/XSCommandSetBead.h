@@ -7,15 +7,12 @@
  */
 class XSCommandSetBead : public XSCommand {
 public:
-    XSCommandSetBead(unsigned int x,
-            unsigned int y,
-            unsigned int region,
-            unsigned int colorIndex,
+    XSCommandSetBead(unsigned int x, unsigned int y, unsigned int region, unsigned int colorIndex,
             bool overwrite);
 
     virtual int Do();
     virtual int Undo();
-    virtual char const *GetDescription() const;
+    virtual char const* GetDescription() const;
 
 private:
     unsigned int m_layer;

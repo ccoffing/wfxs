@@ -10,7 +10,7 @@ class XSCommandLayerAdd : public XSCommand {
 public:
     virtual int Do();
     virtual int Undo();
-    virtual char const *GetDescription() const;
+    virtual char const* GetDescription() const;
 };
 
 
@@ -20,7 +20,7 @@ class XSCommandLayerDel : public XSCommand {
 public:
     virtual int Do();
     virtual int Undo();
-    virtual char const *GetDescription() const;
+    virtual char const* GetDescription() const;
 };
 
 
@@ -30,7 +30,7 @@ class XSCommandLayerUp : public XSCommand {
 public:
     virtual int Do();
     virtual int Undo();
-    virtual char const *GetDescription() const;
+    virtual char const* GetDescription() const;
 };
 
 
@@ -40,7 +40,7 @@ class XSCommandLayerDown : public XSCommand {
 public:
     virtual int Do();
     virtual int Undo();
-    virtual char const *GetDescription() const;
+    virtual char const* GetDescription() const;
 };
 
 

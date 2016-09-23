@@ -2,9 +2,9 @@
 #include "XSModel.h"
 
 
-XSCommandZoom::XSCommandZoom(unsigned int zoom) :
-    m_oldZoom(zoom /* meaningless, to pacify compiler*/),
-    m_newZoom(zoom)
+XSCommandZoom::XSCommandZoom(unsigned int zoom)
+    : m_oldZoom(zoom /* meaningless, to pacify compiler*/)
+    , m_newZoom(zoom)
 {
 }
 
@@ -21,7 +21,7 @@ int XSCommandZoom::Undo()
     return true;
 }
 
-char const *XSCommandZoom::GetDescription() const
+char const* XSCommandZoom::GetDescription() const
 {
     return _("zoom");
 }

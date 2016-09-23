@@ -7,20 +7,19 @@
 #include <vector>
 
 
-BitMask::BitMask(unsigned int x,
-        unsigned int y) :
-    w(x),
-    h(y),
-    m_bs(x * y)
+BitMask::BitMask(unsigned int x, unsigned int y)
+    : w(x)
+    , h(y)
+    , m_bs(x * y)
 {
     assert(w > 0);
     assert(h > 0);
 }
 
-BitMask::BitMask(BitMask const &rhs) :
-    w(rhs.w),
-    h(rhs.h),
-    m_bs(rhs.m_bs)
+BitMask::BitMask(BitMask const& rhs)
+    : w(rhs.w)
+    , h(rhs.h)
+    , m_bs(rhs.m_bs)
 {
 }
 
@@ -71,8 +70,7 @@ void BitMask::FloodFill(unsigned int x, unsigned int y, bool fill)
         // lines even exist).  Make note of the first fillable pixels while
         // scanning from left to right.
         for (int updown = -1; updown <= 1; updown += 2) {
-            if ((updown == -1 && (i > w)) ||
-                (updown ==  1 && (i <= (w * (h - 1))))) {
+            if ((updown == -1 && (i > w)) || (updown == 1 && (i <= (w * (h - 1))))) {
                 unsigned int _west = west + (w * updown);
                 unsigned int _east = east + (w * updown);
                 start = _west;
@@ -92,7 +90,7 @@ void BitMask::FloodFill(unsigned int x, unsigned int y, bool fill)
     }
 }
 
-void BitMask::Erase(BitMask const &b, unsigned int xoffset, unsigned int yoffset)
+void BitMask::Erase(BitMask const& b, unsigned int xoffset, unsigned int yoffset)
 {
     // FIXME
 }

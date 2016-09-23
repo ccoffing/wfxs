@@ -1,6 +1,6 @@
 #include "XSColor.h"
 
-std::ostream & operator<<(std::ostream &out, XSColor const &c)
+std::ostream& operator<<(std::ostream& out, XSColor const& c)
 {
     out.put(c.red);
     out.put(c.green);
@@ -9,10 +9,7 @@ std::ostream & operator<<(std::ostream &out, XSColor const &c)
     return out;
 }
 
-bool XSColor::operator==(XSColor const &rhs) const
+bool XSColor::operator==(XSColor const& rhs) const
 {
-    return red == rhs.red &&
-           green == rhs.green &&
-           blue == rhs.blue &&
-           alpha == rhs.alpha;
+    return red == rhs.red && green == rhs.green && blue == rhs.blue && alpha == rhs.alpha;
 }

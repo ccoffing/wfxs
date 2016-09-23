@@ -18,15 +18,15 @@ public:
      * and then saves it on the command stack.  Ownership of the command is transferred.  The
      * CommandStack will free the Command when it is no longer relevant.
      */
-    virtual int Do(Command *command);
+    virtual int Do(Command* command);
     virtual int ReDo();
     virtual int Undo();
 
     bool CanReDo() const;
     bool CanUndo() const;
 
-    Command const *GetUndoCommand() const;
-    Command const *GetReDoCommand() const;
+    Command const* GetUndoCommand() const;
+    Command const* GetReDoCommand() const;
 
     void Saved();
     bool IsModified() const;
@@ -36,23 +36,23 @@ private:
     int m_used;
     int m_current;
     int m_lastSave;
-    Command **m_commands;
+    Command** m_commands;
 
     // disallow copying
-    CommandStack(CommandStack const &);
-    CommandStack &operator=(CommandStack const &);
+    CommandStack(CommandStack const&);
+    CommandStack& operator=(CommandStack const&);
 };
 
 class XSCommandStack : public CommandStack {
 public:
-    XSCommandStack(XSModel *model);
+    XSCommandStack(XSModel* model);
 
-    virtual int Do(XSCommand *command);
+    virtual int Do(XSCommand* command);
     virtual int Undo();
     virtual int ReDo();
 
 protected:
-    XSModel *m_model;
+    XSModel* m_model;
 };
 
 #endif

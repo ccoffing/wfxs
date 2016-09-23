@@ -4,19 +4,19 @@
 
 #include <assert.h>
 
-XSLayer::XSLayer(unsigned int sizeX, unsigned int sizeY) :
-    m_sizeX(sizeX),
-    m_sizeY(sizeY),
-    m_grid(new XSSquare[sizeX * sizeY]),
-    m_embelishments()
+XSLayer::XSLayer(unsigned int sizeX, unsigned int sizeY)
+    : m_sizeX(sizeX)
+    , m_sizeY(sizeY)
+    , m_grid(new XSSquare[sizeX * sizeY])
+    , m_embelishments()
 {
 }
 
-XSLayer::XSLayer(const XSLayer &rhs) :
-    m_sizeX(rhs.m_sizeX),
-    m_sizeY(rhs.m_sizeY),
-    m_grid(new XSSquare[m_sizeX * m_sizeY]),
-    m_embelishments(rhs.m_embelishments)
+XSLayer::XSLayer(const XSLayer& rhs)
+    : m_sizeX(rhs.m_sizeX)
+    , m_sizeY(rhs.m_sizeY)
+    , m_grid(new XSSquare[m_sizeX * m_sizeY])
+    , m_embelishments(rhs.m_embelishments)
 {
     for (unsigned int i = 0; i < m_sizeX * m_sizeY; ++i) {
         m_grid[i] = rhs.m_grid[i];
@@ -28,7 +28,7 @@ XSLayer::~XSLayer()
     delete[] m_grid;
 }
 
-XSSquare *XSLayer::getSquare(unsigned int x, unsigned int y) const
+XSSquare* XSLayer::getSquare(unsigned int x, unsigned int y) const
 {
     return m_grid + (m_sizeX * y) + x;
 }
@@ -38,7 +38,7 @@ void XSLayer::Resize(unsigned int sizeX, unsigned int sizeY)
     if (sizeX == m_sizeX && sizeY == m_sizeY)
         return;
 
-    XSSquare *grid = new XSSquare[sizeX * sizeY];
+    XSSquare* grid = new XSSquare[sizeX * sizeY];
 
     // Copy over existing squares.
     unsigned int minX = (sizeX < m_sizeX ? sizeX : m_sizeX);
@@ -82,11 +82,10 @@ StitchTypeAndLocation XSLayer::autoStitch(unsigned int squareX, unsigned int squ
         unsigned int xPercent, unsigned int yPercent, StitchType stitchType,
         unsigned int flossIndex)
 {
-    assert(stitchType == Stitch_QuarterAuto ||
-            stitchType == Stitch_HalfAuto ||
-            stitchType == Stitch_ThreeQuarterAuto);
+    assert(stitchType == Stitch_QuarterAuto || stitchType == Stitch_HalfAuto
+            || stitchType == Stitch_ThreeQuarterAuto);
 
-    XSSquare *square = getSquare(squareX, squareY);
+    XSSquare* square = getSquare(squareX, squareY);
 
     unsigned int rotationsTried;
     unsigned int i;
@@ -96,8 +95,7 @@ StitchTypeAndLocation XSLayer::autoStitch(unsigned int squareX, unsigned int squ
 
         rotationsTried = 0;
         for (StitchTypeAndLocation rotated = XSSquare::rotateStitch(stitchToRotate);
-             rotationsTried < 3;
-             rotated = XSSquare::rotateStitch(rotated), ++rotationsTried) {
+                rotationsTried < 3; rotated = XSSquare::rotateStitch(rotated), ++rotationsTried) {
             if (!square->findOverlappingStitch(rotated)) {
                 square->setStitch(rotated, flossIndex);
                 return rotated;
@@ -110,8 +108,7 @@ StitchTypeAndLocation XSLayer::autoStitch(unsigned int squareX, unsigned int squ
 
     // Existing stich couldn't be rotated, or there was no existing stitch.
     // Try to add a new one.
-    if (stitchType == Stitch_ThreeQuarterAuto ||
-        stitchType == Stitch_QuarterAuto) {
+    if (stitchType == Stitch_ThreeQuarterAuto || stitchType == Stitch_QuarterAuto) {
         unsigned int offset = 0;
         // WARNING:  I depend on a UL, UR, LL, LR ordering in the enum.
         // FIXME:  Use region; do not pass % in here.
@@ -134,9 +131,8 @@ StitchTypeAndLocation XSLayer::autoStitch(unsigned int squareX, unsigned int squ
     }
 
     rotationsTried = 0;
-    for (StitchTypeAndLocation rotated = stitchToRotate;
-         rotationsTried < 3;
-         rotated = XSSquare::rotateStitch(rotated), ++rotationsTried) {
+    for (StitchTypeAndLocation rotated = stitchToRotate; rotationsTried < 3;
+            rotated = XSSquare::rotateStitch(rotated), ++rotationsTried) {
         if (!square->findOverlappingStitch(rotated)) {
             square->setStitch(rotated, flossIndex);
             return rotated;
@@ -148,7 +144,7 @@ StitchTypeAndLocation XSLayer::autoStitch(unsigned int squareX, unsigned int squ
 void XSLayer::replaceStitch(unsigned int squareX, unsigned int squareY,
         StitchTypeAndLocation stitchType, unsigned int flossIndex, bool overwrite)
 {
-    XSSquare *square = getSquare(squareX, squareY);
+    XSSquare* square = getSquare(squareX, squareY);
 
     if (overwrite) {
         int i;
@@ -164,15 +160,12 @@ void XSLayer::replaceStitch(unsigned int squareX, unsigned int squareY,
 }
 
 StitchType XSLayer::SetStitch(unsigned int squareX, unsigned int squareY, unsigned int xPercent,
-        unsigned int yPercent, StitchType stitchType, unsigned int flossIndex,
-        bool overwrite)
+        unsigned int yPercent, StitchType stitchType, unsigned int flossIndex, bool overwrite)
 {
-    if (stitchType == Stitch_QuarterAuto ||
-        stitchType == Stitch_HalfAuto ||
-        stitchType == Stitch_ThreeQuarterAuto) {
+    if (stitchType == Stitch_QuarterAuto || stitchType == Stitch_HalfAuto
+            || stitchType == Stitch_ThreeQuarterAuto) {
         StitchTypeAndLocation stl;
-        stl = autoStitch(squareX, squareY, xPercent, yPercent, stitchType,
-                flossIndex);
+        stl = autoStitch(squareX, squareY, xPercent, yPercent, stitchType, flossIndex);
         /*
          *  If an orientation was found, then return that; if it wasn't possible
          *  to place the stitch, return what was requested (possibly an*Auto
@@ -182,8 +175,7 @@ StitchType XSLayer::SetStitch(unsigned int squareX, unsigned int squareY, unsign
         if (stl != StitchLoc_None)
             stitchType = (StitchType)stl;
     } else {
-        replaceStitch(squareX, squareY, (StitchTypeAndLocation)stitchType,
-                flossIndex, overwrite);
+        replaceStitch(squareX, squareY, (StitchTypeAndLocation)stitchType, flossIndex, overwrite);
     }
     return stitchType;
 }
@@ -197,7 +189,8 @@ void XSLayer::SetKnot(unsigned int x, unsigned int y, unsigned int region, KnotT
 void XSLayer::SetBead(unsigned int x, unsigned int y, unsigned int region, unsigned int colorIndex,
         bool overwrite)
 {
-    SetEmbelishment(EmbelType_Bead, x, y, region, (KnotType)0 /* FIXME - yuck*/,  colorIndex, overwrite);
+    SetEmbelishment(
+            EmbelType_Bead, x, y, region, (KnotType)0 /* FIXME - yuck*/, colorIndex, overwrite);
 }
 
 void XSLayer::SetEmbelishment(EmbelType type, unsigned int x, unsigned int y, unsigned int region,
@@ -245,7 +238,7 @@ void XSLayer::SetEmbelishment(EmbelType type, unsigned int x, unsigned int y, un
 void XSLayer::ClearSquare(unsigned int x, unsigned int y)
 {
     assert(x < m_sizeX && y < m_sizeY);
-    XSSquare *square = getSquare(x, y);
+    XSSquare* square = getSquare(x, y);
     square->Clear();
 }
 
@@ -254,13 +247,13 @@ void XSLayer::Backstitch()
     // FIXME
 }
 
-void XSLayer::GetSquareData(XSSquareIO *square, unsigned int squareX, unsigned int squareY)
+void XSLayer::GetSquareData(XSSquareIO* square, unsigned int squareX, unsigned int squareY)
 {
     assert(square);
     assert(squareX < m_sizeX);
     assert(squareY < m_sizeY);
 
-    XSSquare *s = getSquare(squareX, squareY);
+    XSSquare* s = getSquare(squareX, squareY);
 
     s->GetSquareData(square);
 
@@ -269,7 +262,7 @@ void XSLayer::GetSquareData(XSSquareIO *square, unsigned int squareX, unsigned i
     embloc.y = squareY;
     square->knots = 0;
     square->beads = 0;
-    for (unsigned int i = 0; i < 13; ++i) {   // FIXME:  don't hardcode 13 regions
+    for (unsigned int i = 0; i < 13; ++i) {  // FIXME:  don't hardcode 13 regions
         embloc.region = i;
         std::map<EmbLocation, Embelishment>::iterator it = m_embelishments.find(embloc);
         if (it == m_embelishments.end())
@@ -289,12 +282,12 @@ void XSLayer::GetSquareData(XSSquareIO *square, unsigned int squareX, unsigned i
     }
 }
 
-void XSLayer::SetSquareData(XSSquareIO const *square, unsigned int x, unsigned int y)
+void XSLayer::SetSquareData(XSSquareIO const* square, unsigned int x, unsigned int y)
 {
     assert(square);
     assert(x < m_sizeX);
     assert(y < m_sizeY);
 
-    XSSquare *s = getSquare(x, y);
+    XSSquare* s = getSquare(x, y);
     s->SetSquareData(square);
 }

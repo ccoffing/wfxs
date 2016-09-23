@@ -8,7 +8,7 @@ class XSStartupWizard : public BAF::Window {
 public:
     XSStartupWizard();
 
-    virtual void MessageReceived(BMessage *message);
+    virtual void MessageReceived(BMessage* message);
 };
 
 #endif

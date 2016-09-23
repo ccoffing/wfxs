@@ -3,9 +3,9 @@
 #include "XSModel.h"
 
 
-XSCommandSetFlossPalette::XSCommandSetFlossPalette(XSFlossPalette const &flossPalette) :
-    m_oldFlossPalette(),
-    m_newFlossPalette(flossPalette)
+XSCommandSetFlossPalette::XSCommandSetFlossPalette(XSFlossPalette const& flossPalette)
+    : m_oldFlossPalette()
+    , m_newFlossPalette(flossPalette)
 {
 }
 
@@ -22,7 +22,7 @@ int XSCommandSetFlossPalette::Undo()
     return true;
 }
 
-char const *XSCommandSetFlossPalette::GetDescription() const
+char const* XSCommandSetFlossPalette::GetDescription() const
 {
     return _("floss palette");
 }

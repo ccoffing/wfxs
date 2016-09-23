@@ -11,42 +11,32 @@
 #include "XSPropertiesWindow.h"
 
 
-XSPropertiesWindow::XSPropertiesWindow(XSDocument *document,
-        XSProperties const &properties) :
-    BAF::Window(BRect(), "Properties",
-                B_TITLED_WINDOW_LOOK, B_MODAL_SUBSET_WINDOW_FEEL,
-                B_NOT_ZOOMABLE | B_NOT_MINIMIZABLE | B_ASYNCHRONOUS_CONTROLS),
-    m_properties(properties),
-    m_document(document),
-    m_save(false)
+XSPropertiesWindow::XSPropertiesWindow(XSDocument* document, XSProperties const& properties)
+    : BAF::Window(BRect(), "Properties", B_TITLED_WINDOW_LOOK, B_MODAL_SUBSET_WINDOW_FEEL,
+              B_NOT_ZOOMABLE | B_NOT_MINIMIZABLE | B_ASYNCHRONOUS_CONTROLS)
+    , m_properties(properties)
+    , m_document(document)
+    , m_save(false)
 {
-    BAF::Button *ok_button;
-    BAF::TabView *tab_view;
+    BAF::Button* ok_button;
+    BAF::TabView* tab_view;
 
-    BAF::Box *topview = new BAF::Box(NULL, B_PLAIN_BORDER, -1,
+    BAF::Box* topview = new BAF::Box(
+            NULL, B_PLAIN_BORDER, -1,
             new BAF::VGroup(B_ALIGN_LEFT,
                     tab_view = new BAF::TabView(
-                            "Pattern Size",
-                            new BAF::VGroup(B_ALIGN_LEFT,
-                                    0),
-                            "Description",
+                            "Pattern Size", new BAF::VGroup(B_ALIGN_LEFT, 0), "Description",
                             new BAF::VGroup(B_ALIGN_LEFT,
                                     m_title = new BAF::TextControl("Title:", ""),
                                     m_author = new BAF::TextControl("Author:", ""),
-                                    m_fabric = new BAF::TextControl("Fabric:", ""),
-                                    0),
+                                    m_fabric = new BAF::TextControl("Fabric:", ""), 0),
                             "Instructions",
-                            new BAF::VGroup(B_ALIGN_LEFT,
-                                    m_instructions = new BAF::TextView(),
-                                    0),
+                            new BAF::VGroup(B_ALIGN_LEFT, m_instructions = new BAF::TextView(), 0),
                             0),
-                    new BAF::HGroup(B_ALIGN_MIDDLE,
-                            new BAF::HSpacer(),
-                            ok_button = new BAF::Button("OK", BAF_MSG_BUTTON_OKAY),
-                            new BAF::Button("Cancel", B_QUIT_REQUESTED),
-                            0),
-                    0)
-            );
+                    new BAF::HGroup(B_ALIGN_MIDDLE, new BAF::HSpacer(),
+                                    ok_button = new BAF::Button("OK", BAF_MSG_BUTTON_OKAY),
+                                    new BAF::Button("Cancel", B_QUIT_REQUESTED), 0),
+                    0));
 
     NormalizeTextControls(m_title, m_author, m_fabric, 0);
 
@@ -54,9 +44,9 @@ XSPropertiesWindow::XSPropertiesWindow(XSDocument *document,
 
     SetProperties();
 
-    AddChild(dynamic_cast<BView *>(topview));
+    AddChild(dynamic_cast<BView*>(topview));
 
-    BWindow *parentWindow = document->GetWindow();
+    BWindow* parentWindow = document->GetWindow();
     AddToSubset(parentWindow);
 
     ResizeToPreferred();
@@ -64,8 +54,6 @@ XSPropertiesWindow::XSPropertiesWindow(XSDocument *document,
     MoveTo(frame.left, frame.top);
 
     Show();
-
-
 
 
 #if 0
@@ -166,7 +154,7 @@ XSPropertiesWindow::XSPropertiesWindow(XSDocument *document,
 
 void XSPropertiesWindow::GetProperties()
 {
-    m_properties.m_title  = m_title->Text();
+    m_properties.m_title = m_title->Text();
     m_properties.m_author = m_author->Text();
     m_properties.m_fabric = m_fabric->Text();
     m_properties.m_instructions = m_instructions->Text();
@@ -194,7 +182,7 @@ bool XSPropertiesWindow::QuitRequested()
     return false;
 }
 
-void XSPropertiesWindow::MessageReceived(BMessage *message)
+void XSPropertiesWindow::MessageReceived(BMessage* message)
 {
     switch (message->what) {
     case BAF_MSG_QUIT_REQUESTED:

@@ -9,13 +9,11 @@
  */
 class XSCommandFloodFill : public XSCommand {
 public:
-    XSCommandFloodFill(unsigned int x,
-            unsigned int y,
-            XSSquareIO const &newSquare);
+    XSCommandFloodFill(unsigned int x, unsigned int y, XSSquareIO const& newSquare);
 
     virtual int Do();
     virtual int Undo();
-    virtual char const *GetDescription() const;
+    virtual char const* GetDescription() const;
 
 private:
     unsigned int m_x, m_y;

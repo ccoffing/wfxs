@@ -10,10 +10,10 @@
  *  @note This structure is constructed for speed, not space efficiency.
  */
 struct XSSquareIO {
-    XSSquareIO() :
-        stitches(0),
-        knots(0),
-        beads(0)
+    XSSquareIO()
+        : stitches(0)
+        , knots(0)
+        , beads(0)
     {
     }
 
@@ -22,8 +22,8 @@ struct XSSquareIO {
         return stitches == 0 && knots == 0 && beads == 0;
     }
 
-    void Serialize(std::ostream &file) const;
-    void Unserialize(std::istream &file);
+    void Serialize(std::ostream& file) const;
+    void Unserialize(std::istream& file);
 
     unsigned int stitches;
     struct {

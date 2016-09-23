@@ -15,7 +15,7 @@ public:
     XSCommandClearSquare(unsigned int x, unsigned int y, unsigned int layer);
     virtual int Do();
     virtual int Undo();
-    virtual char const *GetDescription() const;
+    virtual char const* GetDescription() const;
 
 private:
     unsigned int m_layer;
@@ -28,11 +28,11 @@ private:
  */
 class XSCommandClearSquares : public XSCommand {
 public:
-    XSCommandClearSquares(std::vector<XSPoint> const &points, unsigned int layer);
+    XSCommandClearSquares(std::vector<XSPoint> const& points, unsigned int layer);
 
     virtual int Do();
     virtual int Undo();
-    virtual char const *GetDescription() const;
+    virtual char const* GetDescription() const;
 
 private:
     unsigned int m_layer;

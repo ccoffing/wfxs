@@ -7,10 +7,10 @@
 BEGIN_EVENT_TABLE(XSStartupWizard, wxDialog)
 END_EVENT_TABLE()
 
-XSStartupWizard::XSStartupWizard(wxWindow *parent) :
-    wxDialog(parent, wxID_ANY, wxT("Welcome..."), wxDefaultPosition)
+XSStartupWizard::XSStartupWizard(wxWindow* parent)
+    : wxDialog(parent, wxID_ANY, wxT("Welcome..."), wxDefaultPosition)
 {
-    wxSizer *sizerTop = new wxBoxSizer(wxVERTICAL);
+    wxSizer* sizerTop = new wxBoxSizer(wxVERTICAL);
 
     sizerTop->Add(new wxButton(this, wxID_NEW, wxT("New")), 0, wxCENTRE | wxALL, 5);
 

@@ -10,16 +10,12 @@
  */
 class XSCommandSetKnot : public XSCommand {
 public:
-    XSCommandSetKnot(unsigned int x,
-            unsigned int y,
-            unsigned int region,
-            KnotType knotType,
-            unsigned int flossIndex,
-            bool overwrite);
+    XSCommandSetKnot(unsigned int x, unsigned int y, unsigned int region, KnotType knotType,
+            unsigned int flossIndex, bool overwrite);
 
     virtual int Do();
     virtual int Undo();
-    virtual char const *GetDescription() const;
+    virtual char const* GetDescription() const;
 
 private:
     unsigned int m_layer;

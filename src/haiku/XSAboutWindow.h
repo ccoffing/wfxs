@@ -9,7 +9,7 @@ class XSAboutWindow : public BAF::Window {
 public:
     XSAboutWindow();
 
-    virtual void MessageReceived(BMessage *message);
+    virtual void MessageReceived(BMessage* message);
 };
 
 #endif

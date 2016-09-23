@@ -3,9 +3,11 @@
 
 #include "XSSkein.h"
 
-TEST_CASE("XSSkein") {
+TEST_CASE("XSSkein")
+{
 
-    SECTION("Constructor") {
+    SECTION("Constructor")
+    {
         XSColor c(0xff, 0, 0);
 
         XSSkein s(FM_ANCHOR, FPL_LINEN, "123ABC", "Linen XYZ", c, false, FB_NONE);
@@ -20,7 +22,8 @@ TEST_CASE("XSSkein") {
         CHECK(FB_NONE == s.m_blend);
     }
 
-    SECTION("Unserialize") {
+    SECTION("Unserialize")
+    {
         XSSkein skein;
 
         // 8: maker
@@ -40,7 +43,8 @@ TEST_CASE("XSSkein") {
         // TODO
     }
 
-    SECTION("Serialize") {
+    SECTION("Serialize")
+    {
         XSSkein skeinA;
 
         skeinA.m_maker = FM_JPCOATS;

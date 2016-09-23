@@ -12,13 +12,13 @@
 #define LOG_NAME "xs.Data"
 
 
-XSSkeinPalette *makerSkeinPalette[FM_NUMBER];
-XSFlossPalette *makerFlossPalette[FM_NUMBER];
+XSSkeinPalette* makerSkeinPalette[FM_NUMBER];
+XSFlossPalette* makerFlossPalette[FM_NUMBER];
 
 // All makers known to the program.  This is the base set that a pattern
 // copies from to start with, but the pattern can come with its own, too.
 std::vector<std::string> makerNames;
-static char const *makerNamesCStr[] =
+static char const* makerNamesCStr[] =
 {
     "DMC",
     "Anchor",
@@ -28,7 +28,7 @@ static char const *makerNamesCStr[] =
 };
 
 std::vector<std::string> productLineNames;
-static char const *productLineNamesCStr[] =
+static char const* productLineNamesCStr[] =
 {
     "Embroidery Floss",
     "Rayon Embroidery Floss",
@@ -46,17 +46,16 @@ static char const *productLineNamesCStr[] =
     "Japan Thread"
 };
 
-
 static void InitSkeinPalettes()
 {
     struct {
-        const char *name;
+        const char* name;
         Maker_t index;
     } toRead[] = {
-        { "dmc",     FM_DMC     },
-        { "anchor",  FM_ANCHOR  },
+        { "dmc", FM_DMC },
+        { "anchor", FM_ANCHOR },
         { "jpcoats", FM_JPCOATS },
-        { 0,         FM_NUMBER  }
+        { 0, FM_NUMBER }
     };
 
 #if 1
@@ -74,12 +73,12 @@ static void InitSkeinPalettes()
         is.open(f.c_str());
 
         Log::debug(LOG_NAME, "Loading skeins");
-        XSSkeinPalette *sp = new XSSkeinPalette;
+        XSSkeinPalette* sp = new XSSkeinPalette;
         sp->Unserialize(is);
         makerSkeinPalette[toRead[i].index] = sp;
 
         Log::debug(LOG_NAME, "Loading floss palette");
-        XSFlossPalette *fp = new XSFlossPalette;
+        XSFlossPalette* fp = new XSFlossPalette;
         fp->Unserialize(is);
         makerFlossPalette[toRead[i].index] = fp;
     }

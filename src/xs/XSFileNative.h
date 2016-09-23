@@ -7,9 +7,9 @@ class XSModel;
 
 /**
  */
-void StreamOutNative(std::ostream &stream, const XSModel *doc);
+void StreamOutNative(std::ostream& stream, const XSModel* doc);
 
 /**
  */
-void StreamInNative(std::istream &stream, XSModel *doc);
+void StreamInNative(std::istream& stream, XSModel* doc);
 #endif

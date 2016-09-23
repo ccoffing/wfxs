@@ -12,19 +12,22 @@ BEGIN_EVENT_TABLE(XSEditFlossWindow, wxFrame)
 // FIXME
 END_EVENT_TABLE()
 
-XSEditFlossWindow::XSEditFlossWindow(XSDocChild *document,
-        XSFlossPalette const &flossPalette) :
-    wxFrame(NULL, -1, wxT("Floss Palette")),
-    m_flossPalette(flossPalette),
-    m_flossIndex(0),
-    m_flossPaletteView(0),
-    m_document(document)
+XSEditFlossWindow::XSEditFlossWindow(XSDocChild* document, XSFlossPalette const& flossPalette)
+    : wxFrame(NULL, -1, wxT("Floss Palette"))
+    , m_flossPalette(flossPalette)
+    , m_flossIndex(0)
+    , m_flossPaletteView(0)
+    , m_document(document)
 {
-    wxPanel *panel = new wxPanel(this);
-    wxBoxSizer *topsizer = new wxStaticBoxSizer(wxVERTICAL, panel);
+    wxPanel* panel = new wxPanel(this);
+    wxBoxSizer* topsizer = new wxStaticBoxSizer(wxVERTICAL, panel);
 
-    topsizer->Add(new wxStaticText(panel, -1, wxT("Current Floss Palette"), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT), 1, wxEXPAND);
-    topsizer->Add(new wxStaticText(panel, -1, wxT("xxx"), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT), 1, wxALIGN_CENTER);
+    topsizer->Add(new wxStaticText(panel, -1, wxT("Current Floss Palette"), wxDefaultPosition,
+                          wxDefaultSize, wxALIGN_LEFT),
+            1, wxEXPAND);
+    topsizer->Add(
+            new wxStaticText(panel, -1, wxT("xxx"), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT),
+            1, wxALIGN_CENTER);
     topsizer->SetSizeHints(panel);
     panel->SetSizer(topsizer);
     panel->SetAutoLayout(true);

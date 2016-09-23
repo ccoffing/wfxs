@@ -28,11 +28,11 @@ wxBitmap * GetPNG() {
 }
 #endif
 
-XSToolWindow::XSToolWindow(wxDocManager *manager) :
-    wxDocParentFrame(manager, NULL, wxID_ANY, wxT("Wildflower Cross Stitch"))
+XSToolWindow::XSToolWindow(wxDocManager* manager)
+    : wxDocParentFrame(manager, NULL, wxID_ANY, wxT("Wildflower Cross Stitch"))
 {
-    wxMenuBar *menubar = new wxMenuBar();
-    wxMenu *menu = new wxMenu();
+    wxMenuBar* menubar = new wxMenuBar();
+    wxMenu* menu = new wxMenu();
 
     menu->Append(wxID_NEW, wxT("&New...\tCTRL-N"));
     menu->Append(wxID_OPEN, wxT("&Open...\tCTRL-O"));
@@ -48,17 +48,17 @@ XSToolWindow::XSToolWindow(wxDocManager *manager) :
 
     SetMenuBar(menubar);
 
-    wxBoxSizer *topsizer = new wxBoxSizer(wxVERTICAL);
+    wxBoxSizer* topsizer = new wxBoxSizer(wxVERTICAL);
 
-    wxBitmap bmpBead(wxBITMAP(new));       // FIXME
-    wxBitmap bmpFullStitch(wxBITMAP(new)); // FIXME
+    wxBitmap bmpBead(wxBITMAP(new));        // FIXME
+    wxBitmap bmpFullStitch(wxBITMAP(new));  // FIXME
 
-    wxNotebook *notebook = new wxNotebook(this, wxID_ANY);
+    wxNotebook* notebook = new wxNotebook(this, wxID_ANY);
     topsizer->Add(notebook);
 
-    wxPanel *panel = new wxPanel(notebook);
+    wxPanel* panel = new wxPanel(notebook);
     notebook->AddPage(panel, wxT("Stitches"));
-    wxGridSizer *grid = new wxGridSizer(3, 3, 5, 5);
+    wxGridSizer* grid = new wxGridSizer(3, 3, 5, 5);
     grid->Add(new wxBitmapButton(panel, XS_EVT_BEAD, bmpBead));
     grid->Add(new wxBitmapButton(panel, XS_EVT_FULL_STITCH, bmpFullStitch));
     grid->Add(new wxBitmapButton(panel, XS_EVT_HALF_TOP_STITCH, bmpFullStitch));
@@ -81,7 +81,7 @@ void XSToolWindow::OnNew()
 }
 
 
-void XSToolWindow::OnButton(wxCommandEvent &event)
+void XSToolWindow::OnButton(wxCommandEvent& event)
 {
     // FIXME
 }

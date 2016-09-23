@@ -7,12 +7,11 @@
  */
 class XSCommandSetSize : public XSCommand {
 public:
-    XSCommandSetSize(unsigned int x,
-            unsigned int y);
+    XSCommandSetSize(unsigned int x, unsigned int y);
 
     virtual int Do();
     virtual int Undo();
-    virtual char const *GetDescription() const;
+    virtual char const* GetDescription() const;
 
 private:
     unsigned int m_newX, m_newY;

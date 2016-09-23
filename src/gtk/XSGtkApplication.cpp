@@ -1,6 +1,6 @@
 #include "gtk/XSGtkApplication.h"
 
-XSGtkApplication::XSGtkApplication(int &argc, char *argv[]) :
-    XSApplication(argc, argv)
+XSGtkApplication::XSGtkApplication(int& argc, char* argv[])
+    : XSApplication(argc, argv)
 {
 }

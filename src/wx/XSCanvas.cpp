@@ -24,9 +24,9 @@ EVT_MOUSE_EVENTS(XSCanvas::OnMouseEvent)
 END_EVENT_TABLE()
 
 
-static wxColour black(0,    0,    0,    0xff);
+static wxColour black(0, 0, 0, 0xff);
 static wxColour cloth_color(0xef, 0xef, 0xd0, 0xff);
-static wxColour cursor_color(0,    0,    0xff, 0xff);
+static wxColour cursor_color(0, 0, 0xff, 0xff);
 static wxColour dark_gray(0x30, 0x30, 0x30, 0xff);
 static wxColour gray(0xa0, 0xa0, 0xa0, 0xff);
 
@@ -50,6 +50,7 @@ struct RegionOffsetDef {
     unsigned int newY;
     unsigned int newRegion;
 };
+
 static struct RegionOffsetDef RegionOffsets[] =
 {
     { 0, 0, 0, 0, 0 },
@@ -92,8 +93,7 @@ static struct RegionOffsetDef RegionOffsets[] =
  *  The inequalities below describe the diagonal lines.  If the user
  *  clicks anywhere in the diamond, it is attributed to that region.
  */
-static unsigned int XYPercentToRegion(unsigned int xPercent,
-        unsigned int yPercent)
+static unsigned int XYPercentToRegion(unsigned int xPercent, unsigned int yPercent)
 {
     int r;
     int intercept1 = xPercent + yPercent;
@@ -140,19 +140,19 @@ static unsigned int XYPercentToRegion(unsigned int xPercent,
 }
 
 
-XSCanvas::XSCanvas(wxWindow *parent, XSDocChild *docchild) :
-    wxScrolledWindow(parent, wxID_ANY),
-    m_docchild(docchild),
-    cursorX(0),
-    cursorY(0),
-    m_resetCursor(true),
-    m_mouseDown(false),
-    m_mouseControl(true),
-    m_prevX((unsigned int)-1),
-    m_prevY((unsigned int)-1),
-    m_prevRegion((unsigned int)-1),
-    m_selectionPath(0),
-    m_selectionMask(0)
+XSCanvas::XSCanvas(wxWindow* parent, XSDocChild* docchild)
+    : wxScrolledWindow(parent, wxID_ANY)
+    , m_docchild(docchild)
+    , cursorX(0)
+    , cursorY(0)
+    , m_resetCursor(true)
+    , m_mouseDown(false)
+    , m_mouseControl(true)
+    , m_prevX((unsigned int)-1)
+    , m_prevY((unsigned int)-1)
+    , m_prevRegion((unsigned int)-1)
+    , m_selectionPath(0)
+    , m_selectionMask(0)
 {
     AdjustScrollBars();
     SetFocus();
@@ -188,10 +188,8 @@ bool XSCanvas::Layout()
 }
 
 
-void XSCanvas::RefreshSquares(unsigned int startX,
-        unsigned int startY,
-        unsigned int stopX,
-        unsigned int stopY)
+void XSCanvas::RefreshSquares(
+        unsigned int startX, unsigned int startY, unsigned int stopX, unsigned int stopY)
 {
     unsigned int zoom = m_docchild->GetDocument()->GetZoom();
     wxRect r(startX * zoom, startY * zoom, stopX * zoom + zoom, stopY * zoom + zoom);
@@ -200,8 +198,7 @@ void XSCanvas::RefreshSquares(unsigned int startX,
 }
 
 
-void XSCanvas::RefreshSquareContents(unsigned int x,
-        unsigned int y)
+void XSCanvas::RefreshSquareContents(unsigned int x, unsigned int y)
 {
     wxASSERT(x < m_docchild->GetDocument()->SquaresX());
     wxASSERT(y < m_docchild->GetDocument()->SquaresY());
@@ -210,10 +207,9 @@ void XSCanvas::RefreshSquareContents(unsigned int x,
 }
 
 
-void XSCanvas::RefreshSquare(unsigned int x,
-        unsigned int y)
+void XSCanvas::RefreshSquare(unsigned int x, unsigned int y)
 {
-    XSDocument const *doc = m_docchild->GetDocument();
+    XSDocument const* doc = m_docchild->GetDocument();
 
     wxASSERT(x < doc->SquaresX());
     wxASSERT(y < doc->SquaresY());
@@ -224,10 +220,9 @@ void XSCanvas::RefreshSquare(unsigned int x,
 }
 
 
-const wxRect XSCanvas::SquareInnerRect(unsigned int x,
-        unsigned int y)
+const wxRect XSCanvas::SquareInnerRect(unsigned int x, unsigned int y)
 {
-    XSDocument *doc = m_docchild->GetDocument();
+    XSDocument* doc = m_docchild->GetDocument();
     unsigned int zoom = doc->GetZoom();
 
     return wxRect(x * zoom + 1, y * zoom + 1, x * zoom + zoom - 1, y * zoom + zoom - 1);
@@ -272,9 +267,7 @@ XSSquareIO XSCanvas::CalculateSquare(unsigned int x,
 #endif
 
 
-static bool DeJiggle(unsigned int x,
-        unsigned int y,
-        bool reset)
+static bool DeJiggle(unsigned int x, unsigned int y, bool reset)
 {
     /*
      *  I'm playing a little fast-and-loose by having these global-static
@@ -294,10 +287,9 @@ static bool DeJiggle(unsigned int x,
 }
 
 
-void XSCanvas::ClearToSquare(unsigned int nextX,
-        unsigned int nextY)
+void XSCanvas::ClearToSquare(unsigned int nextX, unsigned int nextY)
 {
-    wxASSERT(!(m_prevX == nextX && m_prevY == nextY));   // de-jiggled
+    wxASSERT(!(m_prevX == nextX && m_prevY == nextY));  // de-jiggled
 
     std::vector<wxPoint> points;
     mt::BresenhamLine<wxPoint>(m_prevX, m_prevY, nextX, nextY, points);
@@ -310,7 +302,7 @@ void XSCanvas::ClearToSquare(unsigned int nextX,
 }
 
 
-void XSCanvas::OnMouseEvent(wxMouseEvent &event)
+void XSCanvas::OnMouseEvent(wxMouseEvent& event)
 {
     if (!m_docchild->IsActive())
         return;
@@ -324,8 +316,8 @@ void XSCanvas::OnMouseEvent(wxMouseEvent &event)
     unsigned int xPercent = ((unsigned int)point.x) % zoom * 100 / zoom;
     unsigned int yPercent = ((unsigned int)point.y) % zoom * 100 / zoom;
     unsigned int region = XYPercentToRegion(xPercent, yPercent);
-    bool valid = (x < m_docchild->GetDocument()->SquaresX() &&
-                  y < m_docchild->GetDocument()->SquaresY());
+    bool valid = (x < m_docchild->GetDocument()->SquaresX()
+            && y < m_docchild->GetDocument()->SquaresY());
     bool newSquare = (cursorX != x || cursorY != y);
 
     ToolType toolType = m_docchild->GetToolType();
@@ -357,18 +349,14 @@ void XSCanvas::OnMouseEvent(wxMouseEvent &event)
 }
 
 
-void XSCanvas::MouseMoved(unsigned int x,
-        unsigned int y,
-        unsigned int region,
-        bool cmdDown)
+void XSCanvas::MouseMoved(unsigned int x, unsigned int y, unsigned int region, bool cmdDown)
 {
     XSToolState const toolState = m_docchild->GetDocument()->ToolState();
 
     switch (toolState.m_toolType) {
-    case ToolType_Stitch:
-    {
+    case ToolType_Stitch: {
         DeJiggle(x, y, true);
-//            wxASSERT(! (m_prevX == nextX && m_prevY == nextY));  // de-jiggled
+        //            wxASSERT(! (m_prevX == nextX && m_prevY == nextY));  // de-jiggled
         if (!m_mouseDown)
             break;
         std::vector<wxPoint> points;
@@ -391,10 +379,7 @@ void XSCanvas::MouseMoved(unsigned int x,
 }
 
 
-void XSCanvas::MouseDown(unsigned int x,
-        unsigned int y,
-        unsigned int region,
-        bool cmdDown)
+void XSCanvas::MouseDown(unsigned int x, unsigned int y, unsigned int region, bool cmdDown)
 {
     XSToolState const toolState = m_docchild->GetDocument()->ToolState();
 
@@ -407,19 +392,17 @@ void XSCanvas::MouseDown(unsigned int x,
             m_docchild->OnClearSquare(x, y);
         else
             // FIXME:  pass region instead
-            m_docchild->OnSetStitch(x, y, 50, 50);     // xPercent, yPercent);
+            m_docchild->OnSetStitch(x, y, 50, 50);  // xPercent, yPercent);
         break;
-    case ToolType_Bead:
-    {
+    case ToolType_Bead: {
         DeJiggle(x, y, true);
-        struct RegionOffsetDef *ro = &RegionOffsets[region];
+        struct RegionOffsetDef* ro = &RegionOffsets[region];
         m_docchild->OnSetBead(x + ro->newX, y + ro->newY, ro->newRegion);
         break;
     }
-    case ToolType_Knot:
-    {
+    case ToolType_Knot: {
         DeJiggle(x, y, true);
-        struct RegionOffsetDef *ro = &RegionOffsets[region];
+        struct RegionOffsetDef* ro = &RegionOffsets[region];
         m_docchild->OnSetKnot(x + ro->newX, y + ro->newY, ro->newRegion);
         break;
     }
@@ -427,11 +410,10 @@ void XSCanvas::MouseDown(unsigned int x,
         DeJiggle(x, y, true);
         m_docchild->OnClearSquare(x, y);
         break;
-    case ToolType_FloodFill:
-    {
+    case ToolType_FloodFill: {
         XSSquareIO oldSquare;
-        m_docchild->GetDocument()->GetSquareData(&oldSquare, x, y,
-                m_docchild->GetDocument()->GetCurrentLayerIndex());
+        m_docchild->GetDocument()->GetSquareData(
+                &oldSquare, x, y, m_docchild->GetDocument()->GetCurrentLayerIndex());
 #if 0
 // zzz   seems like I need a CalculateSquare, similar to setSquare, but
 //      it directly calls the doc functions, saves the resulting square,
@@ -455,18 +437,17 @@ void XSCanvas::MouseDown(unsigned int x,
                 if (m_selectionPath->Complete()) {
                     m_selectionMask = m_selectionPath->GetMask();
                     // FIXME
-                } else   {
+                } else {
                     // FIXME:  warn user in status bar
                 }
             }
         }
         break;
-    case ToolType_ColorPicker:
-    {
+    case ToolType_ColorPicker: {
         XSSquareIO square;
-        m_docchild->GetDocument()->GetSquareData(&square, x, y,
-                m_docchild->GetDocument()->GetCurrentLayerIndex());
-//            if (square.num_beads
+        m_docchild->GetDocument()->GetSquareData(
+                &square, x, y, m_docchild->GetDocument()->GetCurrentLayerIndex());
+        //            if (square.num_beads
         // FIXME ... look at region; pick relevant stich
         break;
     }
@@ -485,9 +466,7 @@ void XSCanvas::MouseDown(unsigned int x,
 }
 
 
-void XSCanvas::MouseUp(unsigned int x,
-        unsigned int y,
-        unsigned int region)
+void XSCanvas::MouseUp(unsigned int x, unsigned int y, unsigned int region)
 {
     m_mouseDown = false;
 
@@ -513,7 +492,7 @@ void XSCanvas::MouseUp(unsigned int x,
         if (toolState.m_tool == Tool_RectangularSelect) {
             m_selectionPath->Complete();
             m_selectionMask = m_selectionPath->GetMask();
-        } else   {
+        } else {
             // Nothing -- Free form selection usage is click-move-click.
         }
         break;
@@ -537,31 +516,27 @@ void XSCanvas::ScrollBy(int dx, int dy)
 
 void XSCanvas::MoveCursorBy(int dx, int dy)
 {
-    XSDocument const *doc = m_docchild->GetDocument();
+    XSDocument const* doc = m_docchild->GetDocument();
 
-    if (cursorX + dx >= 0 && cursorY + dy >= 0 &&
-        cursorX + dx < doc->SquaresX() && cursorY + dy < doc->SquaresY()) {
+    if (cursorX + dx >= 0 && cursorY + dy >= 0 && cursorX + dx < doc->SquaresX()
+            && cursorY + dy < doc->SquaresY()) {
         RefreshSquare(cursorX, cursorY);
         cursorX += dx;
         cursorY += dy;
-        RefreshSquare(cursorX, cursorY); // to draw the cursor
+        RefreshSquare(cursorX, cursorY);  // to draw the cursor
         m_mouseControl = false;
     }
 }
 
 
-void XSCanvas::OnKeyDown(wxKeyEvent &event)
+void XSCanvas::OnKeyDown(wxKeyEvent& event)
 {
     m_docchild->OnKeyDown(event);
 }
 
 
-void XSCanvas::DrawPatternSquare(wxDC &dc,
-        XSSquareIO &square,
-        float zx,
-        float zy,
-        unsigned int z,
-        XSFlossPalette const &flossPalette)
+void XSCanvas::DrawPatternSquare(wxDC& dc, XSSquareIO& square, float zx, float zy, unsigned int z,
+        XSFlossPalette const& flossPalette)
 {
 #if 0
     static struct DrawPatternData {
@@ -633,23 +608,15 @@ void XSCanvas::DrawPatternSquare(wxDC &dc,
 }
 
 
-void XSCanvas::DrawRealisticSquare(wxDC &dc,
-        XSSquareIO & /*square*/,
-        float /*zx*/,
-        float /*zy*/,
-        unsigned int /*zoom*/,
-        XSFlossPalette const & /*flossPalette*/)
+void XSCanvas::DrawRealisticSquare(wxDC& dc, XSSquareIO& /*square*/, float /*zx*/, float /*zy*/,
+        unsigned int /*zoom*/, XSFlossPalette const& /*flossPalette*/)
 {
     // FIXME
 }
 
 
-void XSCanvas::DrawDesignSquare(wxDC &dc,
-        XSSquareIO &square,
-        float zx,
-        float zy,
-        unsigned int zoom,
-        XSFlossPalette const &flossPalette)
+void XSCanvas::DrawDesignSquare(wxDC& dc, XSSquareIO& square, float zx, float zy, unsigned int zoom,
+        XSFlossPalette const& flossPalette)
 {
     const float line_width = 0.2;
     const float li /*line_inset*/ = line_width * 0.375;
@@ -662,48 +629,50 @@ void XSCanvas::DrawDesignSquare(wxDC &dc,
     } drawDesignData[] =
     {
         { true,  li,       li,       1.0 - li, 1.0 - li },
-        { true,  li,       1.0 - li, 1.0 - li, li       }, // StitchLoc_Full
+        { true,  li,       1.0 - li, 1.0 - li, li       },  // StitchLoc_Full
         { true,  li,       1.0 - li, 1.0 - li, li       },
-        { true,  li,       li,       0.5,      0.5      }, // StitchLoc_ThreeQuarterUL
+        { true,  li,       li,       0.5,      0.5      },  // StitchLoc_ThreeQuarterUL
         { true,  li,       li,       1.0 - li, 1.0 - li },
-        { true,  1.0 - li, li,       0.5,      0.5      }, // StitchLoc_ThreeQuarterUR
+        { true,  1.0 - li, li,       0.5,      0.5      },  // StitchLoc_ThreeQuarterUR
         { true,  li,       li,       1.0 - li, 1.0 - li },
-        { true,  li,       1.0 - li, 0.5,      0.5      }, // StitchLoc_ThreeQuarterLL
+        { true,  li,       1.0 - li, 0.5,      0.5      },  // StitchLoc_ThreeQuarterLL
         { true,  li,       1.0 - li, 1.0 - li, li       },
-        { true,  1.0 - li, 1.0 - li, 0.5,      0.5      }, // StitchLoc_ThreeQuarterLR
+        { true,  1.0 - li, 1.0 - li, 0.5,      0.5      },  // StitchLoc_ThreeQuarterLR
         { true,  li,       1.0 - li, 1.0 - li, li       },
-        { false, 0,        0,        0,        0        }, // StitchLoc_HalfBottom
+        { false, 0,        0,        0,        0        },  // StitchLoc_HalfBottom
         { true,  li,       li,       1.0 - li, 1.0 - li },
-        { false, 0,        0,        0,        0        }, // StitchLoc_HalfTop
+        { false, 0,        0,        0,        0        },  // StitchLoc_HalfTop
         { true,  li,       li,       0.3,      0.3      },
-        { false, 0,        0,        0,        0        }, // StitchLoc_QuarterUL
+        { false, 0,        0,        0,        0        },  // StitchLoc_QuarterUL
         { true,  1.0 - li, li,       0.7,      0.3      },
-        { false, 0,        0,        0,        0        }, // StitchLoc_QuarterUR
+        { false, 0,        0,        0,        0        },  // StitchLoc_QuarterUR
         { true,  li,       1.0 - li, 0.3,      0.7      },
-        { false, 0,        0,        0,        0        }, // StitchLoc_QuarterLL
+        { false, 0,        0,        0,        0        },  // StitchLoc_QuarterLL
         { true,  1.0 - li, 1.0 - li, 0.7,      0.7      },
-        { false, 0,        0,        0,        0        }, // StitchLoc_QuarterLR
+        { false, 0,        0,        0,        0        },  // StitchLoc_QuarterLR
     };
 
     float pen_width = zoom * line_width;
 
     for (unsigned int i = 0; i < square.stitches; ++i) {
-        struct DrawDesignData *data = &drawDesignData[(square.stitch[i].stitchType - 1) * 2];
+        struct DrawDesignData* data = &drawDesignData[(square.stitch[i].stitchType - 1) * 2];
 
         if (data->line) {
             wxColour color = flossPalette[square.stitch[i].flossIndex].GetColor();
             dc.SetPen(wxPen(color, pen_width));
-            dc.DrawLine(zx + zoom * data->xs, zy + zoom * data->ys, zx + zoom * data->xe, zy + zoom * data->ye);
+            dc.DrawLine(zx + zoom * data->xs, zy + zoom * data->ys, zx + zoom * data->xe,
+                    zy + zoom * data->ye);
             if ((++data)->line)
-                dc.DrawLine(zx + zoom * data->xs, zy + zoom * data->ys, zx + zoom * data->xe, zy + zoom * data->ye);
+                dc.DrawLine(zx + zoom * data->xs, zy + zoom * data->ys, zx + zoom * data->xe,
+                        zy + zoom * data->ye);
         }
     }
 
     for (unsigned int i = 0; i < square.knots; ++i) {
-        XSFloss const &floss = flossPalette[square.knot[i].flossIndex];
+        XSFloss const& floss = flossPalette[square.knot[i].flossIndex];
         dc.SetPen(wxPen(floss.GetColor(), pen_width));
 
-        struct RegionOffsetDef *ro = &RegionOffsets[square.knot[i].region];
+        struct RegionOffsetDef* ro = &RegionOffsets[square.knot[i].region];
         switch (square.knot[i].knotType) {
         case Knot_French:
             dc.DrawEllipse(zx + (zoom * ro->xOffset) / 4, zy + (zoom * ro->yOffset) / 4, li, li);
@@ -714,19 +683,19 @@ void XSCanvas::DrawDesignSquare(wxDC &dc,
     }
 
     for (unsigned int i = 0; i < square.beads; ++i) {
-        struct RegionOffsetDef *ro = &RegionOffsets[square.bead[i].region];
-        wxColour color; // = flossPalette->GetColorAtIndex(square.bead[i].colorIndex); // FIXME beads are color, not floss
+        struct RegionOffsetDef* ro = &RegionOffsets[square.bead[i].region];
+        wxColour color;  // = flossPalette->GetColorAtIndex(square.bead[i].colorIndex); // FIXME
+                         // beads are color, not floss
         dc.SetPen(wxPen(color, pen_width));
         dc.SetBrush(color);
         dc.DrawEllipse(zx + (zoom * ro->xOffset) / 4, zy + (zoom * ro->yOffset) / 4, li, li);
     }
-
 }
 
 
-void XSCanvas::OnDraw(wxDC &dc)
+void XSCanvas::OnDraw(wxDC& dc)
 {
-    XSDocument const *doc = m_docchild->GetDocument();
+    XSDocument const* doc = m_docchild->GetDocument();
     unsigned int zoom = doc->GetZoom();
     unsigned int squaresX = doc->SquaresX();
     unsigned int squaresY = doc->SquaresY();
@@ -809,7 +778,7 @@ void XSCanvas::OnDraw(wxDC &dc)
         }
     }
 
-    XSFlossPalette const &flossPalette = doc->GetFlossPalette();
+    XSFlossPalette const& flossPalette = doc->GetFlossPalette();
     unsigned int layer = doc->GetCurrentLayerIndex();
     enum DrawStyle drawStyle = doc->GetDrawStyle();
 
@@ -824,7 +793,7 @@ void XSCanvas::OnDraw(wxDC &dc)
                 DrawDesignSquare(dc, square, zx, zy, zoom, flossPalette);
             } else if (drawStyle == DrawStyle_Pattern) {
                 DrawPatternSquare(dc, square, zx, zy, zoom, flossPalette);
-            } else   {
+            } else {
                 wxASSERT(drawStyle == DrawStyle_Realistic);
                 DrawRealisticSquare(dc, square, zx, zy, zoom, flossPalette);
             }
@@ -850,14 +819,17 @@ void XSCanvas::OnDraw(wxDC &dc)
 #endif
         dc.SetPen(cursor_color);
         // FIXME: change to:  dc.DrawRectangle(SquareInnerRect());
-        dc.DrawLine(cursorX * zoom + 1,     cursorY * zoom + 1,     cursorX * zoom + zoom - 1, cursorY * zoom + 1);
-        dc.DrawLine(cursorX * zoom + 1,     (cursorY + 1) * zoom - 1, cursorX * zoom + zoom - 1, (cursorY + 1) * zoom - 1);
-        dc.DrawLine(cursorX * zoom + 1,     cursorY * zoom + 1,     cursorX * zoom + 1,      (cursorY + 1) * zoom - 1);
-        dc.DrawLine((cursorX + 1) * zoom - 1, cursorY * zoom + 1,     (cursorX + 1) * zoom - 1,  (cursorY + 1) * zoom - 1);
+        dc.DrawLine(cursorX * zoom + 1, cursorY * zoom + 1, cursorX * zoom + zoom - 1,
+                cursorY * zoom + 1);
+        dc.DrawLine(cursorX * zoom + 1, (cursorY + 1) * zoom - 1, cursorX * zoom + zoom - 1,
+                (cursorY + 1) * zoom - 1);
+        dc.DrawLine(cursorX * zoom + 1, cursorY * zoom + 1, cursorX * zoom + 1,
+                (cursorY + 1) * zoom - 1);
+        dc.DrawLine((cursorX + 1) * zoom - 1, cursorY * zoom + 1, (cursorX + 1) * zoom - 1,
+                (cursorY + 1) * zoom - 1);
     }
 
-    if (m_docchild->GetToolType() == ToolType_Select &&
-        m_selectionMask) {
+    if (m_docchild->GetToolType() == ToolType_Select && m_selectionMask) {
         // FIXME -- draw current path; shade selection
     }
 }

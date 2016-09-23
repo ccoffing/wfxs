@@ -2,19 +2,15 @@
 #include "XSModel.h"
 
 
-XSCommandSetKnot::XSCommandSetKnot(unsigned int x,
-        unsigned int y,
-        unsigned int region,
-        KnotType knotType,
-        unsigned int flossIndex,
-        bool overwrite) :
-    m_layer((unsigned int)-1),
-    m_x(x),
-    m_y(y),
-    m_region(region),
-    m_knotType(knotType),
-    m_flossIndex(flossIndex),
-    m_overwrite(overwrite)
+XSCommandSetKnot::XSCommandSetKnot(unsigned int x, unsigned int y, unsigned int region,
+        KnotType knotType, unsigned int flossIndex, bool overwrite)
+    : m_layer((unsigned int)-1)
+    , m_x(x)
+    , m_y(y)
+    , m_region(region)
+    , m_knotType(knotType)
+    , m_flossIndex(flossIndex)
+    , m_overwrite(overwrite)
 {
 }
 
@@ -32,7 +28,7 @@ int XSCommandSetKnot::Undo()
     return true;
 }
 
-char const *XSCommandSetKnot::GetDescription() const
+char const* XSCommandSetKnot::GetDescription() const
 {
     return _("knot");
 }

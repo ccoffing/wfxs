@@ -3,9 +3,9 @@
 #include "XSProperties.h"
 
 
-XSCommandSetProperties::XSCommandSetProperties(XSProperties const &properties) :
-    m_oldProperties(),
-    m_newProperties(properties)
+XSCommandSetProperties::XSCommandSetProperties(XSProperties const& properties)
+    : m_oldProperties()
+    , m_newProperties(properties)
 {
 }
 
@@ -22,7 +22,7 @@ int XSCommandSetProperties::Undo()
     return true;
 }
 
-char const *XSCommandSetProperties::GetDescription() const
+char const* XSCommandSetProperties::GetDescription() const
 {
     return _("document properties");
 }

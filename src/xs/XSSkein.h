@@ -12,14 +12,7 @@
 
 
 // FIXME:  move this to XSData.h
-typedef enum {
-    FM_DMC = 0,
-    FM_ANCHOR,
-    FM_JPCOATS,
-    FM_KREINIK,
-    FM_MILLHILL,
-    FM_NUMBER
-} Maker_t;
+typedef enum { FM_DMC = 0, FM_ANCHOR, FM_JPCOATS, FM_KREINIK, FM_MILLHILL, FM_NUMBER } Maker_t;
 
 typedef enum {
     FPL_EMBROIDERY = 0,     // Embroidery Floss
@@ -39,15 +32,10 @@ typedef enum {
     FPL_NUMBER
 } FlossProductLine_t;
 
-typedef enum {
-    FB_NONE = 0,
-    FB_SMOOTH,
-    FB_BANDED,
-    FB_NUMBER
-} FlossBlend_t;
+typedef enum { FB_NONE = 0, FB_SMOOTH, FB_BANDED, FB_NUMBER } FlossBlend_t;
 
-#define MAX_FLOSS_ID_LEN    20
-#define MAX_FLOSS_DESC_LEN  50
+#define MAX_FLOSS_ID_LEN 20
+#define MAX_FLOSS_DESC_LEN 50
 
 /**
  *  Represents a particular skein of floss (maker, color, strands, etc).
@@ -56,23 +44,18 @@ class XSSkein {
 public:
     XSSkein();
     virtual ~XSSkein();
-    XSSkein(std::istream &src);
-    XSSkein(Maker_t maker,
-            FlossProductLine_t productLine,
-            const char *id,
-            const char *description,
-            XSColor color,
-            bool discontinued,
-            FlossBlend_t blend);
-    XSSkein(XSSkein const &ref);
-    XSSkein &operator=(XSSkein const &rhs);
+    XSSkein(std::istream& src);
+    XSSkein(Maker_t maker, FlossProductLine_t productLine, const char* id, const char* description,
+            XSColor color, bool discontinued, FlossBlend_t blend);
+    XSSkein(XSSkein const& ref);
+    XSSkein& operator=(XSSkein const& rhs);
     //  bool operator==(XSSkein const& rhs) const;
 
-    void Serialize(std::ostream &file) const;
-    void Unserialize(std::istream &src);
-    void SerializeRef(std::ostream &file) const;
-    static void UnserializeRef(std::istream &src, Maker_t &maker,
-            FlossProductLine_t &productLine, std::string &id);
+    void Serialize(std::ostream& file) const;
+    void Unserialize(std::istream& src);
+    void SerializeRef(std::ostream& file) const;
+    static void UnserializeRef(
+            std::istream& src, Maker_t& maker, FlossProductLine_t& productLine, std::string& id);
 
     // Identifying tuple:
     Maker_t m_maker;

@@ -18,17 +18,12 @@ class XSPoint;
  */
 class XSCommandSetStitch : public XSCommand {
 public:
-    XSCommandSetStitch(unsigned int x,
-            unsigned int y,
-            unsigned int xPercent,
-            unsigned int yPercent,
-            StitchType stitchType,
-            unsigned int flossIndex,
-            bool overwrite);
+    XSCommandSetStitch(unsigned int x, unsigned int y, unsigned int xPercent, unsigned int yPercent,
+            StitchType stitchType, unsigned int flossIndex, bool overwrite);
 
     virtual int Do();
     virtual int Undo();
-    virtual char const *GetDescription() const;
+    virtual char const* GetDescription() const;
 
 private:
     unsigned int m_layer;
@@ -52,14 +47,12 @@ private:
  */
 class XSCommandSetStitches : public XSCommand {
 public:
-    XSCommandSetStitches(std::vector<XSPoint> &points,
-            StitchType stitchType,
-            unsigned int flossIndex,
-            bool overwrite);
+    XSCommandSetStitches(std::vector<XSPoint>& points, StitchType stitchType,
+            unsigned int flossIndex, bool overwrite);
 
     virtual int Do();
     virtual int Undo();
-    virtual char const *GetDescription() const;
+    virtual char const* GetDescription() const;
 
 private:
     unsigned int m_layer;

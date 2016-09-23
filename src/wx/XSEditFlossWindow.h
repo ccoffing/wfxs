@@ -17,21 +17,20 @@ class XSFlossPaletteView;
  */
 class XSEditFlossWindow : public wxFrame {
 public:
-    XSEditFlossWindow(XSDocChild *document,
-            XSFlossPalette const &flossPalette);
+    XSEditFlossWindow(XSDocChild* document, XSFlossPalette const& flossPalette);
     virtual ~XSEditFlossWindow();
 
 private:
     XSFlossPalette m_flossPalette;
     unsigned int m_flossIndex;
-    XSFlossPaletteView *m_flossPaletteView;
-//    xxx * m_makerList;
+    XSFlossPaletteView* m_flossPaletteView;
+    //    xxx * m_makerList;
 
-    XSDocChild *m_document;
+    XSDocChild* m_document;
 
     // Disallow copying
-    XSEditFlossWindow(XSEditFlossWindow const &);
-    XSEditFlossWindow &operator=(XSEditFlossWindow const &);
+    XSEditFlossWindow(XSEditFlossWindow const&);
+    XSEditFlossWindow& operator=(XSEditFlossWindow const&);
 
     DECLARE_EVENT_TABLE()
 };

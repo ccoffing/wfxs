@@ -12,8 +12,8 @@
 class XSFlossPalette;
 class XSSkeinPalette;
 
-extern XSSkeinPalette *makerSkeinPalette[FM_NUMBER];
-extern XSFlossPalette *makerFlossPalette[FM_NUMBER];
+extern XSSkeinPalette* makerSkeinPalette[FM_NUMBER];
+extern XSFlossPalette* makerFlossPalette[FM_NUMBER];
 extern std::vector<std::string> makerNames;
 extern std::vector<std::string> productLineNames;
 
