@@ -13,20 +13,20 @@ XSCommandClearSquare::XSCommandClearSquare(unsigned int x, unsigned int y, unsig
 {
 }
 
-int XSCommandClearSquare::Do()
+int XSCommandClearSquare::doCommand()
 {
-    m_model->GetSquareData(&m_oldSquare, m_x, m_y, m_layer);
-    m_model->ClearSquare(m_x, m_y, m_layer);
+    m_model->getSquareData(&m_oldSquare, m_x, m_y, m_layer);
+    m_model->clearSquare(m_x, m_y, m_layer);
     return true;
 }
 
-int XSCommandClearSquare::Undo()
+int XSCommandClearSquare::undoCommand()
 {
-    m_model->SetSquareData(&m_oldSquare, m_x, m_y, m_layer);
+    m_model->setSquareData(&m_oldSquare, m_x, m_y, m_layer);
     return true;
 }
 
-char const* XSCommandClearSquare::GetDescription() const
+char const* XSCommandClearSquare::getDescription() const
 {
     return _("erase square");
 }
@@ -39,28 +39,28 @@ XSCommandClearSquares::XSCommandClearSquares(std::vector<XSPoint> const& points,
     m_oldSquares.reserve(points.size());
 }
 
-int XSCommandClearSquares::Do()
+int XSCommandClearSquares::doCommand()
 {
-    for (unsigned int i = 0; i < m_points.size(); ++i) {
+    for (auto const& point : m_points) {
         XSSquareIO square;
-        m_model->GetSquareData(&square, m_points[i].x, m_points[i].y, m_layer);
+        m_model->getSquareData(&square, point.x, point.y, m_layer);
         m_oldSquares.push_back(square);
     }
-    for (unsigned int i = 0; i < m_points.size(); ++i) {
-        m_model->ClearSquare(m_points[i].x, m_points[i].y, m_layer);
+    for (auto const& point : m_points) {
+        m_model->clearSquare(point.x, point.y, m_layer);
     }
     return true;
 }
 
-int XSCommandClearSquares::Undo()
+int XSCommandClearSquares::undoCommand()
 {
     for (unsigned int i = 0; i < m_points.size(); ++i) {
-        m_model->SetSquareData(&m_oldSquares[i], m_points[i].x, m_points[i].y, m_layer);
+        m_model->setSquareData(&m_oldSquares[i], m_points[i].x, m_points[i].y, m_layer);
     }
     return true;
 }
 
-char const* XSCommandClearSquares::GetDescription() const
+char const* XSCommandClearSquares::getDescription() const
 {
     return _("erase squares");
 }

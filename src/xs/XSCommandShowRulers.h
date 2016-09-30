@@ -14,9 +14,9 @@ class XSCommandShowRulers : public XSCommand {
 public:
     XSCommandShowRulers(bool showRulers);
 
-    virtual int Do();
-    virtual int Undo();
-    virtual char const* GetDescription() const;
+    virtual int doCommand();
+    virtual int undoCommand();
+    virtual char const* getDescription() const;
 
 private:
     bool m_oldShowRulers;

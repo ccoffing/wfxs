@@ -13,9 +13,9 @@ class XSPoint;
 class XSCommandClearSquare : public XSCommand {
 public:
     XSCommandClearSquare(unsigned int x, unsigned int y, unsigned int layer);
-    virtual int Do();
-    virtual int Undo();
-    virtual char const* GetDescription() const;
+    virtual int doCommand();
+    virtual int undoCommand();
+    virtual char const* getDescription() const;
 
 private:
     unsigned int m_layer;
@@ -30,9 +30,9 @@ class XSCommandClearSquares : public XSCommand {
 public:
     XSCommandClearSquares(std::vector<XSPoint> const& points, unsigned int layer);
 
-    virtual int Do();
-    virtual int Undo();
-    virtual char const* GetDescription() const;
+    virtual int doCommand();
+    virtual int undoCommand();
+    virtual char const* getDescription() const;
 
 private:
     unsigned int m_layer;

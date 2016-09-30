@@ -36,7 +36,7 @@ void XSController::save(const XSModel& model, const char* filename)
     std::ofstream of;
 
     of.open(filename);
-    model.SaveObject(of);
+    model.saveObject(of);
 }
 
 void XSController::open(const char* filename)
@@ -45,30 +45,30 @@ void XSController::open(const char* filename)
 
     ifs.open(filename);
 
-    XSModel model(0, 0);
-    model.LoadObject(ifs);
-
-    *m_model = std::move(model);
+    // TODO
+    XSModel* model = new XSModel(0, 0);
+    model->loadObject(ifs);
+    m_model = model;
 }
 
-void XSController::OnPatternStyle(CommandEvent& event)
+void XSController::onPatternStyle(CommandEvent& event)
 {
-    m_commandStack.Do(new XSCommandSetStyle(DrawStyle_Pattern));
+    m_commandStack.doCommand(new XSCommandSetStyle(DrawStyle_Pattern));
 }
 
-void XSController::OnDesignStyle(CommandEvent& event)
+void XSController::onDesignStyle(CommandEvent& event)
 {
-    m_commandStack.Do(new XSCommandSetStyle(DrawStyle_Design));
+    m_commandStack.doCommand(new XSCommandSetStyle(DrawStyle_Design));
 }
 
-void XSController::OnRealisticStyle(CommandEvent& event)
+void XSController::onRealisticStyle(CommandEvent& event)
 {
-    m_commandStack.Do(new XSCommandSetStyle(DrawStyle_Realistic));
+    m_commandStack.doCommand(new XSCommandSetStyle(DrawStyle_Realistic));
 }
 
-void XSController::OnShowGrid(CommandEvent& event)
+void XSController::onShowGrid(CommandEvent& event)
 {
-    m_commandStack.Do(new XSCommandShowGrid(!m_model->IsShowGrid()));
+    m_commandStack.doCommand(new XSCommandShowGrid(!m_model->isShowGrid()));
 }
 
 #if 0
@@ -89,7 +89,7 @@ void x()
         switch ((XSWindowDialogs)dialog) {
         case XS_DIALOG_PROPERTIES:
             if ((unsigned int)button == XS_EVT_BUTTON_OKAY) {
-                m_commandStack.Do(new XSCommandSetProperties(m_propertiesWindow->m_properties));
+                m_commandStack.doCommand(new XSCommandSetProperties(m_propertiesWindow->m_properties));
             }
             m_propertiesWindow->PostMessage(XS_EVT_QUIT_REQUESTED);
             m_propertiesWindow = 0;
@@ -123,171 +123,171 @@ void x()
         if (m_editFlossWindow)
             m_editFlossWindow->Show();
         else
-            m_editFlossWindow = new XSEditFlossWindow(this, m_model->ToolState().m_flossPalette);
+            m_editFlossWindow = new XSEditFlossWindow(this, m_model->toolState().m_flossPalette);
         break;
     }
 }
 
 #endif
 
-void XSController::OnZoomIn(CommandEvent& event)
+void XSController::onZoomIn(CommandEvent& event)
 {
-    unsigned int zoom = m_model->GetZoom();
+    unsigned int zoom = m_model->getZoom();
     unsigned int increment = zoom / 8;
 
     if (!increment)
         ++increment;
     zoom += increment;
-    m_commandStack.Do(new XSCommandZoom(zoom));
+    m_commandStack.doCommand(new XSCommandZoom(zoom));
 }
 
-void XSController::OnZoomOut(CommandEvent& event)
+void XSController::onZoomOut(CommandEvent& event)
 {
-    unsigned int zoom = m_model->GetZoom();
+    unsigned int zoom = m_model->getZoom();
     unsigned int increment = zoom / 8;
 
     if (!increment)
         ++increment;
     zoom -= increment;
-    m_commandStack.Do(new XSCommandZoom(zoom));
+    m_commandStack.doCommand(new XSCommandZoom(zoom));
 }
 
-void XSController::OnOverwrite()
+void XSController::onOverwrite()
 {
-    m_model->ToolState().m_overwrite = !m_model->ToolState().m_overwrite;
+    m_model->toolState().m_overwrite = !m_model->toolState().m_overwrite;
 }
 
-void XSController::OnFullStitch()
+void XSController::onFullStitch()
 {
-    m_model->ToolState().m_toolType = ToolType_Stitch;
-    m_model->ToolState().m_stitchType = Stitch_Full;
+    m_model->toolState().m_toolType = ToolType_Stitch;
+    m_model->toolState().m_stitchType = Stitch_Full;
 }
 
-void XSController::OnHalfAutoStitch()
+void XSController::onHalfAutoStitch()
 {
-    m_model->ToolState().m_toolType = ToolType_Stitch;
-    m_model->ToolState().m_stitchType = Stitch_HalfAuto;
+    m_model->toolState().m_toolType = ToolType_Stitch;
+    m_model->toolState().m_stitchType = Stitch_HalfAuto;
 }
 
-void XSController::OnHalfTopStitch()
+void XSController::onHalfTopStitch()
 {
-    m_model->ToolState().m_toolType = ToolType_Stitch;
-    m_model->ToolState().m_stitchType = Stitch_HalfTop;
+    m_model->toolState().m_toolType = ToolType_Stitch;
+    m_model->toolState().m_stitchType = Stitch_HalfTop;
 }
 
-void XSController::OnHalfBottomStitch()
+void XSController::onHalfBottomStitch()
 {
-    m_model->ToolState().m_toolType = ToolType_Stitch;
-    m_model->ToolState().m_stitchType = Stitch_HalfBottom;
+    m_model->toolState().m_toolType = ToolType_Stitch;
+    m_model->toolState().m_stitchType = Stitch_HalfBottom;
 }
 
-void XSController::OnThreeQuarterAutoStitch()
+void XSController::onThreeQuarterAutoStitch()
 {
-    m_model->ToolState().m_toolType = ToolType_Stitch;
-    m_model->ToolState().m_stitchType = Stitch_ThreeQuarterAuto;
+    m_model->toolState().m_toolType = ToolType_Stitch;
+    m_model->toolState().m_stitchType = Stitch_ThreeQuarterAuto;
 }
 
-void XSController::OnThreeQuarterULStitch()
+void XSController::onThreeQuarterULStitch()
 {
-    m_model->ToolState().m_toolType = ToolType_Stitch;
-    m_model->ToolState().m_stitchType = Stitch_ThreeQuarterUL;
+    m_model->toolState().m_toolType = ToolType_Stitch;
+    m_model->toolState().m_stitchType = Stitch_ThreeQuarterUL;
 }
 
-void XSController::OnThreeQuarterURStitch()
+void XSController::onThreeQuarterURStitch()
 {
-    m_model->ToolState().m_toolType = ToolType_Stitch;
-    m_model->ToolState().m_stitchType = Stitch_ThreeQuarterUR;
+    m_model->toolState().m_toolType = ToolType_Stitch;
+    m_model->toolState().m_stitchType = Stitch_ThreeQuarterUR;
 }
 
-void XSController::OnThreeQuarterLLStitch()
+void XSController::onThreeQuarterLLStitch()
 {
-    m_model->ToolState().m_toolType = ToolType_Stitch;
-    m_model->ToolState().m_stitchType = Stitch_ThreeQuarterLL;
+    m_model->toolState().m_toolType = ToolType_Stitch;
+    m_model->toolState().m_stitchType = Stitch_ThreeQuarterLL;
 }
 
-void XSController::OnThreeQuarterLRStitch()
+void XSController::onThreeQuarterLRStitch()
 {
-    m_model->ToolState().m_toolType = ToolType_Stitch;
-    m_model->ToolState().m_stitchType = Stitch_ThreeQuarterLR;
+    m_model->toolState().m_toolType = ToolType_Stitch;
+    m_model->toolState().m_stitchType = Stitch_ThreeQuarterLR;
 }
 
-void XSController::OnQuarterAutoStitch()
+void XSController::onQuarterAutoStitch()
 {
-    m_model->ToolState().m_toolType = ToolType_Stitch;
-    m_model->ToolState().m_stitchType = Stitch_QuarterAuto;
+    m_model->toolState().m_toolType = ToolType_Stitch;
+    m_model->toolState().m_stitchType = Stitch_QuarterAuto;
 }
 
-void XSController::OnQuarterULStitch()
+void XSController::onQuarterULStitch()
 {
-    m_model->ToolState().m_toolType = ToolType_Stitch;
-    m_model->ToolState().m_stitchType = Stitch_QuarterUL;
+    m_model->toolState().m_toolType = ToolType_Stitch;
+    m_model->toolState().m_stitchType = Stitch_QuarterUL;
 }
 
-void XSController::OnQuarterURStitch()
+void XSController::onQuarterURStitch()
 {
-    m_model->ToolState().m_toolType = ToolType_Stitch;
-    m_model->ToolState().m_stitchType = Stitch_QuarterUR;
+    m_model->toolState().m_toolType = ToolType_Stitch;
+    m_model->toolState().m_stitchType = Stitch_QuarterUR;
 }
 
-void XSController::OnQuarterLLStitch()
+void XSController::onQuarterLLStitch()
 {
-    m_model->ToolState().m_toolType = ToolType_Stitch;
-    m_model->ToolState().m_stitchType = Stitch_QuarterLL;
+    m_model->toolState().m_toolType = ToolType_Stitch;
+    m_model->toolState().m_stitchType = Stitch_QuarterLL;
 }
 
-void XSController::OnQuarterLRStitch()
+void XSController::onQuarterLRStitch()
 {
-    m_model->ToolState().m_toolType = ToolType_Stitch;
-    m_model->ToolState().m_stitchType = Stitch_QuarterLR;
+    m_model->toolState().m_toolType = ToolType_Stitch;
+    m_model->toolState().m_stitchType = Stitch_QuarterLR;
 }
 
-void XSController::OnLayerAdd(CommandEvent& event)
+void XSController::onLayerAdd(CommandEvent& event)
 {
-    m_commandStack.Do(new XSCommandLayerAdd());
+    m_commandStack.doCommand(new XSCommandLayerAdd());
 }
 
-void XSController::OnLayerDel(CommandEvent& event)
+void XSController::onLayerDel(CommandEvent& event)
 {
-    m_commandStack.Do(new XSCommandLayerDel());
+    m_commandStack.doCommand(new XSCommandLayerDel());
 }
 
-void XSController::OnLayerUp(CommandEvent& event)
+void XSController::onLayerUp(CommandEvent& event)
 {
-    m_commandStack.Do(new XSCommandLayerUp());
+    m_commandStack.doCommand(new XSCommandLayerUp());
 }
 
-void XSController::OnLayerDown(CommandEvent& event)
+void XSController::onLayerDown(CommandEvent& event)
 {
-    m_commandStack.Do(new XSCommandLayerUp());
+    m_commandStack.doCommand(new XSCommandLayerUp());
 }
 
-void XSController::OnToolEraserSmall(CommandEvent& event)
+void XSController::onToolEraserSmall(CommandEvent& event)
 {
-    m_model->ToolState().m_toolType = ToolType_Eraser;
+    m_model->toolState().m_toolType = ToolType_Eraser;
 }
 
-void XSController::OnToolEraserMedium(CommandEvent& event)
+void XSController::onToolEraserMedium(CommandEvent& event)
 {
-    m_model->ToolState().m_toolType = ToolType_Eraser;
+    m_model->toolState().m_toolType = ToolType_Eraser;
 }
 
-void XSController::OnToolEraserLarge(CommandEvent& event)
+void XSController::onToolEraserLarge(CommandEvent& event)
 {
-    m_model->ToolState().m_toolType = ToolType_Eraser;
+    m_model->toolState().m_toolType = ToolType_Eraser;
 }
 
-void XSController::OnToolFloodFill(CommandEvent& event)
+void XSController::onToolFloodFill(CommandEvent& event)
 {
-    m_model->ToolState().m_toolType = ToolType_FloodFill;
+    m_model->toolState().m_toolType = ToolType_FloodFill;
 }
 
-void XSController::OnColorPicker(CommandEvent& event)
+void XSController::onColorPicker(CommandEvent& event)
 {
-    m_model->ToolState().m_toolType = ToolType_ColorPicker;
+    m_model->toolState().m_toolType = ToolType_ColorPicker;
 }
 
 #if 0
-void XSController::SetTool(Tool tool)
+void XSController::setTool(Tool tool)
 {
     switch (tool) {
     case Tool_FullStitch:
@@ -382,75 +382,75 @@ void XSController::SetTool(Tool tool)
 
 #endif
 
-void XSController::PropertiesWindowClosing(XSProperties const& properties)
+void XSController::propertiesWindowClosing(XSProperties const& properties)
 {
     m_propertiesWindow = 0;
-    m_commandStack.Do(new XSCommandSetProperties(properties));
+    m_commandStack.doCommand(new XSCommandSetProperties(properties));
 }
 
-void XSController::FlossPaletteWindowClosing(XSFlossPalette const& flossPalette)
+void XSController::flossPaletteWindowClosing(XSFlossPalette const& flossPalette)
 {
     m_editFlossWindow = 0;
-    m_commandStack.Do(new XSCommandSetFlossPalette(flossPalette));
+    m_commandStack.doCommand(new XSCommandSetFlossPalette(flossPalette));
 }
 
-void XSController::OnClearSquare(unsigned int x, unsigned int y)
+void XSController::onClearSquare(unsigned int x, unsigned int y)
 {
-    m_commandStack.Do(new XSCommandClearSquare(x, y, m_model->GetCurrentLayerIndex()));
+    m_commandStack.doCommand(new XSCommandClearSquare(x, y, m_model->getCurrentLayerIndex()));
 }
 
-void XSController::OnClearSquares(std::vector<XSPoint> const& points)
+void XSController::onClearSquares(std::vector<XSPoint> const& points)
 {
-    m_commandStack.Do(new XSCommandClearSquares(points, m_model->GetCurrentLayerIndex()));
+    m_commandStack.doCommand(new XSCommandClearSquares(points, m_model->getCurrentLayerIndex()));
 }
 
-void XSController::OnSetKnot(unsigned int x, unsigned int y, unsigned int region)
+void XSController::onSetKnot(unsigned int x, unsigned int y, unsigned int region)
 {
-    m_commandStack.Do(new XSCommandSetKnot(x, y, region, m_model->ToolState().m_knotType,
-            m_model->ToolState().m_flossIndex, m_model->ToolState().m_overwrite));
+    m_commandStack.doCommand(new XSCommandSetKnot(x, y, region, m_model->toolState().m_knotType,
+            m_model->toolState().m_flossIndex, m_model->toolState().m_overwrite));
 }
 
-void XSController::OnSetStitches(std::vector<XSPoint>& points)
+void XSController::onSetStitches(std::vector<XSPoint>& points)
 {
-    m_commandStack.Do(new XSCommandSetStitches(points, m_model->ToolState().m_stitchTypeContinued,
-            m_model->ToolState().m_flossIndex, m_model->ToolState().m_overwrite));
+    m_commandStack.doCommand(new XSCommandSetStitches(points, m_model->toolState().m_stitchTypeContinued,
+            m_model->toolState().m_flossIndex, m_model->toolState().m_overwrite));
 }
 
-void XSController::OnSetStitch(
+void XSController::onSetStitch(
         unsigned int x, unsigned int y, unsigned int xPercent, unsigned int yPercent)
 {
-    m_commandStack.Do(
-            new XSCommandSetStitch(x, y, xPercent, yPercent, m_model->ToolState().m_stitchType,
-                    m_model->ToolState().m_flossIndex, m_model->ToolState().m_overwrite));
-    m_model->ToolState().m_stitchTypeContinued = m_model->ToolState().m_stitchType;
+    m_commandStack.doCommand(
+            new XSCommandSetStitch(x, y, xPercent, yPercent, m_model->toolState().m_stitchType,
+                    m_model->toolState().m_flossIndex, m_model->toolState().m_overwrite));
+    m_model->toolState().m_stitchTypeContinued = m_model->toolState().m_stitchType;
 }
 
-void XSController::OnFloodFill(unsigned int x, unsigned int y, XSSquareIO const& newSquare)
+void XSController::onFloodFill(unsigned int x, unsigned int y, XSSquareIO const& newSquare)
 {
-    m_commandStack.Do(new XSCommandFloodFill(x, y, newSquare));
+    m_commandStack.doCommand(new XSCommandFloodFill(x, y, newSquare));
 }
 
-void XSController::OnSetBead(unsigned int x, unsigned int y, unsigned int region)
+void XSController::onSetBead(unsigned int x, unsigned int y, unsigned int region)
 {
-    m_commandStack.Do(new XSCommandSetBead(
-            x, y, region, m_model->ToolState().m_beadIndex, m_model->ToolState().m_overwrite));
+    m_commandStack.doCommand(new XSCommandSetBead(
+            x, y, region, m_model->toolState().m_beadIndex, m_model->toolState().m_overwrite));
 }
 
-StitchType XSController::GetStitchType() const
+StitchType XSController::getStitchType() const
 {
     return m_model->m_toolState.m_stitchType;
 }
 
-ToolType XSController::GetToolType() const
+ToolType XSController::getToolType() const
 {
     return m_model->m_toolState.m_toolType;
 }
 
 #if 0
-XSRect XSController::GetPreferredFrame(unsigned int x,
+XSRect XSController::getPreferredFrame(unsigned int x,
         unsigned int y)
 {
-    unsigned int zoom = XSCanvas::GetPreferredZoom();
+    unsigned int zoom = XSCanvas::getPreferredZoom();
     XSRect frame(0, 0, x * zoom, y * zoom);
 
     XSRect prevFrame;
@@ -469,49 +469,49 @@ XSRect XSController::GetPreferredFrame(unsigned int x,
 #endif
 
 #if 0
-void XSController::OnKeyDown(KeyEvent &event)
+void XSController::onKeyDown(KeyEvent &event)
 {
-    unsigned int zoom = m_model->GetZoom();
+    unsigned int zoom = m_model->getZoom();
 
     switch (event.GetKeyCode()) {
     case 'A':
     case 'a':
-        m_view->ScrollBy(zoom, 0);
+        m_view->scrollBy(zoom, 0);
         break;
     case 'S':
     case 's':
-        m_view->ScrollBy(0, -zoom);
+        m_view->scrollBy(0, -zoom);
         break;
     case 'W':
     case 'w':
-        m_view->ScrollBy(0, zoom);
+        m_view->scrollBy(0, zoom);
         break;
     case 'D':
     case 'd':
-        m_view->ScrollBy(-zoom, 0);
+        m_view->scrollBy(-zoom, 0);
         break;
     case KeyEvent::LEFT:
-        m_view->MoveCursorBy(-1, 0);
+        m_view->moveCursorBy(-1, 0);
         break;
     case KeyEvent::RIGHT:
-        m_view->MoveCursorBy(1, 0);
+        m_view->moveCursorBy(1, 0);
         break;
     case KeyEvent::UP:
-        m_view->MoveCursorBy(0, -1);
+        m_view->moveCursorBy(0, -1);
         break;
     case KeyEvent::DOWN:
-        m_view->MoveCursorBy(0, 1);
+        m_view->moveCursorBy(0, 1);
         break;
     case ' ':
     {
-        // m_view->KeyboardClick();
+        // m_view->keyboardClick();
         break;
     }
     case '[':
-        m_model->PreviousFloss();
+        m_model->previousFloss();
         break;
     case ']':
-        m_model->NextFloss();
+        m_model->nextFloss();
         break;
     }
 }
@@ -520,15 +520,15 @@ void XSController::OnKeyDown(KeyEvent &event)
 
 void XSController::setFloss(unsigned int i)
 {
-    m_model->SetFloss(i);
+    m_model->setFloss(i);
 }
 
 void XSController::nextFloss()
 {
-    m_model->NextFloss();
+    m_model->nextFloss();
 }
 
 void XSController::previousFloss()
 {
-    m_model->PreviousFloss();
+    m_model->previousFloss();
 }

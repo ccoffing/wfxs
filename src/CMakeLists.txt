@@ -42,12 +42,21 @@ endif()
 
 if(UI_QT)
     add_subdirectory(qt)
+    # Enable running from the build dir, by adding a link to resources.
+    add_custom_target(qtResources ALL
+        COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_SOURCE_DIR}/resources qt/resources)
 endif()
 
 if(UI_GTKMM)
     add_subdirectory(gtk)
+    # Enable running from the build dir, by adding a link to resources.
+    add_custom_target(gtkResources ALL
+        COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_SOURCE_DIR}/resources gtk/resources)
 endif()
 
 if(UI_WX)
     add_subdirectory(wx)
+    # Enable running from the build dir, by adding a link to resources.
+    add_custom_target(wxResources ALL
+        COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_SOURCE_DIR}/resources wx/resources)
 endif()

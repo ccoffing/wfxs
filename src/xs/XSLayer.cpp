@@ -2,59 +2,49 @@
 #include "XSSquare.h"
 #include "XSStitchTypes.h"
 
-#include <assert.h>
+#include <cassert>
 
 XSLayer::XSLayer(unsigned int sizeX, unsigned int sizeY)
     : m_sizeX(sizeX)
     , m_sizeY(sizeY)
-    , m_grid(new XSSquare[sizeX * sizeY])
+    , m_grid(sizeX * sizeY)
     , m_embelishments()
 {
 }
 
-XSLayer::XSLayer(const XSLayer& rhs)
+XSLayer::XSLayer(XSLayer&& rhs)
     : m_sizeX(rhs.m_sizeX)
     , m_sizeY(rhs.m_sizeY)
-    , m_grid(new XSSquare[m_sizeX * m_sizeY])
-    , m_embelishments(rhs.m_embelishments)
 {
-    for (unsigned int i = 0; i < m_sizeX * m_sizeY; ++i) {
-        m_grid[i] = rhs.m_grid[i];
-    }
+    m_grid = std::move(rhs.m_grid);
+    m_embelishments = std::move(rhs.m_embelishments);
 }
 
-XSLayer::~XSLayer()
+XSSquare& XSLayer::getSquare(unsigned int x, unsigned int y)
 {
-    delete[] m_grid;
+    return m_grid[(m_sizeX * y) + x];
 }
 
-XSSquare* XSLayer::getSquare(unsigned int x, unsigned int y) const
+void XSLayer::resize(unsigned int sizeX, unsigned int sizeY)
 {
-    return m_grid + (m_sizeX * y) + x;
-}
+    if (sizeX == m_sizeX) {
+       m_grid.resize(sizeX * sizeY);
+    } else {
+        std::vector<XSSquare> grid(sizeX * sizeY);
 
-void XSLayer::Resize(unsigned int sizeX, unsigned int sizeY)
-{
-    if (sizeX == m_sizeX && sizeY == m_sizeY)
-        return;
-
-    XSSquare* grid = new XSSquare[sizeX * sizeY];
-
-    // Copy over existing squares.
-    unsigned int minX = (sizeX < m_sizeX ? sizeX : m_sizeX);
-    unsigned int minY = (sizeY < m_sizeY ? sizeY : m_sizeY);
-    for (unsigned int y = 0; y < minY; ++y) {
-        for (unsigned int x = 0; x < minX; ++x) {
-            grid[(sizeX * y) + x] = m_grid[(m_sizeX * y) + x];
+        // Copy over existing squares.
+        unsigned int minX = (sizeX < m_sizeX ? sizeX : m_sizeX);
+        unsigned int minY = (sizeY < m_sizeY ? sizeY : m_sizeY);
+        for (unsigned int y = 0; y < minY; ++y) {
+            for (unsigned int x = 0; x < minX; ++x) {
+                grid[(sizeX * y) + x] = m_grid[(m_sizeX * y) + x];
+            }
         }
+
+        m_grid = grid;
     }
-
-    // Release no-longer-used squares.
-    delete[] m_grid;
-
     m_sizeX = sizeX;
     m_sizeY = sizeY;
-    m_grid = grid;
 }
 
 /*
@@ -85,25 +75,25 @@ StitchTypeAndLocation XSLayer::autoStitch(unsigned int squareX, unsigned int squ
     assert(stitchType == Stitch_QuarterAuto || stitchType == Stitch_HalfAuto
             || stitchType == Stitch_ThreeQuarterAuto);
 
-    XSSquare* square = getSquare(squareX, squareY);
+    XSSquare& square = getSquare(squareX, squareY);
 
     unsigned int rotationsTried;
     unsigned int i;
     StitchTypeAndLocation stitchToRotate;
-    if (square->findUniqueStitch(stitchType, flossIndex, &i, &stitchToRotate)) {
-        square->clearStitchByIndex(i);
+    if (square.findUniqueStitch(stitchType, flossIndex, &i, &stitchToRotate)) {
+        square.clearStitchByIndex(i);
 
         rotationsTried = 0;
         for (StitchTypeAndLocation rotated = XSSquare::rotateStitch(stitchToRotate);
                 rotationsTried < 3; rotated = XSSquare::rotateStitch(rotated), ++rotationsTried) {
-            if (!square->findOverlappingStitch(rotated)) {
-                square->setStitch(rotated, flossIndex);
+            if (!square.findOverlappingStitch(rotated)) {
+                square.setStitch(rotated, flossIndex);
                 return rotated;
             }
         }
 
         // Rotation didn't work -- put old stitch back.
-        square->setStitch(stitchToRotate, flossIndex);
+        square.setStitch(stitchToRotate, flossIndex);
     }
 
     // Existing stich couldn't be rotated, or there was no existing stitch.
@@ -133,8 +123,8 @@ StitchTypeAndLocation XSLayer::autoStitch(unsigned int squareX, unsigned int squ
     rotationsTried = 0;
     for (StitchTypeAndLocation rotated = stitchToRotate; rotationsTried < 3;
             rotated = XSSquare::rotateStitch(rotated), ++rotationsTried) {
-        if (!square->findOverlappingStitch(rotated)) {
-            square->setStitch(rotated, flossIndex);
+        if (!square.findOverlappingStitch(rotated)) {
+            square.setStitch(rotated, flossIndex);
             return rotated;
         }
     }
@@ -144,22 +134,22 @@ StitchTypeAndLocation XSLayer::autoStitch(unsigned int squareX, unsigned int squ
 void XSLayer::replaceStitch(unsigned int squareX, unsigned int squareY,
         StitchTypeAndLocation stitchType, unsigned int flossIndex, bool overwrite)
 {
-    XSSquare* square = getSquare(squareX, squareY);
+    XSSquare& square = getSquare(squareX, squareY);
 
     if (overwrite) {
         int i;
-        while ((i = square->findOverlappingStitch(stitchType))) {
-            square->clearStitchByIndex(i);
+        while ((i = square.findOverlappingStitch(stitchType))) {
+            square.clearStitchByIndex(i);
         }
     } else {
-        if (square->findOverlappingStitch(stitchType))
+        if (square.findOverlappingStitch(stitchType))
             return;
     }
 
-    square->setStitch(stitchType, flossIndex);
+    square.setStitch(stitchType, flossIndex);
 }
 
-StitchType XSLayer::SetStitch(unsigned int squareX, unsigned int squareY, unsigned int xPercent,
+StitchType XSLayer::setStitch(unsigned int squareX, unsigned int squareY, unsigned int xPercent,
         unsigned int yPercent, StitchType stitchType, unsigned int flossIndex, bool overwrite)
 {
     if (stitchType == Stitch_QuarterAuto || stitchType == Stitch_HalfAuto
@@ -180,20 +170,20 @@ StitchType XSLayer::SetStitch(unsigned int squareX, unsigned int squareY, unsign
     return stitchType;
 }
 
-void XSLayer::SetKnot(unsigned int x, unsigned int y, unsigned int region, KnotType knotType,
+void XSLayer::setKnot(unsigned int x, unsigned int y, unsigned int region, KnotType knotType,
         unsigned int flossIndex, bool overwrite)
 {
-    SetEmbelishment(EmbelType_Knot, x, y, region, knotType, flossIndex, overwrite);
+    setEmbelishment(EmbelType_Knot, x, y, region, knotType, flossIndex, overwrite);
 }
 
-void XSLayer::SetBead(unsigned int x, unsigned int y, unsigned int region, unsigned int colorIndex,
+void XSLayer::setBead(unsigned int x, unsigned int y, unsigned int region, unsigned int colorIndex,
         bool overwrite)
 {
-    SetEmbelishment(
-            EmbelType_Bead, x, y, region, (KnotType)0 /* FIXME - yuck*/, colorIndex, overwrite);
+    setEmbelishment(EmbelType_Bead, x, y, region, (KnotType)0 /* FIXME - yuck*/, colorIndex,
+            overwrite);
 }
 
-void XSLayer::SetEmbelishment(EmbelType type, unsigned int x, unsigned int y, unsigned int region,
+void XSLayer::setEmbelishment(EmbelType type, unsigned int x, unsigned int y, unsigned int region,
         KnotType knotType, unsigned int index, bool overwrite)
 {
     bool exists;
@@ -235,27 +225,25 @@ void XSLayer::SetEmbelishment(EmbelType type, unsigned int x, unsigned int y, un
     assert(m_embelishments.count(embloc) == 1);
 }
 
-void XSLayer::ClearSquare(unsigned int x, unsigned int y)
+void XSLayer::clearSquare(unsigned int x, unsigned int y)
 {
     assert(x < m_sizeX && y < m_sizeY);
-    XSSquare* square = getSquare(x, y);
-    square->Clear();
+    XSSquare& square = getSquare(x, y);
+    square.clear();
 }
 
-void XSLayer::Backstitch()
+void XSLayer::backstitch()
 {
     // FIXME
 }
 
-void XSLayer::GetSquareData(XSSquareIO* square, unsigned int squareX, unsigned int squareY)
+void XSLayer::getSquareData(XSSquareIO* square, unsigned int squareX, unsigned int squareY)
 {
     assert(square);
     assert(squareX < m_sizeX);
     assert(squareY < m_sizeY);
 
-    XSSquare* s = getSquare(squareX, squareY);
-
-    s->GetSquareData(square);
+    getSquare(squareX, squareY).getSquareData(square);
 
     EmbLocation embloc;
     embloc.x = squareX;
@@ -282,12 +270,11 @@ void XSLayer::GetSquareData(XSSquareIO* square, unsigned int squareX, unsigned i
     }
 }
 
-void XSLayer::SetSquareData(XSSquareIO const* square, unsigned int x, unsigned int y)
+void XSLayer::setSquareData(XSSquareIO const* square, unsigned int x, unsigned int y)
 {
     assert(square);
     assert(x < m_sizeX);
     assert(y < m_sizeY);
 
-    XSSquare* s = getSquare(x, y);
-    s->SetSquareData(square);
+    getSquare(x, y).setSquareData(square);
 }

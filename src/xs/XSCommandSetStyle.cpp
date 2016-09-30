@@ -8,20 +8,20 @@ XSCommandSetStyle::XSCommandSetStyle(enum DrawStyle style)
 {
 }
 
-int XSCommandSetStyle::Do()
+int XSCommandSetStyle::doCommand()
 {
-    m_oldStyle = m_model->GetDrawStyle();
-    m_model->SetDrawStyle(m_newStyle);
+    m_oldStyle = m_model->getDrawStyle();
+    m_model->setDrawStyle(m_newStyle);
     return true;
 }
 
-int XSCommandSetStyle::Undo()
+int XSCommandSetStyle::undoCommand()
 {
-    m_model->SetDrawStyle(m_oldStyle);
+    m_model->setDrawStyle(m_oldStyle);
     return true;
 }
 
-char const* XSCommandSetStyle::GetDescription() const
+char const* XSCommandSetStyle::getDescription() const
 {
     return _("set style");
 }

@@ -1,7 +1,7 @@
 #ifndef XS_FLOSS_PALETTE_H
 #define XS_FLOSS_PALETTE_H
 
-#include "xs/XSSymbolPalette.h"
+#include "XSSymbolPalette.h"
 
 #include <iostream>
 
@@ -21,15 +21,15 @@ public:
     XSFloss& operator[](unsigned int i) const;
     XSFloss& operator[](unsigned int i);
 
-    XSFloss& GetFloss(unsigned int i) const;
+    XSFloss& getFloss(unsigned int i) const;
     unsigned int size() const;
 
-    void Serialize(std::ostream& file) const;
-    void Unserialize(std::istream& src);
-    void UnserializeAll(std::istream& src);
+    void serialize(std::ostream& file) const;
+    void unserialize(std::istream& src);
+    void unserializeAll(std::istream& src);
 
 private:
-    void ResizePalette(unsigned int);
+    void resizePalette(unsigned int);
 
     unsigned int m_paletteSize;
     XSFloss* m_palette;

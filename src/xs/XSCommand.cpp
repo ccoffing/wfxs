@@ -2,12 +2,12 @@
 #include "XSController.h"
 
 
-void XSCommand::Init(XSModel* model)
+void XSCommand::init(XSModel* model)
 {
     m_model = model;
 }
 
-char const* XSCommand::GetDescription() const
+char const* XSCommand::getDescription() const
 {
     return "";
 }

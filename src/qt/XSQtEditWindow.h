@@ -18,7 +18,7 @@ public:
     XSQtEditWindow();
 
 protected:
-    void contextMenuEvent(QContextMenuEvent* event);
+    void contextMenuEvent(QContextMenuEvent* event) override;
 
 private slots:
     void newFile();

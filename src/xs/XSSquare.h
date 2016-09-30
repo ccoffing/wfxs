@@ -4,7 +4,7 @@
 #include "XSSquareIO.h"
 #include "XSStitchTypes.h"
 
-#include <stdint.h>
+#include <cstdint>
 
 
 /**
@@ -22,8 +22,8 @@ struct SquareData {
      *  elements in the hashtables -- a way to optimize out many
      *  useless hashtable searches during screen redraws.
      */
-    unsigned int num_knots : 4;
-    unsigned int num_beads : 4;
+    unsigned int numKnots : 4;
+    unsigned int numBeads : 4;
     uint8_t pad;
 } __attribute__((packed));
 
@@ -31,9 +31,9 @@ struct SquareData {
  */
 class XSSquare {
 public:
-    static const unsigned int MaxStitches;
-    static const unsigned int MaxKnots;
-    static const unsigned int MaxBeads;
+    static const unsigned int maxStitches = 4;
+    static const unsigned int maxKnots = 8;
+    static const unsigned int maxBeads = 8;
 
     XSSquare()
         : m_squareData(0)
@@ -59,13 +59,13 @@ public:
 
     void clearStitchByIndex(unsigned int index);
 
-    void Clear();
+    void clear();
 
     /**
      */
-    void GetSquareData(XSSquareIO* square) const;
+    void getSquareData(XSSquareIO* square) const;
 
-    void SetSquareData(XSSquareIO const* square);
+    void setSquareData(XSSquareIO const* square);
 
 protected:
     union {

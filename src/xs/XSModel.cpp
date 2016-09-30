@@ -12,24 +12,20 @@ XSModel::XSModel(unsigned int x, unsigned int y)
     , m_sizeX(x)
     , m_sizeY(y)
     , m_zoom(10)
-    ,
-    // TODO: XSView::GetPreferredZoom()),
-    m_minZoom(4)
+    // TODO: XSView::getPreferredZoom()),
+    , m_minZoom(4)
     , m_maxZoom(50)
-    , m_numLayers(0)
-    , m_numAllocatedLayers(16)
     , m_currentLayerIndex(0)
-    , m_layers(new XSLayer*[m_numAllocatedLayers])
     , m_showGrid(true)
     , m_showRulers(true)
     , m_editable(true)
     , m_properties()
     , m_drawStyle(DrawStyle_Design)
 {
-    AddLayer();
+    addLayer();
 }
 
-XSModel& XSModel::operator=(XSModel&& rhs)
+XSModel::XSModel(XSModel&& rhs)
 {
     m_toolState = rhs.m_toolState;
     m_controller = rhs.m_controller;
@@ -39,236 +35,209 @@ XSModel& XSModel::operator=(XSModel&& rhs)
     m_zoom = rhs.m_zoom;
     m_minZoom = rhs.m_minZoom;
     m_maxZoom = rhs.m_maxZoom;
-    m_numLayers = rhs.m_numLayers;
-    m_numAllocatedLayers = rhs.m_numAllocatedLayers;
     m_currentLayerIndex = rhs.m_currentLayerIndex;
-    m_layers = rhs.m_layers;
-    m_numLayers = rhs.m_numLayers;
+    m_layers = std::move(rhs.m_layers);
     m_showGrid = rhs.m_showGrid;
     m_showRulers = rhs.m_showRulers;
     m_editable = rhs.m_editable;
     m_properties = rhs.m_properties;
     m_drawStyle = rhs.m_drawStyle;
 
-    rhs.m_layers = nullptr;
-
     m_controller->m_model = this;
-
-    return *this;
 }
 
-XSModel::~XSModel()
-{
-    delete[] m_layers;
-}
-
-std::ostream& XSModel::SaveObject(std::ostream& stream) const
+std::ostream& XSModel::saveObject(std::ostream& stream) const
 {
     StreamOutNative(stream, this);
     return stream;
 }
 
-std::istream& XSModel::LoadObject(std::istream& stream)
+std::istream& XSModel::loadObject(std::istream& stream)
 {
     StreamInNative(stream, this);
     return stream;
 }
 
-XSProperties& XSModel::GetProperties()
+XSProperties& XSModel::getProperties()
 {
     return m_properties;
 }
 
-const XSProperties& XSModel::GetProperties() const
+const XSProperties& XSModel::getProperties() const
 {
     return m_properties;
 }
 
-void XSModel::SetProperties(XSProperties const& properties)
+void XSModel::setProperties(XSProperties const& properties)
 {
     m_properties = properties;
     // TODO:  notify controller to refresh title on window
 }
 
-XSFlossPalette const& XSModel::GetFlossPalette() const
+XSFlossPalette const& XSModel::getFlossPalette() const
 {
     return m_toolState.m_flossPalette;
 }
 
-void XSModel::SetFlossPalette(XSFlossPalette const& flossPalette)
+void XSModel::setFlossPalette(XSFlossPalette const& flossPalette)
 {
     m_toolState.m_flossPalette = flossPalette;
 }
 
-void XSModel::PreviousFloss()
+void XSModel::previousFloss()
 {
     if (m_toolState.m_flossIndex) {
-        //        m_controller->GetFlossPaletteView()->RefreshWell(m_toolState.m_flossIndex);
+        //        m_controller->getFlossPaletteView()->refreshWell(m_toolState.m_flossIndex);
         m_toolState.m_flossIndex--;
-        //        m_controller->GetFlossPaletteView()->RefreshWell(m_toolState.m_flossIndex);
+        //        m_controller->getFlossPaletteView()->refreshWell(m_toolState.m_flossIndex);
     }
 }
 
-void XSModel::NextFloss()
+void XSModel::nextFloss()
 {
     if (m_toolState.m_flossIndex + 1 < m_toolState.m_flossPalette.size()) {
-        //        m_controller->GetFlossPaletteView()->RefreshWell(m_toolState.m_flossIndex);
+        //        m_controller->getFlossPaletteView()->refreshWell(m_toolState.m_flossIndex);
         m_toolState.m_flossIndex++;
-        //        m_controller->GetFlossPaletteView()->RefreshWell(m_toolState.m_flossIndex);
+        //        m_controller->getFlossPaletteView()->refreshWell(m_toolState.m_flossIndex);
     }
 }
 
-void XSModel::SetFloss(unsigned int i)
+void XSModel::setFloss(unsigned int i)
 {
     if (i < m_toolState.m_flossPalette.size())
         m_toolState.m_flossIndex = i;
 }
 
-void XSModel::AddLayer()
+void XSModel::addLayer()
 {
-    XSLayer* layer = new XSLayer(m_sizeX, m_sizeY);
-
-    if (m_numLayers == m_numAllocatedLayers) {
-        XSLayer** newLayers = new XSLayer*[m_numAllocatedLayers * 2];
-        for (unsigned int i = 0; i < m_numLayers; ++i) {
-            newLayers[i] = m_layers[i];
-        }
-        delete[] m_layers;
-        m_layers = newLayers;
-        m_numAllocatedLayers *= 2;
-    }
-    m_layers[m_numLayers++] = layer;
+    m_layers.push_back(std::unique_ptr<XSLayer>(new XSLayer(m_sizeX, m_sizeY)));
 }
 
-void XSModel::DelLayer(unsigned int i)
+void XSModel::delLayer(unsigned int i)
 {
-    assert(i < m_numLayers);
-    assert(m_numLayers > 1);
+    assert(i < m_layers.size());
+    assert(m_layers.size() > 1);
 
     //    if (m_currentLayerIndex == i)
-    //        m_controller->GetView()->Refresh();
+    //        m_controller->getView()->refresh();
 
-    delete m_layers[i];
-    for (unsigned int layer = i; layer < m_numLayers - 1; ++layer) {
-        m_layers[layer] = m_layers[layer + 1];
-    }
-    m_numLayers--;
+    m_layers.erase(m_layers.begin() + i);
 
-    if (m_currentLayerIndex == m_numLayers)
+    if (m_currentLayerIndex == m_layers.size())
         m_currentLayerIndex--;
 }
 
-void XSModel::DownLayer()
+void XSModel::downLayer()
 {
-    if (m_currentLayerIndex < m_numLayers - 1) {
+    if (m_currentLayerIndex < m_layers.size() - 1) {
         m_currentLayerIndex++;
-        //        m_controller->GetView()->Refresh();
+        //        m_controller->getView()->refresh();
     }
 }
 
-void XSModel::UpLayer()
+void XSModel::upLayer()
 {
     if (m_currentLayerIndex > 0) {
         m_currentLayerIndex--;
-        //        m_controller->GetView()->Refresh();
+        //        m_controller->getView()->refresh();
     }
 }
 
-unsigned int XSModel::GetCurrentLayerIndex() const
+unsigned int XSModel::getCurrentLayerIndex() const
 {
     return m_currentLayerIndex;
 }
 
-unsigned int XSModel::GetNumberLayers() const
+unsigned int XSModel::getNumberLayers() const
 {
-    return m_numLayers;
+    return m_layers.size();
 }
 
-void XSModel::Resize(unsigned int sizeX, unsigned int sizeY)
+void XSModel::resize(unsigned int sizeX, unsigned int sizeY)
 {
     // FIXME:  catch exceptions...
-    for (unsigned int i = 0; i < m_numLayers; ++i) {
-        m_layers[i]->Resize(sizeX, sizeY);
+    for (unsigned int i = 0; i < m_layers.size(); ++i) {
+        m_layers[i]->resize(sizeX, sizeY);
     }
     m_sizeX = sizeX;
     m_sizeY = sizeY;
     //    if (m_controller) {
-    //        m_controller->GetView()->AdjustScrollBars();
-    //        m_controller->GetView()->Refresh();
+    //        m_controller->getView()->adjustScrollBars();
+    //        m_controller->getView()->refresh();
     //    }
 }
 
-unsigned int XSModel::SquaresX() const
+unsigned int XSModel::squaresX() const
 {
     return m_sizeX;
 }
 
-unsigned int XSModel::SquaresY() const
+unsigned int XSModel::squaresY() const
 {
     return m_sizeY;
 }
 
-StitchType XSModel::SetStitch(unsigned int squareX, unsigned int squareY, unsigned int xPercent,
+StitchType XSModel::setStitch(unsigned int squareX, unsigned int squareY, unsigned int xPercent,
         unsigned int yPercent, StitchType stitchType, unsigned int flossIndex, bool overwrite)
 {
     Log::debug(LOG_NAME, "%u %u %u", squareX, squareY, flossIndex);
-    StitchType st = m_layers[m_currentLayerIndex]->SetStitch(
+    StitchType st = m_layers[m_currentLayerIndex]->setStitch(
             squareX, squareY, xPercent, yPercent, stitchType, flossIndex, overwrite);
 
-    //    m_controller->GetView()->RefreshSquareContents(squareX, squareY);
+    //    m_controller->getView()->refreshSquareContents(squareX, squareY);
     return st;
 }
 
-void XSModel::SetKnot(unsigned int x, unsigned int y, unsigned int region, KnotType knotType,
+void XSModel::setKnot(unsigned int x, unsigned int y, unsigned int region, KnotType knotType,
         unsigned int flossIndex, bool overwrite)
 {
-    m_layers[m_currentLayerIndex]->SetKnot(x, y, region, knotType, flossIndex, overwrite);
-    //    m_controller->GetView()->RefreshSquareContents(x, y);
+    m_layers[m_currentLayerIndex]->setKnot(x, y, region, knotType, flossIndex, overwrite);
+    //    m_controller->getView()->refreshSquareContents(x, y);
 }
 
-void XSModel::SetBead(unsigned int x, unsigned int y, unsigned int region, unsigned int colorIndex,
+void XSModel::setBead(unsigned int x, unsigned int y, unsigned int region, unsigned int colorIndex,
         bool overwrite)
 {
-    m_layers[m_currentLayerIndex]->SetBead(x, y, region, colorIndex, overwrite);
-    //    m_controller->GetView()->RefreshSquareContents(x, y);
+    m_layers[m_currentLayerIndex]->setBead(x, y, region, colorIndex, overwrite);
+    //    m_controller->getView()->refreshSquareContents(x, y);
 }
 
-void XSModel::SetSquareData(
+void XSModel::setSquareData(
         XSSquareIO const* square, unsigned int x, unsigned int y, unsigned int layer)
 {
-    assert(layer < m_numLayers);
-    m_layers[layer]->SetSquareData(square, x, y);
-    //    m_controller->GetView()->RefreshSquareContents(x, y);
+    assert(layer < m_layers.size());
+    m_layers[layer]->setSquareData(square, x, y);
+    //    m_controller->getView()->refreshSquareContents(x, y);
 }
 
-void XSModel::SetSquareDataNoInval(
+void XSModel::setSquareDataNoInval(
         XSSquareIO const* square, unsigned int x, unsigned int y, unsigned int layer)
 {
-    assert(layer < m_numLayers);
-    m_layers[layer]->SetSquareData(square, x, y);
+    assert(layer < m_layers.size());
+    m_layers[layer]->setSquareData(square, x, y);
 }
 
-void XSModel::GetSquareData(
+void XSModel::getSquareData(
         XSSquareIO* square, unsigned int x, unsigned int y, unsigned int layer) const
 {
-    assert(layer < m_numLayers);
-    m_layers[layer]->GetSquareData(square, x, y);
+    assert(layer < m_layers.size());
+    m_layers[layer]->getSquareData(square, x, y);
 }
 
 XSSquare& XSModel::getSquare(unsigned int x, unsigned int y, unsigned int layer)
 {
-    assert(layer < m_numLayers);
-    return *m_layers[layer]->getSquare(x, y);
+    assert(layer < m_layers.size());
+    return m_layers[layer]->getSquare(x, y);
 }
 
-void XSModel::ClearSquare(unsigned int x, unsigned int y, unsigned int layer)
+void XSModel::clearSquare(unsigned int x, unsigned int y, unsigned int layer)
 {
-    assert(layer < m_numLayers);
-    m_layers[layer]->ClearSquare(x, y);
-    //    m_controller->GetView()->RefreshSquareContents(x, y);
+    assert(layer < m_layers.size());
+    m_layers[layer]->clearSquare(x, y);
+    //    m_controller->getView()->refreshSquareContents(x, y);
 }
 
-unsigned int XSModel::SetZoom(unsigned int zoom)
+unsigned int XSModel::setZoom(unsigned int zoom)
 {
     unsigned int oldZoom = m_zoom;
 
@@ -281,19 +250,19 @@ unsigned int XSModel::SetZoom(unsigned int zoom)
 
     if (m_zoom != oldZoom) {
         // FIXME: reset originX,Y to move towards cursorX,Y
-        //        m_controller->GetView()->ResetScrollBars();
-        //        m_controller->GetView()->Refresh();
+        //        m_controller->getView()->resetScrollBars();
+        //        m_controller->getView()->refresh();
     }
 
     return m_zoom;
 }
 
-unsigned int XSModel::GetZoom() const
+unsigned int XSModel::getZoom() const
 {
     return m_zoom;
 }
 
-void XSModel::GetZoomRange(unsigned int* min, unsigned int* max) const
+void XSModel::getZoomRange(unsigned int* min, unsigned int* max) const
 {
     if (min)
         *min = m_minZoom;
@@ -301,26 +270,26 @@ void XSModel::GetZoomRange(unsigned int* min, unsigned int* max) const
         *max = m_maxZoom;
 }
 
-enum DrawStyle XSModel::GetDrawStyle() const
+enum DrawStyle XSModel::getDrawStyle() const
 {
     return m_drawStyle;
 }
 
-void XSModel::SetDrawStyle(enum DrawStyle style)
+void XSModel::setDrawStyle(enum DrawStyle style)
 {
     m_drawStyle = style;
-    //    m_controller->GetView()->Refresh();
+    //    m_controller->getView()->refresh();
 }
 
-void XSModel::SetShowGrid(bool grid)
+void XSModel::setShowGrid(bool grid)
 {
     if (m_showGrid != grid) {
         m_showGrid = grid;
-        //        m_controller->GetView()->Refresh();
+        //        m_controller->getView()->refresh();
     }
 }
 
-void XSModel::SetShowRulers(bool rulers)
+void XSModel::setShowRulers(bool rulers)
 {
     if (m_showRulers != rulers) {
         m_showRulers = rulers;

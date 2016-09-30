@@ -14,9 +14,9 @@ class XSCommandZoom : public XSCommand {
 public:
     XSCommandZoom(unsigned int zoom);
 
-    virtual int Do();
-    virtual int Undo();
-    virtual char const* GetDescription() const;
+    virtual int doCommand();
+    virtual int undoCommand();
+    virtual char const* getDescription() const;
 
 private:
     unsigned int m_oldZoom;

@@ -18,38 +18,38 @@ public:
      *  command will not be saved to the undo/redo stack.
      *  @return 0 iff success.
      */
-    virtual int Do() = 0;
+    virtual int doCommand() = 0;
 
     /**
      *  Attempts to undo the command.  (Will only be called if the command was previously
      *  sucessfuly performed, so that may be assumed.)
      *  @return 0 iff success.
      */
-    virtual int Undo() = 0;
+    virtual int undoCommand() = 0;
 
     /**
      *  Attempts to redo the command.  (Will only be called if the command was previously
      *  sucessfuly done and later undone, so that may be assumed.) Default implementation is to
-     *  call Do, but subclasses may override for a more efficient implementation (for example,
-     *  Do may save away state that makes Undo and ReDo more efficient.)
+     *  call doCommand, but subclasses may override for a more efficient implementation (for example,
+     *  doCommand may save away state that makes undoCommand and redoCommand more efficient.)
      *  @return 0 iff success.
      */
-    virtual int ReDo()
+    virtual int redoCommand()
     {
-        return Do();
+        return doCommand();
     }
 
     /**
      *  Returns an internationalized description in UTF-8.  The description should describe the
      *  action in general terms.  Do not include "undo" or "redo" in the description.
      */
-    virtual char const* GetDescription() const = 0;
+    virtual char const* getDescription() const = 0;
 };
 
 /** Base class for cross-stitch commands.
  *
  *  In general, it's a good idea to pass as little as possible to the constructor of the derived
- *  class.  The remaining information can be obtained in the Do() function.  This way, the command
+ *  class.  The remaining information can be obtained in the doCommand() function.  This way, the command
  *  is more like a macro -- can (in theory) be replayed elsewhere.
  */
 class XSCommand : public Command {
@@ -59,9 +59,9 @@ public:
     {
     }
 
-    void Init(XSModel* model);
+    void init(XSModel* model);
 
-    char const* GetDescription() const;
+    char const* getDescription() const;
 
 protected:
     XSModel* m_model;

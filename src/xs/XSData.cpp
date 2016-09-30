@@ -74,12 +74,12 @@ static void InitSkeinPalettes()
 
         Log::debug(LOG_NAME, "Loading skeins");
         XSSkeinPalette* sp = new XSSkeinPalette;
-        sp->Unserialize(is);
+        sp->unserialize(is);
         makerSkeinPalette[toRead[i].index] = sp;
 
         Log::debug(LOG_NAME, "Loading floss palette");
         XSFlossPalette* fp = new XSFlossPalette;
-        fp->Unserialize(is);
+        fp->unserialize(is);
         makerFlossPalette[toRead[i].index] = fp;
     }
 
@@ -91,8 +91,8 @@ static void InitMakers()
 {
     Log::info(LOG_NAME, "Loading makers");
 
-    for (unsigned int i = 0; i < FM_NUMBER; ++i) {
-        makerNames.push_back(std::string(makerNamesCStr[i]));
+    for (auto& elem : makerNamesCStr) {
+        makerNames.push_back(std::string(elem));
     }
 }
 
@@ -100,8 +100,8 @@ static void InitProductLines()
 {
     Log::info(LOG_NAME, "Loading product lines");
 
-    for (unsigned int i = 0; i < FPL_NUMBER; ++i) {
-        productLineNames.push_back(std::string(productLineNamesCStr[i]));
+    for (auto& elem : productLineNamesCStr) {
+        productLineNames.push_back(std::string(elem));
     }
 }
 

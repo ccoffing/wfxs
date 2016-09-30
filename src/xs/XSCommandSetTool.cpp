@@ -6,17 +6,17 @@ XSCommandSetTool::XSCommandSetTool()
 {
 }
 
-int XSCommandSetTool::Do()
+int XSCommandSetTool::doCommand()
 {
     return true;
 }
 
-int XSCommandSetTool::Undo()
+int XSCommandSetTool::undoCommand()
 {
     return true;
 }
 
-char const* XSCommandSetTool::GetDescription() const
+char const* XSCommandSetTool::getDescription() const
 {
     return _("");
 }

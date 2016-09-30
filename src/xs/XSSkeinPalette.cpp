@@ -10,29 +10,28 @@ XSSkeinPalette::XSSkeinPalette()
 {
 }
 
-XSSkein const* XSSkeinPalette::Lookup(
+XSSkein const* XSSkeinPalette::lookup(
         Maker_t maker, FlossProductLine_t productLine, std::string const& id)
 {
-    for (size_t i = 0; i < m_skeins.size(); ++i) {
-        if (m_skeins[i].m_maker == maker && m_skeins[i].m_productLine == productLine
-                && m_skeins[i].m_id == id)
-            return &m_skeins[i];
+    for (auto& elem : m_skeins) {
+        if (elem.m_maker == maker && elem.m_productLine == productLine && elem.m_id == id)
+            return &elem;
     }
     return 0;
 }
 
-void XSSkeinPalette::Serialize(std::ostream& file) const
+void XSSkeinPalette::serialize(std::ostream& file) const
 {
     size_t n = m_skeins.size();
 
     WriteBE16_exc(file, n);
     for (size_t i = 0; i < n; ++i) {
         const XSSkein& s = m_skeins[i];
-        s.Serialize(file);
+        s.serialize(file);
     }
 }
 
-void XSSkeinPalette::Unserialize(std::istream& src)
+void XSSkeinPalette::unserialize(std::istream& src)
 {
     uint16_t n;
 
@@ -41,7 +40,7 @@ void XSSkeinPalette::Unserialize(std::istream& src)
     Log::debug(LOG_NAME, "Loading %u skeins", n);
     for (size_t i = 0; i < skeins; ++i) {
         XSSkein skein;
-        skein.Unserialize(src);
+        skein.unserialize(src);
         m_skeins.push_back(skein);
     }
 }

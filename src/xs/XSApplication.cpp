@@ -3,6 +3,7 @@
 #include "Logger.h"
 #include "XSData.h"
 
+#include <string.h>
 
 XSApplication* xs_app;
 static LogAppenderCFile console(stderr);

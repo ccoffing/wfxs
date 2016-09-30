@@ -33,7 +33,7 @@ public:
      *  large enough to enclose the selection.  Ownership of mask transfers to caller.
      *  @return Newly allocated mask describing selection.
      */
-    virtual BitMask* GetMask() = 0;
+    virtual BitMask* getMask() = 0;
 
     /**
      *  Attempts to move by a single square in the specified direction.
@@ -41,35 +41,35 @@ public:
      *      the existing path to be crossed, if it exceeds the boundaries specified in the
      *      constructor, or if the path is already complete.
      */
-    virtual bool Move(MoveDirection m) = 0;
+    virtual bool move(MoveDirection m) = 0;
 
     /**
      *  Determines if the path is complete.  The precise definition of "complete" depends on the
      *  subclass.  Once a path is complete, it cannot be modified further.
      *  @return true if the path is complete, otherwise false.
      */
-    virtual bool IsCompleted() = 0;
+    virtual bool isCompleted() = 0;
 
     /**
      *  Attempts to complete the path.
      *  @return true if the path was able to be completed; false if this failed for some reason.
      */
-    virtual bool Complete() = 0;
+    virtual bool complete() = 0;
 
     /**
      *  Returns the dimensions (width and height) of the completed selection path.
      *  @param[in,out] width The width.
      *  @param[in,out] height The height.
      */
-    virtual void GetDimensions(unsigned int* width, unsigned int* height) = 0;
+    virtual void getDimensions(unsigned int* width, unsigned int* height) = 0;
 
     /**
      *
      */
-    virtual void GetEnd(unsigned int* x, unsigned int* y) = 0;
+    virtual void getEnd(unsigned int* x, unsigned int* y) = 0;
 
 protected:
-    static void Move(MoveDirection move, int* x, int* y);
+    static void move(MoveDirection move, int* x, int* y);
 };
 
 
@@ -87,7 +87,7 @@ public:
      */
     XSFreeFormSelectionPath();
 
-    BitMask* GetMask();
+    BitMask* getMask();
 
     /**
      *  Attempts to move by a single square in the specified direction.
@@ -95,27 +95,27 @@ public:
      *      the existing path to be crossed, if it exceeds the boundaries specified in the
      *      constructor, or if the path is already complete.
      */
-    bool Move(MoveDirection m);
+    bool move(MoveDirection m);
 
     /**
      *  Determines if the path is complete.  A complete path is one that has returned to the
      *  starting point.  Once a path is complete, it cannot be modified further.
      *  @return true if the path is complete, otherwise false.
      */
-    bool IsCompleted();
+    bool isCompleted();
 
     /**
      *  Attempts to complete the path.
      *  @return true if the path was able to be completed; false if this failed for some reason.
      */
-    bool Complete();
+    bool complete();
 
-    void GetDimensions(unsigned int* width, unsigned int* height);
+    void getDimensions(unsigned int* width, unsigned int* height);
 
-    void GetEnd(unsigned int* x, unsigned int* y);
+    void getEnd(unsigned int* x, unsigned int* y);
 
 protected:
-    void UpdateCache();
+    void updateCache();
 
     /**
      *  Walks the current path and discovers some characteristics of it.
@@ -127,8 +127,7 @@ protected:
      *  param[out] dx1  Optional; X offset of starting point.
      *  param[out] dy1  Optional; Y offset of starting point.
      */
-    void WalkPath(
-            unsigned int* width, unsigned int* height, int* dx2, int* dy2, int* dx1, int* dy1);
+    void walkPath(unsigned int* width, unsigned int* height, int* dx2, int* dy2, int* dx1, int* dy1);
 
     std::vector<MoveDirection> m_moves;
     unsigned int m_width, m_height;
@@ -153,25 +152,25 @@ public:
      */
     XSRectangularSelectionPath();
 
-    BitMask* GetMask();
+    BitMask* getMask();
 
-    bool Move(MoveDirection m);
+    bool move(MoveDirection m);
 
     /**
      *  Determines if the path is complete.  Once a path is complete, it cannot be modified further.
      *  @return true if the path is complete, otherwise false.
      */
-    bool IsCompleted();
+    bool isCompleted();
 
     /**
      *  Marks the path as complete.
      *  @return true (always succeeds for rectangular selection path)
      */
-    bool Complete();
+    bool complete();
 
-    void GetDimensions(unsigned int* width, unsigned int* height);
+    void getDimensions(unsigned int* width, unsigned int* height);
 
-    void GetEnd(unsigned int* x, unsigned int* y);
+    void getEnd(unsigned int* x, unsigned int* y);
 
 private:
     int m_x, m_y;

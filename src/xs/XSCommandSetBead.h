@@ -10,9 +10,9 @@ public:
     XSCommandSetBead(unsigned int x, unsigned int y, unsigned int region, unsigned int colorIndex,
             bool overwrite);
 
-    virtual int Do();
-    virtual int Undo();
-    virtual char const* GetDescription() const;
+    virtual int doCommand();
+    virtual int undoCommand();
+    virtual char const* getDescription() const;
 
 private:
     unsigned int m_layer;

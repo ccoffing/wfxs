@@ -10,9 +10,9 @@ class XSCommandSetProperties : public XSCommand {
 public:
     XSCommandSetProperties(XSProperties const& properties);
 
-    virtual int Do();
-    virtual int Undo();
-    virtual char const* GetDescription() const;
+    virtual int doCommand();
+    virtual int undoCommand();
+    virtual char const* getDescription() const;
 
 private:
     XSProperties m_oldProperties;

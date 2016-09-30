@@ -11,9 +11,9 @@ class XSCommandFloodFill : public XSCommand {
 public:
     XSCommandFloodFill(unsigned int x, unsigned int y, XSSquareIO const& newSquare);
 
-    virtual int Do();
-    virtual int Undo();
-    virtual char const* GetDescription() const;
+    virtual int doCommand();
+    virtual int undoCommand();
+    virtual char const* getDescription() const;
 
 private:
     unsigned int m_x, m_y;

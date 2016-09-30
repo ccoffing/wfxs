@@ -8,20 +8,20 @@ XSCommandZoom::XSCommandZoom(unsigned int zoom)
 {
 }
 
-int XSCommandZoom::Do()
+int XSCommandZoom::doCommand()
 {
-    m_oldZoom = m_model->GetZoom();
-    m_model->SetZoom(m_newZoom);
+    m_oldZoom = m_model->getZoom();
+    m_model->setZoom(m_newZoom);
     return true;
 }
 
-int XSCommandZoom::Undo()
+int XSCommandZoom::undoCommand()
 {
-    m_model->SetZoom(m_oldZoom);
+    m_model->setZoom(m_oldZoom);
     return true;
 }
 
-char const* XSCommandZoom::GetDescription() const
+char const* XSCommandZoom::getDescription() const
 {
     return _("zoom");
 }

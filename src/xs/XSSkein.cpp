@@ -1,7 +1,7 @@
-#include "XSSkein.h"
 #include "Logger.h"
 #include "XSDataIO.h"
 #include "XSException.h"
+#include "XSSkein.h"
 #include "XSSymbolPalette.h"
 
 #define LOG_NAME "xs.Skein"
@@ -37,10 +37,10 @@ XSSkein::XSSkein(Maker_t maker, FlossProductLine_t productLine, const char* id,
 
 XSSkein::XSSkein(std::istream& src)
 {
-    Unserialize(src);
+    unserialize(src);
 }
 
-void XSSkein::Unserialize(std::istream& src)
+void XSSkein::unserialize(std::istream& src)
 {
     uint8_t ui8;
 
@@ -81,7 +81,7 @@ void XSSkein::Unserialize(std::istream& src)
     Log::trace(LOG_NAME, "%d %d %d", m_maker, m_productLine, colors);
 }
 
-void XSSkein::Serialize(std::ostream& file) const
+void XSSkein::serialize(std::ostream& file) const
 {
     Write8_exc(file, (uint8_t)m_maker);
     Write8_exc(file, (uint8_t)m_productLine);
@@ -95,15 +95,14 @@ void XSSkein::Serialize(std::ostream& file) const
 
     Write8_exc(file, m_colors.size());
     // printf("Skein writing out %zd colors\n", m_colors.size());
-    for (unsigned int i = 0; i < m_colors.size(); ++i) {
-        XSColor rgb = m_colors[i];
+    for (auto rgb : m_colors) {
         Write8_exc(file, rgb.red);
         Write8_exc(file, rgb.green);
         Write8_exc(file, rgb.blue);
     }
 }
 
-void XSSkein::UnserializeRef(
+void XSSkein::unserializeRef(
         std::istream& src, Maker_t& maker, FlossProductLine_t& productLine, std::string& id)
 {
     uint8_t ui8;
@@ -121,7 +120,7 @@ void XSSkein::UnserializeRef(
     ReadCStr_exc(src, id, MAX_FLOSS_ID_LEN);
 }
 
-void XSSkein::SerializeRef(std::ostream& file) const
+void XSSkein::serializeRef(std::ostream& file) const
 {
     Write8_exc(file, m_maker);
     Write8_exc(file, m_productLine);

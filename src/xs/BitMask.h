@@ -1,9 +1,9 @@
 #ifndef XS_BITMASK_H
 #define XS_BITMASK_H
 
-#include "xs/BitString.h"
+#include "BitString.h"
 
-#include <assert.h>
+#include <cassert>
 
 /**
  *  A bitmask.
@@ -65,10 +65,10 @@ public:
      *  squares, stopping at boundaries that are already cleared.  Does not
      *  flood diagonally.
      */
-    void FloodFill(unsigned int x, unsigned int y, bool fill);
+    void floodFill(unsigned int x, unsigned int y, bool fill);
 
     /** Erases mask b from mask a (a &= ~b) */
-    void Erase(BitMask const& b, unsigned int xoffset = 0, unsigned int yoffset = 0);
+    void erase(BitMask const& b, unsigned int xoffset = 0, unsigned int yoffset = 0);
 
     /**
      *  Crops the mask.
@@ -78,7 +78,7 @@ public:
      *  @param[in] bottom  Amount to shift bottom boundary.
      *  @param[in] fill
      */
-    bool Crop(int left, int top, int right, int bottom, bool fill = false);
+    bool crop(int left, int top, int right, int bottom, bool fill = false);
 
 private:
     inline unsigned int offset(unsigned int x, unsigned int y) const

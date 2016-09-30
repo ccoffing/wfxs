@@ -1,9 +1,9 @@
-#include "xs/BitMask.h"
+#include "BitMask.h"
 
-#include <assert.h>
-#include <stddef.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cassert>
+#include <cstddef>
+#include <cstdlib>
+#include <cstring>
 #include <vector>
 
 
@@ -38,7 +38,7 @@ void BitMask::clear(unsigned int x, unsigned int y)
     m_bs.clear(offset(x, y));
 }
 
-void BitMask::FloodFill(unsigned int x, unsigned int y, bool fill)
+void BitMask::floodFill(unsigned int x, unsigned int y, bool fill)
 {
     assert(x < w);
     assert(y < h);
@@ -90,12 +90,12 @@ void BitMask::FloodFill(unsigned int x, unsigned int y, bool fill)
     }
 }
 
-void BitMask::Erase(BitMask const& b, unsigned int xoffset, unsigned int yoffset)
+void BitMask::erase(BitMask const& b, unsigned int xoffset, unsigned int yoffset)
 {
     // FIXME
 }
 
-bool BitMask::Crop(int left, int top, int right, int bottom, bool fill)
+bool BitMask::crop(int left, int top, int right, int bottom, bool fill)
 {
     // FIXME
 }

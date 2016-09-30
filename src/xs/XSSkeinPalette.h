@@ -5,9 +5,9 @@
  *  A collection of floss skeins.
  */
 
-#include <vector>
-
 #include "XSSkein.h"
+
+#include <vector>
 
 /**
  *  A collection of floss skeins.
@@ -16,10 +16,10 @@ class XSSkeinPalette {
 public:
     XSSkeinPalette();
 
-    XSSkein const* Lookup(Maker_t maker, FlossProductLine_t productLine, std::string const& id);
+    XSSkein const* lookup(Maker_t maker, FlossProductLine_t productLine, std::string const& id);
 
-    void Serialize(std::ostream& file) const;
-    void Unserialize(std::istream& src);
+    void serialize(std::ostream& file) const;
+    void unserialize(std::istream& src);
 
 private:
     std::vector<XSSkein> m_skeins;

@@ -1,9 +1,9 @@
 #ifndef XS_SQUARE_IO_H
 #define XS_SQUARE_IO_H
 
-#include <iostream>
-
 #include "XSStitchTypes.h"
+
+#include <iostream>
 
 
 /** A data structure used to export the contents of a square.
@@ -22,8 +22,8 @@ struct XSSquareIO {
         return stitches == 0 && knots == 0 && beads == 0;
     }
 
-    void Serialize(std::ostream& file) const;
-    void Unserialize(std::istream& file);
+    void serialize(std::ostream& file) const;
+    void unserialize(std::istream& file);
 
     unsigned int stitches;
     struct {

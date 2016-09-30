@@ -6,7 +6,7 @@
 #include <vector>
 
 
-void XSSelectionPath::Move(MoveDirection move, int* x, int* y)
+void XSSelectionPath::move(MoveDirection move, int* x, int* y)
 {
     switch (move) {
     case UP:
@@ -37,9 +37,9 @@ XSFreeFormSelectionPath::XSFreeFormSelectionPath()
 {
 }
 
-BitMask* XSFreeFormSelectionPath::GetMask()
+BitMask* XSFreeFormSelectionPath::getMask()
 {
-    UpdateCache();
+    updateCache();
     if (!m_complete)
         return 0;
 
@@ -70,7 +70,7 @@ BitMask* XSFreeFormSelectionPath::GetMask()
                 clockwise = 1;
             }
         }
-        XSSelectionPath::Move(*it, &x, &y);
+        XSSelectionPath::move(*it, &x, &y);
         if (tracing) {
             // Beware, premature optimization is fun.  How do we decide which square to
             // mark for the outline, considering the current direction and whether we
@@ -94,15 +94,15 @@ BitMask* XSFreeFormSelectionPath::GetMask()
     }
     assert(flood_x > 0);
     BitMask outline = *mask;
-    mask->FloodFill(flood_x, flood_y, true);
-    mask->Erase(outline);
-    mask->Crop(1, 1, -1, -1);
+    mask->floodFill(flood_x, flood_y, true);
+    mask->erase(outline);
+    mask->crop(1, 1, -1, -1);
     return mask;
 }
 
-bool XSFreeFormSelectionPath::Move(MoveDirection move)
+bool XSFreeFormSelectionPath::move(MoveDirection move)
 {
-    UpdateCache();
+    updateCache();
     if (m_complete)
         return false;
 
@@ -116,11 +116,11 @@ bool XSFreeFormSelectionPath::Move(MoveDirection move)
 
         // Disallow touching previous path, other than re-joining to the starting point
         int new_x = m_x, new_y = m_y;
-        XSSelectionPath::Move(move, &new_x, &new_y);
+        XSSelectionPath::move(move, &new_x, &new_y);
         int x = 0, y = 0;
         std::vector<MoveDirection>::iterator it = m_moves.begin();
         do {
-            XSSelectionPath::Move(*it, &x, &y);
+            XSSelectionPath::move(*it, &x, &y);
             ++it;
             if (new_x == x && new_y == y && it != m_moves.end())
                 return false;
@@ -131,42 +131,42 @@ bool XSFreeFormSelectionPath::Move(MoveDirection move)
     return true;
 }
 
-bool XSFreeFormSelectionPath::IsCompleted()
+bool XSFreeFormSelectionPath::isCompleted()
 {
-    UpdateCache();
+    updateCache();
     return m_complete;
 }
 
-bool XSFreeFormSelectionPath::Complete()
+bool XSFreeFormSelectionPath::complete()
 {
     assert(0);  // FIXME -- how to do this without crossing?
     return false;
 }
 
-void XSFreeFormSelectionPath::GetDimensions(unsigned int* width, unsigned int* height)
+void XSFreeFormSelectionPath::getDimensions(unsigned int* width, unsigned int* height)
 {
-    UpdateCache();
+    updateCache();
     *width = m_width;
     *height = m_height;
 }
 
-void XSFreeFormSelectionPath::GetEnd(unsigned int* x, unsigned int* y)
+void XSFreeFormSelectionPath::getEnd(unsigned int* x, unsigned int* y)
 {
-    UpdateCache();
+    updateCache();
     *x = m_x;
     *y = m_y;
 }
 
-void XSFreeFormSelectionPath::UpdateCache()
+void XSFreeFormSelectionPath::updateCache()
 {
     if (!m_validCache) {
-        WalkPath(&m_width, &m_height, &m_x, &m_y, &m_x1, &m_y1);
+        walkPath(&m_width, &m_height, &m_x, &m_y, &m_x1, &m_y1);
         m_validCache = true;
     }
     m_complete = (m_x == 0 && m_y == 0 && !m_moves.empty());
 }
 
-void XSFreeFormSelectionPath::WalkPath(
+void XSFreeFormSelectionPath::walkPath(
         unsigned int* width, unsigned int* height, int* dx2, int* dy2, int* dx1, int* dy1)
 {
     int x = 0, minx = 0, maxx = 0;
@@ -175,7 +175,7 @@ void XSFreeFormSelectionPath::WalkPath(
     std::vector<MoveDirection>::iterator it;
 
     for (it = m_moves.begin(); it != m_moves.end(); ++it) {
-        XSSelectionPath::Move(*it, &x, &y);
+        XSSelectionPath::move(*it, &x, &y);
         minx = std::min(x, minx);
         maxx = std::max(x, maxx);
         miny = std::min(y, miny);
@@ -198,38 +198,38 @@ XSRectangularSelectionPath::XSRectangularSelectionPath()
 {
 }
 
-BitMask* XSRectangularSelectionPath::GetMask()
+BitMask* XSRectangularSelectionPath::getMask()
 {
     if (!m_complete)
         return 0;
     return new BitMask(m_x, m_y);
 }
 
-bool XSRectangularSelectionPath::Move(MoveDirection m)
+bool XSRectangularSelectionPath::move(MoveDirection m)
 {
-    XSSelectionPath::Move(m, &m_x, &m_y);
+    XSSelectionPath::move(m, &m_x, &m_y);
 
     return true;
 }
 
-void XSRectangularSelectionPath::GetDimensions(unsigned int* width, unsigned int* height)
+void XSRectangularSelectionPath::getDimensions(unsigned int* width, unsigned int* height)
 {
     *width = (m_x < 0) ? -m_x : m_x;
     *height = (m_y < 0) ? -m_y : m_y;
 }
 
-void XSRectangularSelectionPath::GetEnd(unsigned int* x, unsigned int* y)
+void XSRectangularSelectionPath::getEnd(unsigned int* x, unsigned int* y)
 {
     *x = m_x;
     *y = m_y;
 }
 
-bool XSRectangularSelectionPath::IsCompleted()
+bool XSRectangularSelectionPath::isCompleted()
 {
     return m_complete;
 }
 
-bool XSRectangularSelectionPath::Complete()
+bool XSRectangularSelectionPath::complete()
 {
     m_complete = true;
     return true;

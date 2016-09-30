@@ -1,8 +1,8 @@
 #include "XSSymbolPalette.h"
 
-#include <assert.h>
+#include <cassert>
 #include <cstring>
-#include <stdint.h>
+#include <cstdint>
 
 
 static uint8_t const XSStaticSymbols[] = {
@@ -206,45 +206,45 @@ XSSymbolPalette::~XSSymbolPalette()
     delete[] symbols;
 }
 
-char const* XSSymbolPalette::SymbolAtIndex(unsigned int i)
+char const* XSSymbolPalette::symbolAtIndex(unsigned int i)
 {
     assert(i < numTotal);
     // printf("SymbolAtIndex %d is %p %s\n", i, symbols+i*4, symbols+i*4);
     return symbols + i * 4;
 }
 
-char* XSSymbolPalette::EditSymbolAtIndex(unsigned int i)
+char* XSSymbolPalette::editSymbolAtIndex(unsigned int i)
 {
     assert(i < numTotal);
     return symbols + i * 4;
 }
 
-char const* XSSymbolPalette::ReserveNextSymbol()
+char const* XSSymbolPalette::reserveNextSymbol()
 {
     for (unsigned int index = m_lastReservedIndex + 1; index < numTotal; ++index) {
         if (!isUsed[index]) {
             m_lastReservedIndex = index;
-            return SymbolAtIndex(index);
+            return symbolAtIndex(index);
         }
     }
     for (int index = 0; index <= m_lastReservedIndex; ++index) {
         if (!isUsed[index]) {
             m_lastReservedIndex = index;
-            return SymbolAtIndex(index);
+            return symbolAtIndex(index);
         }
     }
     return NULL;
 }
 
-char const* XSSymbolPalette::ReserveSymbol(unsigned int index)
+char const* XSSymbolPalette::reserveSymbol(unsigned int index)
 {
     assert(index < numTotal);
     isUsed[index] = true;
     m_lastReservedIndex = index;
-    return SymbolAtIndex(index);
+    return symbolAtIndex(index);
 }
 
-void XSSymbolPalette::FreeSymbol(char const* symbol)
+void XSSymbolPalette::freeSymbol(char const* symbol)
 {
     unsigned int index = (symbol - symbols) / 4;
 
@@ -252,11 +252,11 @@ void XSSymbolPalette::FreeSymbol(char const* symbol)
     isUsed[index] = false;
 }
 
-unsigned int XSSymbolPalette::AddSymbol(char const* symbol)
+unsigned int XSSymbolPalette::addSymbol(char const* symbol)
 {
     // printf("AddSymbol: len %d: %s\n", strlen(symbol), symbol);
     for (unsigned int index = 0; index < numTotal; ++index) {
-        if (strcmp(symbol, SymbolAtIndex(index)) == 0) {
+        if (strcmp(symbol, symbolAtIndex(index)) == 0) {
             return index;
         }
     }
@@ -264,6 +264,6 @@ unsigned int XSSymbolPalette::AddSymbol(char const* symbol)
     char* newSymbols = new char[(numTotal + 1) * 4];
     memcpy(newSymbols, symbols, numTotal * 4);
     ++numTotal;
-    strncpy(EditSymbolAtIndex(numTotal - 1), symbol, 4);
+    strncpy(editSymbolAtIndex(numTotal - 1), symbol, 4);
     return numTotal - 1;
 }

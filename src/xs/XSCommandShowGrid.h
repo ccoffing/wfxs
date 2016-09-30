@@ -14,9 +14,9 @@ class XSCommandShowGrid : public XSCommand {
 public:
     XSCommandShowGrid(bool showGrid);
 
-    virtual int Do();
-    virtual int Undo();
-    virtual char const* GetDescription() const;
+    virtual int doCommand();
+    virtual int undoCommand();
+    virtual char const* getDescription() const;
 
 private:
     bool m_oldShowGrid;

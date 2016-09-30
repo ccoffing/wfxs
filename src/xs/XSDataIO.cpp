@@ -2,7 +2,7 @@
 #include "ByteOrder.h"
 #include "XSException.h"
 
-#include <assert.h>
+#include <cassert>
 #include <iostream>
 #include <string.h>
 

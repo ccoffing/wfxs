@@ -14,9 +14,7 @@ systems such as Windows due to security and privacy concerns.
 Closed-source cross-stitch programs exist, but they are only available on
 Windows.  These are not viable options for us.  Hence WFXS.
 
-My goal is to have WFXS available on any platform with a C++ compiler.  Help
-welcome.  But my interest in cluttering the code with Windows-isms is muted, at
-best.
+My goal is to have WFXS available on any platform with a modern C++ compiler.
 
 # Building
 
@@ -30,7 +28,7 @@ Building requires CMake.  For most situations, building is as simple as:
 # License
 
 Wildflower Cross-stitch (WFXS)
-Copyright (C) 2015 Chuck Coffing <clc@alum.mit.edu>
+Copyright (C) 2015-2016 Chuck Coffing <clc@alum.mit.edu>
 
 This program is free software; you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software

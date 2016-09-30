@@ -14,8 +14,8 @@ TEST_CASE("XSSkein")
 
         CHECK(FM_ANCHOR == s.m_maker);
         CHECK(FPL_LINEN == s.m_productLine);
-        CHECK("123ABC" == s.m_id.c_str());
-        CHECK("Linen XYZ" == s.m_description.c_str());
+        CHECK("123ABC" == s.m_id);
+        CHECK("Linen XYZ" == s.m_description);
         CHECK(1U == s.m_colors.size());
         CHECK(c == s.m_colors[0]);
         CHECK(false == s.m_discontinued);

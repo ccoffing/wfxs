@@ -5,11 +5,10 @@
  *  Represents a particular skein of floss (maker, color, strands, etc).
  */
 
-#include <iostream>
-#include <vector>
-
 #include "XSColor.h"
 
+#include <iostream>
+#include <vector>
 
 // FIXME:  move this to XSData.h
 typedef enum { FM_DMC = 0, FM_ANCHOR, FM_JPCOATS, FM_KREINIK, FM_MILLHILL, FM_NUMBER } Maker_t;
@@ -51,11 +50,11 @@ public:
     XSSkein& operator=(XSSkein const& rhs);
     //  bool operator==(XSSkein const& rhs) const;
 
-    void Serialize(std::ostream& file) const;
-    void Unserialize(std::istream& src);
-    void SerializeRef(std::ostream& file) const;
-    static void UnserializeRef(
-            std::istream& src, Maker_t& maker, FlossProductLine_t& productLine, std::string& id);
+    void serialize(std::ostream& file) const;
+    void unserialize(std::istream& src);
+    void serializeRef(std::ostream& file) const;
+    static void unserializeRef(std::istream& src, Maker_t& maker, FlossProductLine_t& productLine,
+            std::string& id);
 
     // Identifying tuple:
     Maker_t m_maker;

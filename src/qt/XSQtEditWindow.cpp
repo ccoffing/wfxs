@@ -48,8 +48,8 @@ XSQtEditWindow::XSQtEditWindow()
     // m_model.m_toolState.m_flossIndex
     QSignalMapper* signalMapper = new QSignalMapper(this);
     for (unsigned int i = 0; i < m_model.m_toolState.m_flossPalette.size(); ++i) {
-        XSFloss& floss = m_model.m_toolState.m_flossPalette.GetFloss(i);
-        XSColor c = floss.GetColor();
+        XSFloss& floss = m_model.m_toolState.m_flossPalette.getFloss(i);
+        XSColor c = floss.getColor();
         QColor color(c.red, c.green, c.blue);
         QPixmap px(20, 20);
         px.fill(color);
@@ -108,7 +108,7 @@ void XSQtEditWindow::newFile()
 void XSQtEditWindow::updateStitchMessage()
 {
     const char* message;
-    StitchType stitchType = m_controller.GetStitchType();
+    StitchType stitchType = m_controller.getStitchType();
 
     switch (stitchType) {
     case Stitch_Full:
@@ -161,69 +161,69 @@ void XSQtEditWindow::updateStitchMessage()
 
 void XSQtEditWindow::fullStitch()
 {
-    m_controller.OnFullStitch();
+    m_controller.onFullStitch();
     updateStitchMessage();
 }
 
 void XSQtEditWindow::halfStitch()
 {
     // TODO toggle among
-    m_controller.OnHalfAutoStitch();
+    m_controller.onHalfAutoStitch();
     updateStitchMessage();
 }
 
 void XSQtEditWindow::halfAutoStitch()
 {
-    m_controller.OnHalfAutoStitch();
+    m_controller.onHalfAutoStitch();
     updateStitchMessage();
 }
 
 void XSQtEditWindow::halfTopStitch()
 {
-    m_controller.OnHalfTopStitch();
+    m_controller.onHalfTopStitch();
     updateStitchMessage();
 }
 
 void XSQtEditWindow::halfBottomStitch()
 {
-    m_controller.OnHalfBottomStitch();
+    m_controller.onHalfBottomStitch();
     updateStitchMessage();
 }
 
 void XSQtEditWindow::threeQuarterAutoStitch()
 {
-    m_controller.OnThreeQuarterAutoStitch();
+    m_controller.onThreeQuarterAutoStitch();
     updateStitchMessage();
 }
 
 void XSQtEditWindow::threeQuarterULStitch()
 {
-    m_controller.OnThreeQuarterULStitch();
+    m_controller.onThreeQuarterULStitch();
     updateStitchMessage();
 }
 
 void XSQtEditWindow::threeQuarterURStitch()
 {
-    m_controller.OnThreeQuarterURStitch();
+    m_controller.onThreeQuarterURStitch();
     updateStitchMessage();
 }
 
 void XSQtEditWindow::threeQuarterLLStitch()
 {
-    m_controller.OnThreeQuarterLLStitch();
+    m_controller.onThreeQuarterLLStitch();
     updateStitchMessage();
 }
 
 void XSQtEditWindow::threeQuarterLRStitch()
 {
-    m_controller.OnThreeQuarterLRStitch();
+    m_controller.onThreeQuarterLRStitch();
     updateStitchMessage();
 }
 
 void XSQtEditWindow::quarterStitch()
 {
     // TODO:  alternate
-    m_controller.OnQuarterAutoStitch();
+    m_controller.onQuarterAutoStitch();
     updateStitchMessage();
 }
 
@@ -238,7 +238,7 @@ void XSQtEditWindow::overwrite()
 {
     Log::debug(LOG_NAME, "Overwrite");
 
-    m_controller.OnOverwrite();
+    m_controller.onOverwrite();
 }
 
 void XSQtEditWindow::open()
@@ -285,7 +285,7 @@ void XSQtEditWindow::save()
 void XSQtEditWindow::properties()
 {
     XSQtPropertiesDialog* propertiesDialog
-            = new XSQtPropertiesDialog(this, m_model.GetProperties());
+            = new XSQtPropertiesDialog(this, m_model.getProperties());
 
     propertiesDialog->show();
 }
@@ -316,25 +316,25 @@ void XSQtEditWindow::paste()
 
 void XSQtEditWindow::zoomIn()
 {
-    unsigned int zoom = m_model.GetZoom();
+    unsigned int zoom = m_model.getZoom();
     unsigned int increment = zoom / 8;
 
     if (!increment)
         ++increment;
     zoom += increment;
-    m_model.SetZoom(zoom);
+    m_model.setZoom(zoom);
     m_area->update();
 }
 
 void XSQtEditWindow::zoomOut()
 {
-    unsigned int zoom = m_model.GetZoom();
+    unsigned int zoom = m_model.getZoom();
     unsigned int increment = zoom / 8;
 
     if (!increment)
         ++increment;
     zoom -= increment;
-    m_model.SetZoom(zoom);
+    m_model.setZoom(zoom);
     m_area->update();
 }
 

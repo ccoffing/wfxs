@@ -1,17 +1,16 @@
 #ifndef XS_LOGGER_H
 #define XS_LOGGER_H
 
+#include <cassert>
+#include <cstdarg>
 #include <map>
 #include <mutex>
 #include <set>
-#include <stdarg.h>
 #include <string>
 
 #ifndef XS_LOG_LEVEL
 #define XS_LOG_LEVEL 5
 #endif
-
-#include <assert.h>
 
 class Logger;
 class LogAppender;

@@ -3,10 +3,10 @@
 #include "XSException.h"
 #include "XSSquareIO.h"
 
-#include <assert.h>
+#include <cassert>
 
 
-void XSSquareIO::Serialize(std::ostream& file) const
+void XSSquareIO::serialize(std::ostream& file) const
 {
     /*
      *  RLE encoding elsewhere depends on the high bit of the first byte
@@ -29,12 +29,12 @@ void XSSquareIO::Serialize(std::ostream& file) const
     }
 }
 
-void XSSquareIO::Unserialize(std::istream& file)
+void XSSquareIO::unserialize(std::istream& file)
 {
     uint8_t ui8, b;
 
     Read8_exc(file, ui8);
-    if (ui8 > XSSquare::MaxStitches)
+    if (ui8 > XSSquare::maxStitches)
         goto fail;
     stitches = ui8;
     for (unsigned int i = 0; i < ui8; ++i) {
@@ -47,9 +47,9 @@ void XSSquareIO::Unserialize(std::istream& file)
         stitch[i].stitchType = (StitchTypeAndLocation)b;
     }
     Read8_exc(file, ui8);
-    if ((knots = ui8 & 0xf) > XSSquare::MaxKnots)
+    if ((knots = ui8 & 0xf) > XSSquare::maxKnots)
         goto fail;
-    if ((beads = (ui8 >> 4) & 0xf) > XSSquare::MaxBeads)
+    if ((beads = (ui8 >> 4) & 0xf) > XSSquare::maxBeads)
         goto fail;
     for (unsigned int i = 0; i < knots; ++i) {
         Read8_exc(file, b);

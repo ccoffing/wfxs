@@ -1,5 +1,5 @@
-#include "XSCommandFloodFill.h"
 #include "BitMask.h"
+#include "XSCommandFloodFill.h"
 #include "XSModel.h"
 #include "XSSquare.h"
 
@@ -12,16 +12,16 @@ XSCommandFloodFill::XSCommandFloodFill(unsigned int x, unsigned int y, XSSquareI
 {
 }
 
-int XSCommandFloodFill::Do()
+int XSCommandFloodFill::doCommand()
 {
-    unsigned int dx = m_model->SquaresX();
-    unsigned int dy = m_model->SquaresY();
-    unsigned int layer = m_model->GetCurrentLayerIndex();
+    unsigned int dx = m_model->squaresX();
+    unsigned int dy = m_model->squaresY();
+    unsigned int layer = m_model->getCurrentLayerIndex();
     XSSquare oldSquare = m_model->getSquare(m_x, m_y, layer);
     BitMask bitmask(dx, dy);
     BitMask flooded(bitmask);
 
-    // If this is a performance bottleneck, take the BitMask.FloodFill algorithm and pull it
+    // If this is a performance bottleneck, take the BitMask.floodFill algorithm and pull it
     // out and templatize it, so it can directly operate on XSSquare.
     // Set up the boundaries
     for (unsigned int y = 0; y < dy; ++y) {
@@ -33,13 +33,13 @@ int XSCommandFloodFill::Do()
     }
 
     // Do the floodfill.
-    flooded.FloodFill(m_x, m_y, true);
+    flooded.floodFill(m_x, m_y, true);
 
     for (unsigned int y = 0; y < dy; ++y) {
         for (unsigned int x = 0; x < dx; ++x) {
             if (bitmask.test(x, y) != flooded.test(x, y))
                 // TODO:  this blows away embellishments!  Only want to floodfill stitches.
-                m_model->SetSquareDataNoInval(&m_newSquare, x, y, layer);
+                m_model->setSquareDataNoInval(&m_newSquare, x, y, layer);
             // TODO:  Save the old stitch in a ... ?  XSSelectionRectangle?
         }
     }
@@ -48,14 +48,14 @@ int XSCommandFloodFill::Do()
     return true;
 }
 
-int XSCommandFloodFill::Undo()
+int XSCommandFloodFill::undoCommand()
 {
     // FIXME   restore the XSSelectionRectangle
     // TODO:  this suggests that the XSLayer shoudl have a paste API
     return false;
 }
 
-char const* XSCommandFloodFill::GetDescription() const
+char const* XSCommandFloodFill::getDescription() const
 {
     return "flood fill";
 }

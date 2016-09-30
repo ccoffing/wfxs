@@ -1,11 +1,7 @@
 #include "XSSquare.h"
 #include "XSStitchTypes.h"
 
-#include <assert.h>
-
-const unsigned int XSSquare::MaxStitches = 4;
-const unsigned int XSSquare::MaxKnots = 8;
-const unsigned int XSSquare::MaxBeads = 8;
+#include <cassert>
 
 StitchTypeAndLocation XSSquare::rotateStitch(StitchTypeAndLocation stitch)
 {
@@ -135,12 +131,12 @@ void XSSquare::setStitch(StitchTypeAndLocation stitchType, unsigned int flossInd
     }
 }
 
-void XSSquare::Clear()
+void XSSquare::clear()
 {
     m_squareData = 0;
 }
 
-void XSSquare::GetSquareData(XSSquareIO* square) const
+void XSSquare::getSquareData(XSSquareIO* square) const
 {
     unsigned int count = 0;
 
@@ -167,9 +163,9 @@ void XSSquare::GetSquareData(XSSquareIO* square) const
     square->stitches = count;
 }
 
-void XSSquare::SetSquareData(XSSquareIO const* square)
+void XSSquare::setSquareData(XSSquareIO const* square)
 {
-    Clear();
+    clear();
 
     m_squareData = 0;
     do {

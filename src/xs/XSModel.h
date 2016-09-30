@@ -1,14 +1,17 @@
 #ifndef XS_MODEL_H
 #define XS_MODEL_H
 
+#include "XSLayer.h"
 #include "XSProperties.h"
 #include "XSSquareIO.h"
 #include "XSStitchTypes.h"
 #include "XSToolState.h"
 
+#include <memory>
+#include <vector>
+
 class XSCommand;
 class XSController;
-class XSLayer;
 class XSPoint;
 class XSSquare;
 
@@ -20,80 +23,79 @@ enum DrawStyle { DrawStyle_Design, DrawStyle_Pattern, DrawStyle_Realistic };
 class XSModel {
 public:
     XSModel(unsigned int sizeX, unsigned int sizeY);
-    XSModel& operator=(XSModel&& rhs);
-    ~XSModel();
+    XSModel(XSModel&& rhs);
 
     void setController(XSController* controller)
     {
         m_controller = controller;
     }
 
-    std::ostream& SaveObject(std::ostream& stream) const;
-    std::istream& LoadObject(std::istream& stream);
+    std::ostream& saveObject(std::ostream& stream) const;
+    std::istream& loadObject(std::istream& stream);
 
     /** Resizes the doc to the specified size.  If the size is larger than the existing size,
      * the new squares are left empty.  If the size is smaller, existing squares are simply
      * deleted.  The pictures remains rooted at the same origin.
      */
-    void Resize(unsigned int sizeX, unsigned int sizeY);
+    void resize(unsigned int sizeX, unsigned int sizeY);
 
-    unsigned int SquaresX() const;
-    unsigned int SquaresY() const;
+    unsigned int squaresX() const;
+    unsigned int squaresY() const;
 
-    XSProperties& GetProperties();
-    const XSProperties& GetProperties() const;
-    XSFlossPalette const& GetFlossPalette() const;
+    XSProperties& getProperties();
+    const XSProperties& getProperties() const;
+    XSFlossPalette const& getFlossPalette() const;
 
-    void SetProperties(XSProperties const& properties);
-    void SetFlossPalette(XSFlossPalette const&);
-    void PreviousFloss();
-    void NextFloss();
-    void SetFloss(unsigned int i);
-    StitchType SetStitch(unsigned int squareX, unsigned int squareY, unsigned int xPercent,
+    void setProperties(XSProperties const& properties);
+    void setFlossPalette(XSFlossPalette const&);
+    void previousFloss();
+    void nextFloss();
+    void setFloss(unsigned int i);
+    StitchType setStitch(unsigned int squareX, unsigned int squareY, unsigned int xPercent,
             unsigned int yPercent, StitchType stitchType, unsigned int flossIndex, bool overwrite);
-    void SetKnot(unsigned int x, unsigned int y, unsigned int region, KnotType knotType,
+    void setKnot(unsigned int x, unsigned int y, unsigned int region, KnotType knotType,
             unsigned int flossIndex, bool overwrite);
-    void SetBead(unsigned int x, unsigned int y, unsigned int region, unsigned int colorIndex,
+    void setBead(unsigned int x, unsigned int y, unsigned int region, unsigned int colorIndex,
             bool overwrite);
-    void ClearSquare(unsigned int x, unsigned int y, unsigned int layer);
-    void SetSquareData(
+    void clearSquare(unsigned int x, unsigned int y, unsigned int layer);
+    void setSquareData(
             XSSquareIO const* square, unsigned int x, unsigned int y, unsigned int layer);
-    void SetSquareDataNoInval(
+    void setSquareDataNoInval(
             XSSquareIO const* square, unsigned int x, unsigned int y, unsigned int layer);
-    void GetSquareData(XSSquareIO* square, unsigned int squareX, unsigned int squareY,
+    void getSquareData(XSSquareIO* square, unsigned int squareX, unsigned int squareY,
             unsigned int layer) const;
     XSSquare& getSquare(unsigned int x, unsigned int y, unsigned int layer);
-    void AddLayer();
-    void DelLayer(unsigned int index);
-    void DownLayer();
-    void UpLayer();
-    unsigned int GetNumberLayers() const;
-    unsigned int GetCurrentLayerIndex() const;
-    void Backstitch();
-    void SetShowGrid(bool f);
-    void SetShowRulers(bool f);
-    inline bool IsShowGrid() const
+    void addLayer();
+    void delLayer(unsigned int index);
+    void downLayer();
+    void upLayer();
+    unsigned int getNumberLayers() const;
+    unsigned int getCurrentLayerIndex() const;
+    void backstitch();
+    void setShowGrid(bool f);
+    void setShowRulers(bool f);
+    inline bool isShowGrid() const
     {
         return m_showGrid;
     }
 
-    inline bool IsShowRulers() const
+    inline bool isShowRulers() const
     {
         return m_showRulers;
     }
 
-    unsigned int SetZoom(unsigned int zoom);
-    unsigned int GetZoom() const;
-    void GetZoomRange(unsigned int* min, unsigned int* max) const;
-    enum DrawStyle GetDrawStyle() const;
-    void SetDrawStyle(enum DrawStyle);
+    unsigned int setZoom(unsigned int zoom);
+    unsigned int getZoom() const;
+    void getZoomRange(unsigned int* min, unsigned int* max) const;
+    enum DrawStyle getDrawStyle() const;
+    void setDrawStyle(enum DrawStyle);
 
-    inline XSToolState& ToolState()
+    inline XSToolState& toolState()
     {
         return m_toolState;
     }
 
-    inline const XSToolState& ToolState() const
+    inline const XSToolState& toolState() const
     {
         return m_toolState;
     }
@@ -112,10 +114,8 @@ private:
     unsigned int m_minZoom;
     unsigned int m_maxZoom;
 
-    unsigned int m_numLayers;
-    unsigned int m_numAllocatedLayers;
     unsigned int m_currentLayerIndex;
-    XSLayer** m_layers;
+    std::vector<std::unique_ptr<XSLayer>> m_layers;
     bool m_showGrid;
     bool m_showRulers;
     bool m_editable;

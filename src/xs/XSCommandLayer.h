@@ -8,9 +8,9 @@
  */
 class XSCommandLayerAdd : public XSCommand {
 public:
-    virtual int Do();
-    virtual int Undo();
-    virtual char const* GetDescription() const;
+    virtual int doCommand();
+    virtual int undoCommand();
+    virtual char const* getDescription() const;
 };
 
 
@@ -18,9 +18,9 @@ public:
  */
 class XSCommandLayerDel : public XSCommand {
 public:
-    virtual int Do();
-    virtual int Undo();
-    virtual char const* GetDescription() const;
+    virtual int doCommand();
+    virtual int undoCommand();
+    virtual char const* getDescription() const;
 };
 
 
@@ -28,9 +28,9 @@ public:
  */
 class XSCommandLayerUp : public XSCommand {
 public:
-    virtual int Do();
-    virtual int Undo();
-    virtual char const* GetDescription() const;
+    virtual int doCommand();
+    virtual int undoCommand();
+    virtual char const* getDescription() const;
 };
 
 
@@ -38,9 +38,9 @@ public:
  */
 class XSCommandLayerDown : public XSCommand {
 public:
-    virtual int Do();
-    virtual int Undo();
-    virtual char const* GetDescription() const;
+    virtual int doCommand();
+    virtual int undoCommand();
+    virtual char const* getDescription() const;
 };
 
 

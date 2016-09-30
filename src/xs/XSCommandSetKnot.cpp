@@ -14,21 +14,21 @@ XSCommandSetKnot::XSCommandSetKnot(unsigned int x, unsigned int y, unsigned int 
 {
 }
 
-int XSCommandSetKnot::Do()
+int XSCommandSetKnot::doCommand()
 {
-    m_layer = m_model->GetCurrentLayerIndex();
+    m_layer = m_model->getCurrentLayerIndex();
     // FIXME  save old knot/bead at this location
-    m_model->SetKnot(m_x, m_y, m_region, m_knotType, m_flossIndex, m_overwrite);
+    m_model->setKnot(m_x, m_y, m_region, m_knotType, m_flossIndex, m_overwrite);
     return true;
 }
 
-int XSCommandSetKnot::Undo()
+int XSCommandSetKnot::undoCommand()
 {
-    // m_model->SetSquareData(m_layer, m_x, m_y, &m_oldSquare);
+    // m_model->setSquareData(m_layer, m_x, m_y, &m_oldSquare);
     return true;
 }
 
-char const* XSCommandSetKnot::GetDescription() const
+char const* XSCommandSetKnot::getDescription() const
 {
     return _("knot");
 }

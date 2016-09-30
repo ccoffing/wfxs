@@ -11,9 +11,9 @@ class XSCommandSetFlossPalette : public XSCommand {
 public:
     XSCommandSetFlossPalette(XSFlossPalette const& flossPalette);
 
-    virtual int Do();
-    virtual int Undo();
-    virtual char const* GetDescription() const;
+    virtual int doCommand();
+    virtual int undoCommand();
+    virtual char const* getDescription() const;
 
 private:
     XSFlossPalette m_oldFlossPalette;

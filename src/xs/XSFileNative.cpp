@@ -8,8 +8,9 @@
 #include "XSSkein.h"
 #include "XSSquareIO.h"
 
-#include <assert.h>
+#include <cassert>
 #include <iostream>
+#include <string.h>
 #include <string>
 
 
@@ -22,15 +23,15 @@ static void StreamOutNativeSquare(
 
     if (repeatCount != 1)
         Write8_exc(stream, repeatCount | 0x80);
-    square->Serialize(stream);
+    square->serialize(stream);
 }
 
 void StreamOutNative(std::ostream& stream, const XSModel* model)
 {
-    XSToolState const toolState = model->ToolState();
-    unsigned int squaresX = model->SquaresX();
-    unsigned int squaresY = model->SquaresY();
-    unsigned int layers = model->GetNumberLayers();
+    XSToolState const toolState = model->toolState();
+    unsigned int squaresX = model->squaresX();
+    unsigned int squaresY = model->squaresY();
+    unsigned int layers = model->getNumberLayers();
 
     Write8_exc(stream, 'w');
     Write8_exc(stream, 'f');
@@ -41,27 +42,19 @@ void StreamOutNative(std::ostream& stream, const XSModel* model)
     WriteLE32_exc(stream, squaresY);
     WriteLE32_exc(stream, layers);
 
-    /*
-     *  Dump out meta-data
-     */
-    model->GetProperties().Serialize(stream);
+    // Dump out meta-data
+    model->getProperties().serialize(stream);
 
-    /*
-     *  Write out the makers.  Only write out those that this document
-     *  actually uses, to keep the program's and the document's lists
-     *  of makers independent.
-     *
-     *  Disk format:
-     *  1                  number of makers
-     *  for each maker:
-     *    n                index of this maker, as used later in the file
-     *    strlen(maker)+1  CStr of maker's name
-     */
-    std::vector<unsigned int> makers;
-    makers.reserve(toolState.m_makerNames.size());
-    for (unsigned int i = 0; i < toolState.m_makerNames.size(); ++i) {
-        makers.push_back(0);
-    }
+    //  Write out the makers.  Only write out those that this document
+    //  actually uses, to keep the program's and the document's lists
+    //  of makers independent.
+    //
+    //  Disk format:
+    //  1                  number of makers
+    //  for each maker:
+    //    n                index of this maker, as used later in the file
+    //    strlen(maker)+1  CStr of maker's name
+    std::vector<unsigned int> makers(toolState.m_makerNames.size());
     // Mark all that are used
     unsigned int used = 0;
     for (unsigned int i = 0; i < toolState.m_flossPalette.size(); ++i) {
@@ -102,7 +95,7 @@ void StreamOutNative(std::ostream& stream, const XSModel* model)
      *  a reason, even if they're not used (yet!) in the pattern.
      */
     // FIXME:  pass "makers" down as a way to re-number the output
-    toolState.m_flossPalette.Serialize(stream);
+    toolState.m_flossPalette.serialize(stream);
 
     /*
      *  Dump pattern data
@@ -113,7 +106,7 @@ void StreamOutNative(std::ostream& stream, const XSModel* model)
 
         for (unsigned int y = 0; y < squaresY; ++y) {
             for (unsigned int x = 0; x < squaresX; ++x) {
-                model->GetSquareData(&square, x, y, layer);
+                model->getSquareData(&square, x, y, layer);
 
                 if (repeatPreviousSquare == 0) {
                     previousSquare = square;
@@ -159,8 +152,8 @@ void StreamInNative(std::istream& stream, XSModel* doc)
             break;
 
         XSProperties properties;
-        properties.Unserialize(stream);
-        doc->SetProperties(properties);
+        properties.unserialize(stream);
+        doc->setProperties(properties);
 
         uint8_t numMakers;
         Read8_exc(stream, numMakers);
@@ -177,14 +170,14 @@ void StreamInNative(std::istream& stream, XSModel* doc)
         // skeins
 
         XSToolState toolState = doc->m_toolState;
-        toolState.m_flossPalette.Unserialize(stream);
+        toolState.m_flossPalette.unserialize(stream);
 
         for (unsigned int layer = 0; layer < layers; ++layer) {
             uint8_t repeat = 0;
             XSSquareIO square;
 
             if (layer > 0)
-                doc->AddLayer();
+                doc->addLayer();
 
             for (unsigned int y = 0; y < squaresY; ++y) {
                 for (unsigned int x = 0; x < squaresX; ++x) {
@@ -196,10 +189,10 @@ void StreamInNative(std::istream& stream, XSModel* doc)
                             stream.seekg(-1, std::ios::cur);
                             repeat = 1;
                         }
-                        square.Unserialize(stream);
+                        square.unserialize(stream);
                     }
                     assert(repeat);
-                    doc->SetSquareDataNoInval(&square, x, y, layer);
+                    doc->setSquareDataNoInval(&square, x, y, layer);
                     repeat--;
                 }
             }

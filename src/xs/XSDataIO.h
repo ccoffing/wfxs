@@ -6,7 +6,6 @@
  */
 
 #include <iostream>
-#include <sys/types.h>
 
 /** Writes the data to the stream.
  *

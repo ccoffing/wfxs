@@ -2,7 +2,7 @@
 #include "XSCommandStack.h"
 #include "XSDocument.h"
 
-#include <assert.h>
+#include <cassert>
 
 
 static const int NONE = -2;
@@ -27,21 +27,21 @@ CommandStack::~CommandStack()
     delete[] m_commands;
 }
 
-Command const* CommandStack::GetUndoCommand() const
+Command const* CommandStack::getUndoCommand() const
 {
-    if (!CanUndo())
+    if (!canUndo())
         return 0;
     return m_commands[m_current - 1];
 }
 
-Command const* CommandStack::GetReDoCommand() const
+Command const* CommandStack::getRedoCommand() const
 {
-    if (!CanReDo())
+    if (!canRedo())
         return 0;
     return m_commands[m_current];
 }
 
-int CommandStack::Do(Command* command)
+int CommandStack::doCommand(Command* command)
 {
     if (m_current < m_used) {
         for (int i = m_current; i < m_used; ++i) {
@@ -63,51 +63,51 @@ int CommandStack::Do(Command* command)
     ++m_current;
     m_used = m_current;
 
-    // printf("doing %d (%s)\n", m_current - 1, m_commands[m_current - 1]->GetDescription());
-    int error = m_commands[m_current - 1]->Do();
+    // printf("doing %d (%s)\n", m_current - 1, m_commands[m_current - 1]->getDescription());
+    int error = m_commands[m_current - 1]->doCommand();
     if (error)
         --m_current;
     return error;
 }
 
-int CommandStack::ReDo()
+int CommandStack::redoCommand()
 {
-    assert(CanReDo());
+    assert(canRedo());
     // printf("redoing %d of %d (%s)\n", m_current, m_used,
-    // m_commands[m_current]->GetDescription());
-    int error = m_commands[m_current]->ReDo();
+    // m_commands[m_current]->getDescription());
+    int error = m_commands[m_current]->redoCommand();
     if (!error)
         ++m_current;
     return error;
 }
 
-int CommandStack::Undo()
+int CommandStack::undoCommand()
 {
-    assert(CanUndo());
+    assert(canUndo());
     // printf("undoing %d of %d (%s)\n", m_current-1, m_used,
-    // m_commands[m_current-1]->GetDescription());
-    int error = m_commands[m_current - 1]->Undo();
+    // m_commands[m_current-1]->getDescription());
+    int error = m_commands[m_current - 1]->undoCommand();
     if (!error)
         --m_current;
     return error;
 }
 
-bool CommandStack::CanReDo() const
+bool CommandStack::canRedo() const
 {
     return m_used > m_current;
 }
 
-bool CommandStack::CanUndo() const
+bool CommandStack::canUndo() const
 {
     return m_current > 0;
 }
 
-void CommandStack::Saved()
+void CommandStack::saved()
 {
     m_lastSave = m_current - 1;
 }
 
-bool CommandStack::IsModified() const
+bool CommandStack::isModified() const
 {
     return m_lastSave != m_current - 1;
 }
@@ -117,18 +117,18 @@ XSCommandStack::XSCommandStack(XSModel* model)
 {
 }
 
-int XSCommandStack::Do(XSCommand* command)
+int XSCommandStack::doCommand(XSCommand* command)
 {
-    command->Init(m_model);
-    return CommandStack::Do(command);
+    command->init(m_model);
+    return CommandStack::doCommand(command);
 }
 
-int XSCommandStack::Undo()
+int XSCommandStack::undoCommand()
 {
-    return CommandStack::Undo();
+    return CommandStack::undoCommand();
 }
 
-int XSCommandStack::ReDo()
+int XSCommandStack::redoCommand()
 {
-    return CommandStack::ReDo();
+    return CommandStack::redoCommand();
 }

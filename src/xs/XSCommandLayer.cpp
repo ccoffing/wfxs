@@ -2,76 +2,76 @@
 #include "XSModel.h"
 
 
-int XSCommandLayerAdd::Do()
+int XSCommandLayerAdd::doCommand()
 {
-    m_model->AddLayer();
+    m_model->addLayer();
     return true;
 }
 
-int XSCommandLayerAdd::Undo()
+int XSCommandLayerAdd::undoCommand()
 {
-    m_model->DelLayer(m_model->GetNumberLayers());
+    m_model->delLayer(m_model->getNumberLayers());
     return true;
 }
 
-char const* XSCommandLayerAdd::GetDescription() const
+char const* XSCommandLayerAdd::getDescription() const
 {
     return _("new layer");
 }
 
-int XSCommandLayerDel::Do()
+int XSCommandLayerDel::doCommand()
 {
-    m_model->DelLayer(m_model->GetNumberLayers());
+    m_model->delLayer(m_model->getNumberLayers());
     return true;
 }
 
-int XSCommandLayerDel::Undo()
+int XSCommandLayerDel::undoCommand()
 {
     // FIXME
     return false;
 }
 
-char const* XSCommandLayerDel::GetDescription() const
+char const* XSCommandLayerDel::getDescription() const
 {
     return _("delete layer");
 }
 
-int XSCommandLayerUp::Do()
+int XSCommandLayerUp::doCommand()
 {
-    if (m_model->GetCurrentLayerIndex() > 0) {
-        m_model->UpLayer();
+    if (m_model->getCurrentLayerIndex() > 0) {
+        m_model->upLayer();
         return true;
     }
     return false;
 }
 
-int XSCommandLayerUp::Undo()
+int XSCommandLayerUp::undoCommand()
 {
-    m_model->DownLayer();
+    m_model->downLayer();
     return true;
 }
 
-char const* XSCommandLayerUp::GetDescription() const
+char const* XSCommandLayerUp::getDescription() const
 {
     return _("layer up");
 }
 
-int XSCommandLayerDown::Do()
+int XSCommandLayerDown::doCommand()
 {
-    if (m_model->GetCurrentLayerIndex() + 1 < m_model->GetNumberLayers()) {
-        m_model->DownLayer();
+    if (m_model->getCurrentLayerIndex() + 1 < m_model->getNumberLayers()) {
+        m_model->downLayer();
         return true;
     }
     return false;
 }
 
-int XSCommandLayerDown::Undo()
+int XSCommandLayerDown::undoCommand()
 {
-    m_model->UpLayer();
+    m_model->upLayer();
     return true;
 }
 
-char const* XSCommandLayerDown::GetDescription() const
+char const* XSCommandLayerDown::getDescription() const
 {
     return _("layer down");
 }

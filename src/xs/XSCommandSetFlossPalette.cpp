@@ -9,20 +9,20 @@ XSCommandSetFlossPalette::XSCommandSetFlossPalette(XSFlossPalette const& flossPa
 {
 }
 
-int XSCommandSetFlossPalette::Do()
+int XSCommandSetFlossPalette::doCommand()
 {
-    m_oldFlossPalette = m_model->GetFlossPalette();
-    m_model->SetFlossPalette(m_newFlossPalette);
+    m_oldFlossPalette = m_model->getFlossPalette();
+    m_model->setFlossPalette(m_newFlossPalette);
     return true;
 }
 
-int XSCommandSetFlossPalette::Undo()
+int XSCommandSetFlossPalette::undoCommand()
 {
-    m_model->SetFlossPalette(m_oldFlossPalette);
+    m_model->setFlossPalette(m_oldFlossPalette);
     return true;
 }
 
-char const* XSCommandSetFlossPalette::GetDescription() const
+char const* XSCommandSetFlossPalette::getDescription() const
 {
     return _("floss palette");
 }

@@ -3,6 +3,7 @@
 #include "StringUtils.h"
 
 #include <memory>
+#include <cstring>
 #include <string>
 
 using namespace std;
@@ -210,7 +211,7 @@ static const char levelChar[] = { 'T', 'D', 'I', 'W', 'E' };
 void Logger::log(Log::Level level, const char* fmt, va_list ap)
 {
     try {
-        if (this && getLevel() <= level) {
+        if (getLevel() <= level) {
 #if 0
             std::string s;
             uint64_t usec64 = Clock::monotonicUSec();

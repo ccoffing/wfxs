@@ -5,9 +5,9 @@
  *  @brief Data: skeins, palettes, floss makers, product lines
  */
 
-#include <vector>
-
 #include "XSSkein.h"
+
+#include <vector>
 
 class XSFlossPalette;
 class XSSkeinPalette;

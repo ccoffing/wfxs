@@ -16,11 +16,11 @@ public:
     XSProperties(XSProperties const& ref);
     XSProperties& operator=(XSProperties const&);
 
-    void Serialize(std::ostream& file) const;
-    void Unserialize(std::istream& file);
+    void serialize(std::ostream& file) const;
+    void unserialize(std::istream& file);
 
 private:
-    void SetDefaults();
+    void setDefaults();
 
 public:
     std::string m_filename;  // FIXME:  move this elsewhere

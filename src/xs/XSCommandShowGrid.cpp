@@ -8,20 +8,20 @@ XSCommandShowGrid::XSCommandShowGrid(bool showGrid)
 {
 }
 
-int XSCommandShowGrid::Do()
+int XSCommandShowGrid::doCommand()
 {
-    m_oldShowGrid = m_model->IsShowGrid();
-    m_model->SetShowGrid(m_newShowGrid);
+    m_oldShowGrid = m_model->isShowGrid();
+    m_model->setShowGrid(m_newShowGrid);
     return true;
 }
 
-int XSCommandShowGrid::Undo()
+int XSCommandShowGrid::undoCommand()
 {
-    m_model->SetShowGrid(m_oldShowGrid);
+    m_model->setShowGrid(m_oldShowGrid);
     return true;
 }
 
-char const* XSCommandShowGrid::GetDescription() const
+char const* XSCommandShowGrid::getDescription() const
 {
     return _("show grid");
 }

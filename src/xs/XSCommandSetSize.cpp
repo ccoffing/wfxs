@@ -10,23 +10,23 @@ XSCommandSetSize::XSCommandSetSize(unsigned int x, unsigned int y)
 {
 }
 
-int XSCommandSetSize::Do()
+int XSCommandSetSize::doCommand()
 {
-    m_oldX = m_model->SquaresX();
-    m_oldY = m_model->SquaresY();
+    m_oldX = m_model->squaresX();
+    m_oldY = m_model->squaresY();
     // FIXME:  save the stitches
-    m_model->Resize(m_newX, m_newY);
+    m_model->resize(m_newX, m_newY);
     return true;
 }
 
-int XSCommandSetSize::Undo()
+int XSCommandSetSize::undoCommand()
 {
-    m_model->Resize(m_oldX, m_oldY);
+    m_model->resize(m_oldX, m_oldY);
     // FIXME:  restore the stitches
     return true;
 }
 
-char const* XSCommandSetSize::GetDescription() const
+char const* XSCommandSetSize::getDescription() const
 {
     return _("resize");
 }

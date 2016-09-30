@@ -8,7 +8,7 @@
 
 #include <QtGui>
 
-#include <assert.h>
+#include <cassert>
 
 
 /**
@@ -156,29 +156,29 @@ XSQtCanvas::XSQtCanvas(XSModel& model, XSController& controller, QWidget* parent
 
 QSize XSQtCanvas::minimumSizeHint() const
 {
-    unsigned int squaresX = m_model.SquaresX();
-    unsigned int squaresY = m_model.SquaresY();
+    unsigned int squaresX = m_model.squaresX();
+    unsigned int squaresY = m_model.squaresY();
 
     if (squaresX > 10)
         squaresX = 10;
     if (squaresY > 10)
         squaresY = 10;
-    unsigned int zoom = m_model.GetZoom();
+    unsigned int zoom = m_model.getZoom();
     return QSize(squaresX * zoom + 1, squaresY * zoom + 1);
 }
 
 QSize XSQtCanvas::sizeHint() const
 {
-    unsigned int squaresX = m_model.SquaresX();
-    unsigned int squaresY = m_model.SquaresY();
-    unsigned int zoom = m_model.GetZoom();
+    unsigned int squaresX = m_model.squaresX();
+    unsigned int squaresY = m_model.squaresY();
+    unsigned int zoom = m_model.getZoom();
 
     return QSize(squaresX * zoom + 1, squaresY * zoom + 1);
 }
 
 QRect XSQtCanvas::squareInnerRect(unsigned int x, unsigned int y)
 {
-    unsigned int zoom = m_model.GetZoom();
+    unsigned int zoom = m_model.getZoom();
 
     return QRect(x * zoom + 1, y * zoom + 1, x * zoom + zoom - 1, y * zoom + zoom - 1);
 }
@@ -200,53 +200,53 @@ void XSQtCanvas::mousePressEvent(QMouseEvent* event)
 
     m_mouseDown = true;
 
-    unsigned int zoom = m_model.GetZoom();
+    unsigned int zoom = m_model.getZoom();
     int squareX = event->x() / zoom;
     int squareY = event->y() / zoom;
 
     m_prevX = squareX;
     m_prevY = squareY;
 
-    XSToolState const toolState = m_model.ToolState();
+    XSToolState const toolState = m_model.toolState();
     switch (toolState.m_toolType) {
     case ToolType_Stitch:
         DeJiggle(squareX, squareY, true);
         if (m_cmdDown)
-            m_controller.OnClearSquare(squareX, squareY);
+            m_controller.onClearSquare(squareX, squareY);
         else
             // FIXME:  pass region instead
-            m_controller.OnSetStitch(squareX, squareY, 50, 50);  // xPercent, yPercent);
+            m_controller.onSetStitch(squareX, squareY, 50, 50);  // xPercent, yPercent);
         break;
     case ToolType_Bead: {
         DeJiggle(squareX, squareY, true);
         // struct RegionOffsetDef* ro = &RegionOffsets[region];
-        // m_controller.OnSetBead(squareX + ro->newX, squareY + ro->newY, ro->newRegion);
+        // m_controller.onSetBead(squareX + ro->newX, squareY + ro->newY, ro->newRegion);
         break;
     }
     case ToolType_Knot: {
         DeJiggle(squareX, squareY, true);
         // struct RegionOffsetDef* ro = & RegionOffsets[region];
-        // m_controller.OnSetKnot(squareX + ro->newX, squareY + ro->newY, ro->newRegion);
+        // m_controller.onSetKnot(squareX + ro->newX, squareY + ro->newY, ro->newRegion);
         break;
     }
     case ToolType_Eraser: {
         DeJiggle(squareX, squareY, true);
-        m_controller.OnClearSquare(squareX, squareY);
+        m_controller.onClearSquare(squareX, squareY);
         break;
     }
     case ToolType_FloodFill: {
         XSSquareIO oldSquare;
-        m_model.GetSquareData(&oldSquare, squareX, squareY, m_model.GetCurrentLayerIndex());
+        m_model.getSquareData(&oldSquare, squareX, squareY, m_model.getCurrentLayerIndex());
 #if 0
-        // zzz   seems like I need a CalculateSquare, similar to setSquare, but
+        // XXX  seems like I need a CalculateSquare, similar to setSquare, but
         //      it directly calls the doc functions, saves the resulting square,
         //      and then undoes it.  Yuck
-        XSSquareIO newSquare = doc->CalculateSquare(squareX, squareY,
+        XSSquareIO newSquare = doc->calculateSquare(squareX, squareY,
                 ((unsigned int)point.x) % zoom * 100 / zoom,
                 ((unsigned int)point.y) % zoom * 100 / zoom,
                 toolState.m_toolType, true, false);
 
-        m_controller.CommandFloodFill(squareX, squareY, oldSquare, newSquare);
+        m_controller.commandFloodFill(squareX, squareY, oldSquare, newSquare);
 #endif
         break;
     }
@@ -257,8 +257,8 @@ void XSQtCanvas::mousePressEvent(QMouseEvent* event)
             if (!m_selectionPath)
                 m_selectionPath = new XSFreeFormSelectionPath();
             else {
-                if (m_selectionPath->Complete()) {
-                    m_selectionMask = m_selectionPath->GetMask();
+                if (m_selectionPath->complete()) {
+                    m_selectionMask = m_selectionPath->getMask();
                     // FIXME
                 } else {
                     // FIXME:  warn user in status bar
@@ -269,7 +269,7 @@ void XSQtCanvas::mousePressEvent(QMouseEvent* event)
     }
     case ToolType_ColorPicker: {
         XSSquareIO square;
-        m_model.GetSquareData(&square, squareX, squareY, m_model.GetCurrentLayerIndex());
+        m_model.getSquareData(&square, squareX, squareY, m_model.getCurrentLayerIndex());
         //            if (square.num_beads
         // FIXME ... look at region; pick relevant stich
         break;
@@ -298,12 +298,12 @@ void XSQtCanvas::mouseMoveEvent(QMouseEvent* event)
     if (!m_mouseDown)
         return;
 
-    unsigned int zoom = m_model.GetZoom();
+    unsigned int zoom = m_model.getZoom();
     int squareX = event->x() / zoom;
     int squareY = event->y() / zoom;
 
-    if (squareX < 0 || (unsigned int)squareX >= m_model.SquaresX() || squareY < 0
-            || (unsigned int)squareY >= m_model.SquaresX())
+    if (squareX < 0 || (unsigned int)squareX >= m_model.squaresX() || squareY < 0
+            || (unsigned int)squareY >= m_model.squaresX())
         return;
 
     if (!DeJiggle(squareX, squareY, false))
@@ -318,9 +318,9 @@ void XSQtCanvas::mouseMoveEvent(QMouseEvent* event)
         points.erase(points.begin());
 
         if (m_cmdDown)
-            m_controller.OnClearSquares(points);
+            m_controller.onClearSquares(points);
         else
-            m_controller.OnSetStitches(points);
+            m_controller.onSetStitches(points);
 
         for (auto& point : points)
             refreshSquare(point.x, point.y);
@@ -350,10 +350,10 @@ void XSQtCanvas::paintEvent(QPaintEvent* /* event */)
     painter.drawRect(0, 0, width(), height());
 #endif
 
-    unsigned int squaresX = m_model.SquaresX();
-    unsigned int squaresY = m_model.SquaresY();
+    unsigned int squaresX = m_model.squaresX();
+    unsigned int squaresY = m_model.squaresY();
 
-    unsigned int zoom = m_model.GetZoom();
+    unsigned int zoom = m_model.getZoom();
     unsigned int left = 0;
     unsigned int top = 0;
     unsigned int right = left + width();
@@ -380,7 +380,7 @@ void XSQtCanvas::paintEvent(QPaintEvent* /* event */)
     painter.setPen(blackPen);
     painter.drawRect(0, 0, squaresX * zoom, squaresY * zoom);
 
-    if (m_model.IsShowGrid()) {
+    if (m_model.isShowGrid()) {
         painter.setPen(grayPen);
         // Draw the gray lines
         for (unsigned int x = left; x <= right; ++x) {
@@ -414,9 +414,9 @@ void XSQtCanvas::paintEvent(QPaintEvent* /* event */)
         }
     }
 
-    const XSFlossPalette& flossPalette = m_model.GetFlossPalette();
-    unsigned int layer = m_model.GetCurrentLayerIndex();
-    enum DrawStyle drawStyle = m_model.GetDrawStyle();
+    const XSFlossPalette& flossPalette = m_model.getFlossPalette();
+    unsigned int layer = m_model.getCurrentLayerIndex();
+    enum DrawStyle drawStyle = m_model.getDrawStyle();
 
     for (unsigned int x = left; x <= right; ++x) {
         for (unsigned int y = top; y <= bottom; ++y) {
@@ -424,19 +424,19 @@ void XSQtCanvas::paintEvent(QPaintEvent* /* event */)
             double zx = x * zoom;
             double zy = y * zoom;
 
-            m_model.GetSquareData(&square, x, y, layer);
+            m_model.getSquareData(&square, x, y, layer);
             if (drawStyle == DrawStyle_Design) {
-                DrawDesignSquare(painter, square, zx, zy, zoom, flossPalette);
+                drawDesignSquare(painter, square, zx, zy, zoom, flossPalette);
             } else if (drawStyle == DrawStyle_Pattern) {
-                DrawPatternSquare(painter, square, zx, zy, zoom, flossPalette);
+                drawPatternSquare(painter, square, zx, zy, zoom, flossPalette);
             } else {
                 assert(drawStyle == DrawStyle_Realistic);
-                DrawRealisticSquare(painter, square, zx, zy, zoom, flossPalette);
+                drawRealisticSquare(painter, square, zx, zy, zoom, flossPalette);
             }
         }
     }
 
-    if (m_resetCursor) {  // || squareInnerRect(cursorX, cursorY).Intersects(updateRect))
+    if (m_resetCursor) {  // || squareInnerRect(cursorX, cursorY).intersects(updateRect))
         m_resetCursor = false;
 
 #if 0
@@ -527,7 +527,7 @@ void XSQtCanvas::paintEvent(QPaintEvent* /* event */)
 #endif
 }
 
-void XSQtCanvas::DrawDesignSquare(QPainter& painter, XSSquareIO& square, double zx, double zy,
+void XSQtCanvas::drawDesignSquare(QPainter& painter, XSSquareIO& square, double zx, double zy,
         unsigned int zoom, XSFlossPalette const& flossPalette)
 {
     const double line_width = 0.2;
@@ -572,7 +572,7 @@ void XSQtCanvas::DrawDesignSquare(QPainter& painter, XSSquareIO& square, double 
         struct DrawDesignData* data = &drawDesignData[(square.stitch[i].stitchType - 1) * 2];
 
         if (data->line) {
-            XSColor c = flossPalette[square.stitch[i].flossIndex].GetColor();
+            XSColor c = flossPalette[square.stitch[i].flossIndex].getColor();
             QColor color(c.red, c.green, c.blue);
             pen.setColor(color);
             painter.setPen(pen);
@@ -585,7 +585,7 @@ void XSQtCanvas::DrawDesignSquare(QPainter& painter, XSSquareIO& square, double 
     }
 
     for (unsigned int i = 0; i < square.knots; ++i) {
-        XSColor c = flossPalette[square.knot[i].flossIndex].GetColor();
+        XSColor c = flossPalette[square.knot[i].flossIndex].getColor();
         QColor color(c.red, c.green, c.blue);
         pen.setColor(color);
         painter.setPen(pen);
@@ -603,7 +603,7 @@ void XSQtCanvas::DrawDesignSquare(QPainter& painter, XSSquareIO& square, double 
 
     for (unsigned int i = 0; i < square.beads; ++i) {
         struct RegionOffsetDef* ro = &RegionOffsets[square.bead[i].region];
-        QColor color;  // = flossPalette->GetColorAtIndex(square.bead[i].colorIndex); // FIXME beads
+        QColor color;  // = flossPalette->getColorAtIndex(square.bead[i].colorIndex); // FIXME beads
                        // are color, not floss
         painter.setPen(pen);
         painter.setBrush(color);
@@ -611,12 +611,12 @@ void XSQtCanvas::DrawDesignSquare(QPainter& painter, XSSquareIO& square, double 
     }
 }
 
-void XSQtCanvas::DrawPatternSquare(QPainter& painter, XSSquareIO& square, double zx, double zy,
+void XSQtCanvas::drawPatternSquare(QPainter& painter, XSSquareIO& square, double zx, double zy,
         unsigned int zoom, XSFlossPalette const& flossPalette)
 {
 }
 
-void XSQtCanvas::DrawRealisticSquare(QPainter& painter, XSSquareIO& square, double zx, double zy,
+void XSQtCanvas::drawRealisticSquare(QPainter& painter, XSSquareIO& square, double zx, double zy,
         unsigned int zoom, XSFlossPalette const& flossPalette)
 {
 }

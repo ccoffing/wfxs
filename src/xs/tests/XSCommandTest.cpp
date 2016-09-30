@@ -6,12 +6,12 @@
 
 class TestXSCommand : public XSCommand {
 public:
-    int Do()
+    int doCommand()
     {
         return 0;
     }
 
-    int Undo()
+    int undoCommand()
     {
         return 0;
     }
@@ -28,27 +28,27 @@ TEST_CASE("CommandStack")
 
     SECTION("init")
     {
-        CHECK_FALSE(cs.CanReDo());
-        CHECK_FALSE(cs.CanUndo());
-        CHECK_FALSE(cs.IsModified());
+        CHECK_FALSE(cs.canRedo());
+        CHECK_FALSE(cs.canUndo());
+        CHECK_FALSE(cs.isModified());
     }
 
     SECTION("undo")
     {
         Command* c = new TestXSCommand;
 
-        cs.Do(c);
-        CHECK_FALSE(cs.CanReDo());
-        CHECK(cs.GetReDoCommand() == 0);
-        CHECK(cs.CanUndo());
-        CHECK(cs.GetUndoCommand() == c);
-        CHECK(cs.IsModified());
+        cs.doCommand(c);
+        CHECK_FALSE(cs.canRedo());
+        CHECK(cs.getRedoCommand() == 0);
+        CHECK(cs.canUndo());
+        CHECK(cs.getUndoCommand() == c);
+        CHECK(cs.isModified());
 
-        cs.Undo();
-        CHECK(cs.CanReDo());
-        CHECK(cs.GetReDoCommand() == c);
-        CHECK_FALSE(cs.CanUndo());
-        CHECK(cs.GetUndoCommand() == 0);
-        CHECK_FALSE(cs.IsModified());
+        cs.undoCommand();
+        CHECK(cs.canRedo());
+        CHECK(cs.getRedoCommand() == c);
+        CHECK_FALSE(cs.canUndo());
+        CHECK(cs.getUndoCommand() == 0);
+        CHECK_FALSE(cs.isModified());
     }
 }

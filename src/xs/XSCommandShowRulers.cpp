@@ -3,25 +3,25 @@
 
 
 XSCommandShowRulers::XSCommandShowRulers(bool showRulers)
-    : m_oldShowRulers(showRulers /* meaninless, to pacify compiler*/)
+    : m_oldShowRulers(false)
     , m_newShowRulers(showRulers)
 {
 }
 
-int XSCommandShowRulers::Do()
+int XSCommandShowRulers::doCommand()
 {
-    m_oldShowRulers = m_model->IsShowRulers();
-    m_model->SetShowRulers(m_newShowRulers);
+    m_oldShowRulers = m_model->isShowRulers();
+    m_model->setShowRulers(m_newShowRulers);
     return true;
 }
 
-int XSCommandShowRulers::Undo()
+int XSCommandShowRulers::undoCommand()
 {
-    m_model->SetShowRulers(m_oldShowRulers);
+    m_model->setShowRulers(m_oldShowRulers);
     return true;
 }
 
-char const* XSCommandShowRulers::GetDescription() const
+char const* XSCommandShowRulers::getDescription() const
 {
     return _("show rulers");
 }

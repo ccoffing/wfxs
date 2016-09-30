@@ -15,24 +15,24 @@ class XSQtCanvas : public QWidget {
     Q_OBJECT
 
 public:
-    XSQtCanvas(XSModel& model, XSController& controller, QWidget* parent = 0);
+    XSQtCanvas(XSModel& model, XSController& controller, QWidget* parent = nullptr);
 
-    QSize minimumSizeHint() const;
-    QSize sizeHint() const;
+    QSize minimumSizeHint() const override;
+    QSize sizeHint() const override;
     QRect squareInnerRect(unsigned int x, unsigned int y);
     void refreshSquare(unsigned int x, unsigned int y);
 
 protected:
-    void mousePressEvent(QMouseEvent* event);
-    void mouseReleaseEvent(QMouseEvent* event);
-    void mouseMoveEvent(QMouseEvent* event);
-    void paintEvent(QPaintEvent* event);
+    void mousePressEvent(QMouseEvent* event) override;
+    void mouseReleaseEvent(QMouseEvent* event) override;
+    void mouseMoveEvent(QMouseEvent* event) override;
+    void paintEvent(QPaintEvent* event) override;
 
-    void DrawDesignSquare(QPainter& painter, XSSquareIO& square, double zx, double zy,
+    void drawDesignSquare(QPainter& painter, XSSquareIO& square, double zx, double zy,
             unsigned int zoom, XSFlossPalette const& flossPalette);
-    void DrawPatternSquare(QPainter& painter, XSSquareIO& square, double zx, double zy,
+    void drawPatternSquare(QPainter& painter, XSSquareIO& square, double zx, double zy,
             unsigned int zoom, XSFlossPalette const& flossPalette);
-    void DrawRealisticSquare(QPainter& painter, XSSquareIO& square, double zx, double zy,
+    void drawRealisticSquare(QPainter& painter, XSSquareIO& square, double zx, double zy,
             unsigned int zoom, XSFlossPalette const& flossPalette);
 
 private:

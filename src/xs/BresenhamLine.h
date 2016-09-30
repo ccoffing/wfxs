@@ -33,13 +33,9 @@ template <class T> void BresenhamLine(int x0, int y0, int x1, int y1, std::vecto
         std::swap(x0, y0);
         std::swap(x1, y1);
     }
-    int direction;
     if (x0 > x1) {
         std::swap(x0, x1);
         std::swap(y0, y1);
-        direction = -1;
-    } else {
-        direction = 1;
     }
     int deltax = x1 - x0;
     int deltay = abs(y1 - y0);

@@ -18,25 +18,25 @@ class XSColor;
  */
 class XSFloss {
 public:
-    static const unsigned int MaxSkeins = 2;
+    static const unsigned int maxSkeins = 2;
 
     XSFloss();
     ~XSFloss();
     XSFloss(std::istream& src, XSSymbolPalette*);
     XSFloss(XSSkein const* skein, unsigned int number, XSSymbolPalette*);
 
-    bool AddSkein(XSSkein const* skein, unsigned int number);
+    bool addSkein(XSSkein const* skein, unsigned int number);
 
-    XSColor GetColor() const;
+    XSColor getColor() const;
 
-    void SetSymbol(char const*);
+    void setSymbol(char const*);
 
-    void Serialize(std::ostream& file) const;
-    void Unserialize(std::istream& src);
+    void serialize(std::ostream& file) const;
+    void unserialize(std::istream& src);
     unsigned int m_numskeins;
-    XSSkein const* m_skeins[MaxSkeins];
+    XSSkein const* m_skeins[maxSkeins];
 
-    unsigned int m_strands[MaxSkeins];
+    unsigned int m_strands[maxSkeins];
 
     /**
      *  The m_symbol pointer points to an entry in the m_symbolPalette.

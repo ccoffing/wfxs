@@ -18,22 +18,22 @@ XSCommandSetStitch::XSCommandSetStitch(unsigned int x, unsigned int y, unsigned 
 {
 }
 
-int XSCommandSetStitch::Do()
+int XSCommandSetStitch::doCommand()
 {
-    m_layer = m_model->GetCurrentLayerIndex();
-    m_model->GetSquareData(&m_oldSquare, m_x, m_y, m_layer);
-    m_stitchType = m_model->SetStitch(
+    m_layer = m_model->getCurrentLayerIndex();
+    m_model->getSquareData(&m_oldSquare, m_x, m_y, m_layer);
+    m_stitchType = m_model->setStitch(
             m_x, m_y, m_xPercent, m_yPercent, m_stitchType, m_flossIndex, m_overwrite);
     return true;
 }
 
-int XSCommandSetStitch::Undo()
+int XSCommandSetStitch::undoCommand()
 {
-    m_model->SetSquareData(&m_oldSquare, m_x, m_y, m_layer);
+    m_model->setSquareData(&m_oldSquare, m_x, m_y, m_layer);
     return true;
 }
 
-char const* XSCommandSetStitch::GetDescription() const
+char const* XSCommandSetStitch::getDescription() const
 {
     return _("stitch");
 }
@@ -50,31 +50,31 @@ XSCommandSetStitches::XSCommandSetStitches(std::vector<XSPoint>& points, StitchT
     m_oldSquares.reserve(points.size());
 }
 
-int XSCommandSetStitches::Do()
+int XSCommandSetStitches::doCommand()
 {
-    m_layer = m_model->GetCurrentLayerIndex();
-    for (unsigned int i = 0; i < m_points.size(); ++i) {
+    m_layer = m_model->getCurrentLayerIndex();
+    for (auto& elem : m_points) {
         XSSquareIO square;
-        m_model->GetSquareData(&square, m_points[i].x, m_points[i].y, m_layer);
+        m_model->getSquareData(&square, elem.x, elem.y, m_layer);
         m_oldSquares.insert(m_oldSquares.end(), square);
     }
     // FIXME:  SetStitch should take m_layer!!!!!!!!!!!
-    for (unsigned int i = 0; i < m_points.size(); ++i) {
-        m_stitchType = m_model->SetStitch(
-                m_points[i].x, m_points[i].y, 50, 50, m_stitchType, m_flossIndex, m_overwrite);
+    for (auto& elem : m_points) {
+        m_stitchType = m_model->setStitch(
+                elem.x, elem.y, 50, 50, m_stitchType, m_flossIndex, m_overwrite);
     }
     return true;
 }
 
-int XSCommandSetStitches::Undo()
+int XSCommandSetStitches::undoCommand()
 {
     for (unsigned int i = 0; i < m_points.size(); ++i) {
-        m_model->SetSquareData(&m_oldSquares[i], m_points[i].x, m_points[i].y, m_layer);
+        m_model->setSquareData(&m_oldSquares[i], m_points[i].x, m_points[i].y, m_layer);
     }
     return true;
 }
 
-char const* XSCommandSetStitches::GetDescription() const
+char const* XSCommandSetStitches::getDescription() const
 {
     return _("stitches");
 }

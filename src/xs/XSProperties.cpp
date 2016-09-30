@@ -2,16 +2,6 @@
 #include "XSDataIO.h"
 
 
-void XSProperties::SetDefaults()
-{
-    if (m_fabric.length() == 0)
-        m_fabric = "Aida cloth";
-    if (m_horiClothCount == 0)
-        m_horiClothCount = 14;
-    if (m_vertClothCount == 0)
-        m_vertClothCount = m_horiClothCount;
-}
-
 XSProperties::XSProperties()
     : m_filename()
     , m_title()
@@ -21,7 +11,7 @@ XSProperties::XSProperties()
     , m_horiClothCount(0)
     , m_vertClothCount(0)
 {
-    SetDefaults();
+    setDefaults();
 }
 
 XSProperties::XSProperties(XSProperties const& ref)
@@ -53,7 +43,17 @@ XSProperties::~XSProperties()
 {
 }
 
-void XSProperties::Serialize(std::ostream& file) const
+void XSProperties::setDefaults()
+{
+    if (m_fabric.length() == 0)
+        m_fabric = "Aida cloth";
+    if (m_horiClothCount == 0)
+        m_horiClothCount = 14;
+    if (m_vertClothCount == 0)
+        m_vertClothCount = m_horiClothCount;
+}
+
+void XSProperties::serialize(std::ostream& file) const
 {
     WriteCStr_exc(file, m_title);
     WriteCStr_exc(file, m_author);
@@ -63,7 +63,7 @@ void XSProperties::Serialize(std::ostream& file) const
     WriteLE32_exc(file, m_vertClothCount);
 }
 
-void XSProperties::Unserialize(std::istream& file)
+void XSProperties::unserialize(std::istream& file)
 {
     ReadCStr_exc(file, m_title);
     ReadCStr_exc(file, m_author);

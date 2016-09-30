@@ -1,9 +1,9 @@
-#include "xs/BitString.h"
-#include "xs/BitOps.h"
+#include "BitString.h"
+#include "BitOps.h"
 
-#include <assert.h>
-#include <stdint.h>
-#include <string.h>
+#include <cassert>
+#include <cstdint>
+#include <cstring>
 
 inline unsigned int getWords(unsigned int bits)
 {

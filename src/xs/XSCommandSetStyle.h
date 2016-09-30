@@ -15,9 +15,9 @@ class XSCommandSetStyle : public XSCommand {
 public:
     XSCommandSetStyle(enum DrawStyle);
 
-    virtual int Do();
-    virtual int Undo();
-    virtual char const* GetDescription() const;
+    virtual int doCommand();
+    virtual int undoCommand();
+    virtual char const* getDescription() const;
 
 private:
     enum DrawStyle m_newStyle, m_oldStyle;
