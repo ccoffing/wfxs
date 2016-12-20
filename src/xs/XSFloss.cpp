@@ -50,13 +50,13 @@ void XSFloss::unserialize(std::istream& src)
 
     Read8_exc(src, numskeins);
     if (!numskeins || numskeins > maxSkeins)
-        throw IllegalFormatException();
+        throw IllegalFormatException("Bad number of skeins");
     m_numskeins = numskeins;
     for (unsigned int i = 0; i < m_numskeins; ++i) {
         uint8_t strands;
         Read8_exc(src, strands);
         if (strands > 6 || strands == 0)
-            throw IllegalFormatException();
+            throw IllegalFormatException("Bad number of strands");
         m_strands[i] = strands;
 
         Maker_t maker;
@@ -72,7 +72,7 @@ void XSFloss::unserialize(std::istream& src)
         } else {
             // The appropriate maker, product line, or ID wasn't read in
             // previously.
-            throw IllegalFormatException();
+            throw IllegalFormatException("Skein not found");
         }
     }
 

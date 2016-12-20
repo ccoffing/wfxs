@@ -8,10 +8,7 @@
 
 void XSSquareIO::serialize(std::ostream& file) const
 {
-    /*
-     *  RLE encoding elsewhere depends on the high bit of the first byte
-     *  to not be set.
-     */
+    // RLE encoding (in XSFileNative) depends on the high bit of the first byte to not be set.
     assert((stitches & 0x80) == 0);
     Write8_exc(file, stitches);
     for (unsigned int i = 0; i < stitches; ++i) {
@@ -47,9 +44,9 @@ void XSSquareIO::unserialize(std::istream& file)
         stitch[i].stitchType = (StitchTypeAndLocation)b;
     }
     Read8_exc(file, ui8);
-    if ((knots = ui8 & 0xf) > XSSquare::maxKnots)
+    if ((knots = (ui8 & 0xf)) > XSSquare::maxKnots)
         goto fail;
-    if ((beads = (ui8 >> 4) & 0xf) > XSSquare::maxBeads)
+    if ((beads = ((ui8 >> 4) & 0xf)) > XSSquare::maxBeads)
         goto fail;
     for (unsigned int i = 0; i < knots; ++i) {
         Read8_exc(file, b);
@@ -75,5 +72,5 @@ void XSSquareIO::unserialize(std::istream& file)
     return;
 
 fail:
-    throw IllegalFormatException();
+    throw IllegalFormatException("Malformed data in a square");
 }

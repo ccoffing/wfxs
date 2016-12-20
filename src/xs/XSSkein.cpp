@@ -46,12 +46,12 @@ void XSSkein::unserialize(std::istream& src)
 
     Read8_exc(src, ui8);
     if (ui8 >= FM_NUMBER)
-        throw IllegalFormatException();
+        throw IllegalFormatException("Bad 'maker' number");
     m_maker = (Maker_t)ui8;
 
     Read8_exc(src, ui8);
     if (ui8 >= FPL_NUMBER)
-        throw IllegalFormatException();
+        throw IllegalFormatException("Bad 'product line' number");
     m_productLine = (FlossProductLine_t)ui8;
 
     ReadCStr_exc(src, m_id, MAX_FLOSS_ID_LEN);
@@ -63,7 +63,7 @@ void XSSkein::unserialize(std::istream& src)
     m_discontinued = (ui8 & 1);
     unsigned int blend = (ui8 >> 1) & 3;
     if (blend >= FB_NUMBER)
-        throw IllegalFormatException();
+        throw IllegalFormatException("Bad 'blend' number");
     m_blend = (FlossBlend_t)blend;
 
     Read8_exc(src, ui8);
@@ -109,12 +109,12 @@ void XSSkein::unserializeRef(
 
     Read8_exc(src, ui8);
     if (ui8 > FM_NUMBER)
-        throw IllegalFormatException();
+        throw IllegalFormatException("Bad 'maker' number");
     maker = (Maker_t)ui8;
 
     Read8_exc(src, ui8);
     if (ui8 > FPL_NUMBER)
-        throw IllegalFormatException();
+        throw IllegalFormatException("Bad 'product line' number");
     productLine = (FlossProductLine_t)ui8;
 
     ReadCStr_exc(src, id, MAX_FLOSS_ID_LEN);

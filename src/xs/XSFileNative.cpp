@@ -1,3 +1,4 @@
+#include "Logger.h"
 #include "XSFile.h"
 #include "XSApplication.h"
 #include "XSController.h"
@@ -13,6 +14,7 @@
 #include <string.h>
 #include <string>
 
+#define LOG_NAME "xs.FileNative"
 
 static unsigned int g_version = 1;
 
@@ -37,10 +39,10 @@ void StreamOutNative(std::ostream& stream, const XSModel* model)
     Write8_exc(stream, 'f');
     Write8_exc(stream, 'x');
     Write8_exc(stream, 's');
-    WriteLE32_exc(stream, g_version);
-    WriteLE32_exc(stream, squaresX);
-    WriteLE32_exc(stream, squaresY);
-    WriteLE32_exc(stream, layers);
+    WriteBE32_exc(stream, g_version);
+    WriteBE32_exc(stream, squaresX);
+    WriteBE32_exc(stream, squaresY);
+    WriteBE32_exc(stream, layers);
 
     // Dump out meta-data
     model->getProperties().serialize(stream);
@@ -97,9 +99,7 @@ void StreamOutNative(std::ostream& stream, const XSModel* model)
     // FIXME:  pass "makers" down as a way to re-number the output
     toolState.m_flossPalette.serialize(stream);
 
-    /*
-     *  Dump pattern data
-     */
+    // Dump pattern data
     for (unsigned int layer = 0; layer < layers; ++layer) {
         unsigned int repeatPreviousSquare = 0;
         XSSquareIO square, previousSquare;
@@ -114,7 +114,7 @@ void StreamOutNative(std::ostream& stream, const XSModel* model)
                 } else {
                     assert(repeatPreviousSquare < 128);
                     if (repeatPreviousSquare < 127
-                            && memcmp(&previousSquare, &square, sizeof(XSSquareIO)) == 0) {
+                            && memcmp(&previousSquare, &square, sizeof(XSSquareIO)) == 0) {  // XXX operator=
                         ++repeatPreviousSquare;
                     } else {
                         // They differ, or the previous run hit the max length.
@@ -134,74 +134,79 @@ void StreamOutNative(std::ostream& stream, const XSModel* model)
 
 void StreamInNative(std::istream& stream, XSModel* doc)
 {
-    do {
-        uint32_t u32, squaresX, squaresY, layers;
+    uint32_t u32, squaresX, squaresY, layers;
 
-        ReadLE32_exc(stream, u32);
-        // if (u32 != XSApplication::signature)
-        //    break;
+    ReadBE32_exc(stream, u32);
+    if (u32 != 'wfxs') {
+        throw IllegalFormatException("Unrecognized file signature");
+    }
 
-        ReadLE32_exc(stream, u32);
-        if (u32 > g_version)
-            break;
+    ReadBE32_exc(stream, u32);
+    if (u32 > g_version) {
+        throw IllegalFormatException("Unrecognized file version");
+    }
+    Log::debug(LOG_NAME, "File version 0x%x", u32);
 
-        ReadLE32_exc(stream, squaresX);
-        ReadLE32_exc(stream, squaresY);
-        ReadLE32_exc(stream, layers);
-        if (!squaresX || !squaresY || !layers)
-            break;
+    ReadBE32_exc(stream, squaresX);
+    ReadBE32_exc(stream, squaresY);
+    ReadBE32_exc(stream, layers);
+    if (!squaresX || !squaresY || !layers) {
+        throw IllegalFormatException("Pattern has a 0 dimension");
+    }
+    Log::debug(LOG_NAME, "Pattern is %ux%ux%u", squaresX, squaresY, layers);
 
-        XSProperties properties;
-        properties.unserialize(stream);
-        doc->setProperties(properties);
+    XSProperties properties;
+    properties.unserialize(stream);
+    doc->setProperties(properties);
+    doc->resize(squaresX, squaresY);
 
-        uint8_t numMakers;
-        Read8_exc(stream, numMakers);
-        for (unsigned int i = 0; i < numMakers; ++i) {
-            uint8_t index;
-            Read8_exc(stream, index);
-            std::string maker;
-            ReadCStr_exc(stream, maker);
-            // FIXME - add maker to set
+    uint8_t numMakers;
+    Read8_exc(stream, numMakers);
+    Log::debug(LOG_NAME, "Pattern uses %u makers", numMakers);
+    for (unsigned int i = 0; i < numMakers; ++i) {
+        uint8_t index;
+        Read8_exc(stream, index);
+        std::string maker;
+        ReadCStr_exc(stream, maker);
+        Log::debug(LOG_NAME, "Pattern uses maker '%s'", maker.c_str());
+        // FIXME - add maker to set
+    }
+
+    // product lines
+
+    // skeins
+
+    XSToolState toolState = doc->m_toolState;
+    toolState.m_flossPalette.unserialize(stream);
+
+    for (unsigned int layer = 0; layer < layers; ++layer) {
+        uint8_t repeat = 0;
+        XSSquareIO square;
+
+        if (layer > 0) {
+            Log::debug(LOG_NAME, "Adding another layer");
+            doc->addLayer();
         }
 
-        // product lines
-
-        // skeins
-
-        XSToolState toolState = doc->m_toolState;
-        toolState.m_flossPalette.unserialize(stream);
-
-        for (unsigned int layer = 0; layer < layers; ++layer) {
-            uint8_t repeat = 0;
-            XSSquareIO square;
-
-            if (layer > 0)
-                doc->addLayer();
-
-            for (unsigned int y = 0; y < squaresY; ++y) {
-                for (unsigned int x = 0; x < squaresX; ++x) {
-                    if (repeat == 0) {
-                        Read8_exc(stream, repeat);
-                        if (repeat & 0x80) {
-                            repeat &= 0x7f;
-                        } else {
-                            stream.seekg(-1, std::ios::cur);
-                            repeat = 1;
-                        }
-                        square.unserialize(stream);
+        for (unsigned int y = 0; y < squaresY; ++y) {
+            for (unsigned int x = 0; x < squaresX; ++x) {
+                if (repeat == 0) {
+                    Read8_exc(stream, repeat);
+                    if (repeat & 0x80) {
+                        repeat &= 0x7f;
+                    } else {
+                        stream.seekg(-1, std::ios::cur);
+                        repeat = 1;
                     }
-                    assert(repeat);
-                    doc->setSquareDataNoInval(&square, x, y, layer);
-                    repeat--;
+                    square.unserialize(stream);
+                    Log::debug(LOG_NAME, "...repeats %u", repeat);
                 }
+                assert(repeat > 0);
+                doc->setSquareDataNoInval(&square, x, y, layer);
+                repeat--;
             }
-
-            assert(repeat == 0);
         }
 
-        return;
-    } while (false);
-
-    throw IllegalFormatException();
+        assert(repeat == 0);
+    }
 }

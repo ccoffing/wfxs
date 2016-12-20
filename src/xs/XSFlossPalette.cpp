@@ -1,6 +1,6 @@
-#include "XSFloss.h"
 #include "Logger.h"
 #include "XSDataIO.h"
+#include "XSFloss.h"
 #include "XSFlossPalette.h"
 
 #include <cassert>
@@ -48,10 +48,10 @@ void XSFlossPalette::unserializeAll(std::istream& src)
 void XSFlossPalette::unserialize(std::istream& src)
 {
     unsigned int i = 0;
-    uint16_t size;
+    uint16_t paletteSize;
 
-    ReadBE16_exc(src, size);
-    while (size--) {
+    ReadBE16_exc(src, paletteSize);
+    while (paletteSize--) {
         XSFloss floss(src, &m_symbolPalette);
         // FIXME:  resizing each time is inefficient
         (*this)[i++] = floss;
@@ -60,7 +60,7 @@ void XSFlossPalette::unserialize(std::istream& src)
 
 void XSFlossPalette::serialize(std::ostream& file) const
 {
-    WriteLE32_exc(file, m_paletteSize);
+    WriteBE16_exc(file, m_paletteSize);
     for (unsigned int i = 0; i < m_paletteSize; ++i) {
         m_palette[i].serialize(file);
     }

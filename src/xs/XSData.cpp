@@ -71,15 +71,20 @@ static void InitSkeinPalettes()
         Log::info(LOG_NAME, "Loading %s", f.c_str());
         std::ifstream is;
         is.open(f.c_str());
+        if (!is.good()) {
+            Log::error(LOG_NAME, "Failed to load default '%s' skeins", toRead[i].name);
+        }
 
         Log::debug(LOG_NAME, "Loading skeins");
         XSSkeinPalette* sp = new XSSkeinPalette;
-        sp->unserialize(is);
+        if (is.good())
+            sp->unserialize(is);
         makerSkeinPalette[toRead[i].index] = sp;
 
         Log::debug(LOG_NAME, "Loading floss palette");
         XSFlossPalette* fp = new XSFlossPalette;
-        fp->unserialize(is);
+        if (is.good())
+            fp->unserialize(is);
         makerFlossPalette[toRead[i].index] = fp;
     }
 

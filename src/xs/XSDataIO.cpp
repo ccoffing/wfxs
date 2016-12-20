@@ -10,7 +10,7 @@
 size_t Write_exc(std::ostream& dio, char const* src, size_t size)
 {
     if (dio.write(src, size).fail())
-        throw IOException();
+        throw IOException("Failed to write");
     return size;
 }
 
@@ -62,7 +62,7 @@ size_t WriteCStr_exc(std::ostream& dio, char const* src)
 size_t Read_exc(std::istream& dio, char* dst, size_t size)
 {
     if (dio.read(dst, size).fail())
-        throw IOException();
+        throw IOException("Failed to read");
     return size;
 }
 
@@ -76,7 +76,7 @@ size_t ReadLE16_exc(std::istream& dio, uint16_t& i)
     size_t bytes = Read_exc(dio, (char*)&i, 2);
 
     if (bytes != 2)
-        throw IOException();
+        throw IOException("Short read");
     i = ByteOrder::swapUInt16OnLE(i);
     return bytes;
 }
@@ -86,7 +86,7 @@ size_t ReadLE32_exc(std::istream& dio, uint32_t& i)
     size_t bytes = Read_exc(dio, (char*)&i, 4);
 
     if (bytes != 4)
-        throw IOException();
+        throw IOException("Short read");
     i = ByteOrder::swapUInt32OnLE(i);
     return bytes;
 }
@@ -96,7 +96,7 @@ size_t ReadBE16_exc(std::istream& dio, uint16_t& i)
     size_t bytes = Read_exc(dio, (char*)&i, 2);
 
     if (bytes != 2)
-        throw IOException();
+        throw IOException("Short read");
     i = ByteOrder::swapUInt16OnLE(i);
     return bytes;
 }
@@ -106,7 +106,7 @@ size_t ReadBE32_exc(std::istream& dio, uint32_t& i)
     size_t bytes = Read_exc(dio, (char*)&i, 4);
 
     if (bytes != 4)
-        throw IOException();
+        throw IOException("Short read");
     i = ByteOrder::swapUInt32OnLE(i);
     return bytes;
 }
@@ -116,12 +116,12 @@ size_t ReadCStr_exc(std::istream& dio, std::string& dst, unsigned int max)
     for (unsigned int i = 0; !max || i <= max; ++i) {
         char c;
         if (dio.read(&c, 1).fail())
-            throw IOException();
+            throw IOException("Failed to read string");
         if (c == 0)
             return i;
         dst.append(1, c);
     }
-    throw IllegalFormatException();
+    throw IllegalFormatException("Failed to read string");
 }
 
 size_t ReadCStr_exc(std::istream& dio, char* dst, unsigned int max)
@@ -129,12 +129,12 @@ size_t ReadCStr_exc(std::istream& dio, char* dst, unsigned int max)
     for (unsigned int i = 0; !max || i <= max; ++i) {
         char c;
         if (dio.read(&c, 1).fail())
-            throw IOException();
+            throw IOException("Failed to read string");
         dst[i] = c;
         if (c == 0)
             return i;
     }
-    throw IllegalFormatException();
+    throw IllegalFormatException("Failed to read string");
 }
 
 #if 0

@@ -180,7 +180,7 @@ unsigned int XSModel::squaresY() const
 StitchType XSModel::setStitch(unsigned int squareX, unsigned int squareY, unsigned int xPercent,
         unsigned int yPercent, StitchType stitchType, unsigned int flossIndex, bool overwrite)
 {
-    Log::debug(LOG_NAME, "%u %u %u", squareX, squareY, flossIndex);
+    Log::trace(LOG_NAME, "%u %u %u", squareX, squareY, flossIndex);
     StitchType st = m_layers[m_currentLayerIndex]->setStitch(
             squareX, squareY, xPercent, yPercent, stitchType, flossIndex, overwrite);
 

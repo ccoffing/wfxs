@@ -244,7 +244,7 @@ void XSQtEditWindow::overwrite()
 void XSQtEditWindow::open()
 {
     QString fileName
-            = QFileDialog::getOpenFileName(this, tr("Open Pattern"), "", tr("All files (*.*)"));
+            = QFileDialog::getOpenFileName(this, tr("Open Pattern"), "", tr("Wildflower patterns (*.wfxs);;PCStitch patterns (*.pat);;All files (*)"));
 
     if (!fileName.isNull()) {
         try {
@@ -265,7 +265,7 @@ void XSQtEditWindow::open()
 void XSQtEditWindow::save()
 {
     QString fileName = QFileDialog::getSaveFileName(
-            this, tr("Save Pattern"), "", "", 0, QFileDialog::HideNameFilterDetails);
+            this, tr("Save Pattern"), "", "Wildflower patterns (*.wfxs)", 0, QFileDialog::HideNameFilterDetails);
 
     if (!fileName.isNull()) {
         try {

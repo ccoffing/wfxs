@@ -44,8 +44,8 @@ void XSController::open(const char* filename)
     std::ifstream ifs;
 
     ifs.open(filename);
+    // TODO  check if good?
 
-    // TODO
     XSModel* model = new XSModel(0, 0);
     model->loadObject(ifs);
     m_model = model;

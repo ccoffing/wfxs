@@ -1,6 +1,8 @@
+#include "Logger.h"
 #include "XSProperties.h"
 #include "XSDataIO.h"
 
+#define LOG_NAME "xs.Properties"
 
 XSProperties::XSProperties()
     : m_filename()
@@ -59,16 +61,21 @@ void XSProperties::serialize(std::ostream& file) const
     WriteCStr_exc(file, m_author);
     WriteCStr_exc(file, m_fabric);
     WriteCStr_exc(file, m_instructions);
-    WriteLE32_exc(file, m_horiClothCount);
-    WriteLE32_exc(file, m_vertClothCount);
+    WriteBE32_exc(file, m_horiClothCount);
+    WriteBE32_exc(file, m_vertClothCount);
 }
 
 void XSProperties::unserialize(std::istream& file)
 {
     ReadCStr_exc(file, m_title);
+    Log::debug(LOG_NAME, "Title is '%s'", m_title.c_str());
     ReadCStr_exc(file, m_author);
+    Log::debug(LOG_NAME, "Author is '%s'", m_author.c_str());
     ReadCStr_exc(file, m_fabric);
+    Log::debug(LOG_NAME, "Fabric is '%s'", m_fabric.c_str());
     ReadCStr_exc(file, m_instructions);
-    ReadLE32_exc(file, m_horiClothCount);
-    ReadLE32_exc(file, m_vertClothCount);
+    Log::debug(LOG_NAME, "Instructions is '%s'", m_instructions.c_str());
+    ReadBE32_exc(file, m_horiClothCount);
+    ReadBE32_exc(file, m_vertClothCount);
+    Log::debug(LOG_NAME, "Cloth count is %ux%u", m_horiClothCount, m_vertClothCount);
 }
